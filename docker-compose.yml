@@ -1,6 +1,6 @@
 services:
   website:
-    image: ghcr.io/ipnet-mesh/website:latest
+    image: ghcr.io/ipnet-mesh/website:main
     ports:
       - "5000:5000"
     environment:
