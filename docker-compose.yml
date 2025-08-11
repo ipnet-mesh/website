@@ -62,7 +62,9 @@ services:
     image: eclipse-mosquitto:2.0
     restart: unless-stopped
     volumes:
-      - ./mosquitto/config:/mosquitto/config:ro
+      - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./mosquitto/config/acl.conf:/mosquitto/config/acl.conf:ro
+      - ./mosquitto/config/passwd:/mosquitto/config/passwd:ro
       - ./mosquitto/data:/mosquitto/data
       - ./mosquitto/log:/mosquitto/log
     labels:
