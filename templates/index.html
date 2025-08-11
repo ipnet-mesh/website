@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}IPNet - Ipswich Mesh Network{% endblock %}
+{% block description %}Local MeshCore community group serving Ipswich, Suffolk. Join our mesh network and connect with local enthusiasts.{% endblock %}
+
+{% block alpine_data %} x-data="homeData()"{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="hero-container">
+        <h1 class="hero-title">
+            IPNet: Ipswich Mesh Network
+        </h1>
+        <p class="hero-subtitle">
+            Local MeshCore community group serving Ipswich, Suffolk, UK. Connect with us through decentralized mesh networking.
+        </p>
+        <div class="hero-buttons">
+            <a href="{{ url_for('nodes') }}" class="hero-btn-primary">
+                View Network Map
+            </a>
+            <a href="{{ url_for('contact') }}" class="hero-btn-secondary">
+                Join Our Group
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Section -->
+<div class="home-stats-section">
+    <div class="home-stats-container">
+        <div class="home-stats-grid">
+            <div class="home-stat-item">
+                <div class="home-stat-number" x-text="stats.totalNodes">{{ stats.totalNodes }}</div>
+                <div class="home-stat-label">Active Nodes</div>
+            </div>
+            <div class="home-stat-item">
+                <div class="home-stat-number" x-text="stats.totalMembers">{{ stats.totalMembers }}</div>
+                <div class="home-stat-label">Members</div>
+            </div>
+            <div class="home-stat-item">
+                <div class="home-stat-number" x-text="stats.coverageArea">{{ stats.coverageArea }}</div>
+                <div class="home-stat-label">km² Coverage</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- About Section -->
+<div class="about-section">
+    <div class="about-container">
+        <div class="about-header">
+            <h2 class="about-title">
+                About MeshCore
+            </h2>
+            <p class="about-subtitle">
+                Discover the power of decentralized communication
+            </p>
+        </div>
+
+        <div class="about-content">
+            <div class="about-text-section">
+                <h3 class="about-section-title">
+                    What is MeshCore?
+                </h3>
+                <p class="about-text">
+                    MeshCore is an open-source project that enables you to use inexpensive LoRa radios as a long-range mesh communication platform. Perfect for hiking, camping, or emergency communications.
+                </p>
+                <p class="about-text-last">
+                    Our local group maintains a network of nodes across Ipswich, Suffolk, UK, providing coverage and support for the community.
+                </p>
+                <a href="https://meshcore.co.uk" target="_blank" rel="noopener noreferrer" class="about-link">
+                    Learn more about MeshCore
+                    <svg class="about-link-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                    </svg>
+                </a>
+            </div>
+            <div class="about-cta-card">
+                <div class="about-cta-emoji">📡</div>
+                <h4 class="about-cta-title">
+                    Join Our Network
+                </h4>
+                <p class="about-cta-text">
+                    Get started with your own MeshCore/Meshtastic device and connect to our local mesh network today.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

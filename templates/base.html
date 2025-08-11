@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: true }" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="path-prefix" content="">
+    <title>{% block title %}IPNet - Ipswich Mesh Network{% endblock %}</title>
+    <meta name="description" content="{% block description %}Local MeshCore community group serving Ipswich, Suffolk. Join our mesh network and connect with local enthusiasts.{% endblock %}">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ipnt.uk/">
+    <meta property="og:title" content="{% block og_title %}IPNet{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Local MeshCore community group for Ipswich, Suffolk, UK{% endblock %}">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ipnt.uk/">
+    <meta property="twitter:title" content="{% block twitter_title %}IPNet{% endblock %}">
+    <meta property="twitter:description" content="{% block twitter_description %}Local MeshCore community group for Ipswich, Suffolk, UK{% endblock %}">
+    <link rel="canonical" href="https://ipnt.uk/">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    
+    <!-- Built Tailwind CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+    
+    <!-- Prevent flash of light theme -->
+    <script>
+        // Apply dark theme immediately to prevent flash
+        (function() {
+            const isDark = localStorage.getItem('darkMode') !== 'false' && 
+                          (localStorage.getItem('darkMode') === 'true' || !localStorage.getItem('darkMode'));
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="app-body">
+    <!-- Skip to main content -->
+    <a href="#main-content" class="skip-to-main">
+        Skip to main content
+    </a>
+
+    <!-- Navigation -->
+    <nav class="main-nav" x-data="{ mobileMenuOpen: false }">
+        <div class="nav-container">
+            <div class="nav-content">
+                <div class="nav-left">
+                    <!-- Logo -->
+                    <div class="nav-logo">
+                        <a href="{{ url_for('home') }}">
+                            <span class="nav-logo-text">IPNet</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Desktop Navigation -->
+                    <div class="nav-desktop">
+                        <a href="{{ url_for('home') }}" class="nav-link {% if request.endpoint == 'home' %}nav-link-active{% else %}nav-link-inactive{% endif %}">Home</a>
+                        <a href="{{ url_for('nodes') }}" class="nav-link {% if request.endpoint == 'nodes' %}nav-link-active{% else %}nav-link-inactive{% endif %}">Nodes</a>
+                        <a href="{{ url_for('members') }}" class="nav-link {% if request.endpoint == 'members' %}nav-link-active{% else %}nav-link-inactive{% endif %}">Members</a>
+                        <a href="{{ url_for('contact') }}" class="nav-link {% if request.endpoint == 'contact' %}nav-link-active{% else %}nav-link-inactive{% endif %}">Contact</a>
+                    </div>
+                </div>
+                
+                <!-- Dark mode toggle and mobile menu button -->
+                <div class="nav-right">
+                    <!-- Dark mode toggle -->
+                    <button @click="darkMode = !darkMode" class="nav-theme-toggle">
+                        <svg x-show="!darkMode" class="nav-theme-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                        <svg x-show="darkMode" class="nav-theme-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </button>
+                    
+                    <!-- Mobile menu button -->
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="nav-mobile-btn">
+                        <svg class="nav-mobile-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <div x-show="mobileMenuOpen" class="nav-mobile-menu">
+                <div class="nav-mobile-content">
+                    <a href="{{ url_for('home') }}" class="nav-mobile-link {% if request.endpoint == 'home' %}nav-mobile-link-active{% else %}nav-mobile-link-inactive{% endif %}">Home</a>
+                    <a href="{{ url_for('nodes') }}" class="nav-mobile-link {% if request.endpoint == 'nodes' %}nav-mobile-link-active{% else %}nav-mobile-link-inactive{% endif %}">Nodes</a>
+                    <a href="{{ url_for('members') }}" class="nav-mobile-link {% if request.endpoint == 'members' %}nav-mobile-link-active{% else %}nav-mobile-link-inactive{% endif %}">Members</a>
+                    <a href="{{ url_for('contact') }}" class="nav-mobile-link {% if request.endpoint == 'contact' %}nav-mobile-link-active{% else %}nav-mobile-link-inactive{% endif %}">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content"{% block alpine_data %}{% endblock %}>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-brand-header">
+                        <span class="footer-brand-text">IPNet: Ipswich Mesh Network</span>
+                    </div>
+                    <p class="footer-brand-description">
+                        Connecting Ipswich through decentralized mesh networking.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-section-title">Quick Links</h3>
+                    <ul class="footer-nav-list">
+                        <li><a href="{{ url_for('home') }}" class="footer-nav-link">Home</a></li>
+                        <li><a href="{{ url_for('nodes') }}" class="footer-nav-link">Network Map</a></li>
+                        <li><a href="{{ url_for('members') }}" class="footer-nav-link">Members</a></li>
+                        <li><a href="{{ url_for('contact') }}" class="footer-nav-link">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-section-title">Connect</h3>
+                    <div class="footer-social-links">
+                        <a href="https://discord.gg/hXRM2cJgtf" class="footer-social-link">
+                            Discord
+                        </a>
+                        <a href="https://github.com/jinglemansweep/ipnet" class="footer-social-link">
+                            GitHub
+                        </a>
+                        <a href="mailto:info@ipnt.uk" class="footer-social-link">
+                            Email
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; IPNet. Open source community project.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

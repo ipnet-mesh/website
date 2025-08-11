@@ -1,0 +1,257 @@
+{
+  "lastUpdated": "2025-07-29T12:00:00Z",
+  "nodes": [
+    {
+      "id": "rep01.ip2.ipnt.uk",
+      "publicKey": "A0722F9DE381484DA5AAECDB61586171E2FC4A4714072BBF04FD8F09B4768DED",
+      "name": "IP2 Repeater 1",
+      "memberId": "louis",
+      "area": "IP2",
+      "location": {
+        "lat": 52.0354539,
+        "lng": 1.1295338,
+        "description": "Fountains Road"
+      },
+      "hardware": "Heltec V3",
+      "antenna": "Paradar 8.5dBi omni",
+      "elevation": 120,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": false,
+      "meshRole": "repeater",
+      "channels": []
+    },
+    {
+      "id": "rep02.ip2.ipnt.uk",
+      "publicKey": "815EBCB3C74CC07BB37569E8C086CC4D4138948A1D4AEE1C51D57FEC071DDCC3",
+      "name": "IP2 Repeater 2",
+      "memberId": "louis",
+      "area": "IP2",
+      "location": {
+        "lat": 52.0390682,
+        "lng": 1.1304141,
+        "description": "Belstead Road"
+      },
+      "hardware": "Heltec V3",
+      "antenna": "Generic 5dBi Whip",
+      "elevation": 120,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": false,
+      "meshRole": "repeater",
+      "channels": []
+    },
+    {
+      "id": "rep03.ip2.ipnt.uk",
+      "publicKey": "3DC903EC46BB61A837BBC5212BB6000ED93E13F3FE4A04B390A8AD80C7D5357A",
+      "name": "IP2 Repeater 3",
+      "memberId": "louis",
+      "area": "IP2",
+      "location": {
+        "lat": 52.046356,
+        "lng": 1.134661,
+        "description": "Birkfield Drive"
+      },
+      "hardware": "Heltec V3",
+      "antenna": "Paradar 8.5dBi omni",
+      "elevation": 120,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": false,
+      "meshRole": "repeater",
+      "channels": []
+    },
+        {
+      "id": "int01.ip2.ipnt.uk",
+      "publicKey": "",
+      "name": "IP2 Integration 1",
+      "memberId": "louis",
+      "area": "IP2",
+      "location": {
+        "lat": 52.0354539,
+        "lng": 1.1295338,
+        "description": "Fountains Road"
+      },
+      "hardware": "Heltec V3",
+      "antenna": "Generic 5dBi Whip",
+      "elevation": 120,
+      "showOnMap": false,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": false,
+      "meshRole": "integration",
+      "channels": []
+    },
+    {
+      "id": "rep01.ip3.ipnt.uk",
+      "publicKey": "b58dc510a30b1675dd9a9ac7ab05ac601e5eee7b0a8ee5ca7189de4056b9ae49",
+      "name": "IP3 Repeater 1",
+      "memberId": "markab",
+      "area": "IP3",
+      "location": {
+        "lat": 52.045803,
+        "lng": 1.204416,
+        "description": "Brokehall"
+      },
+      "hardware": "Heltec V3",
+      "antenna": "Paradar 8.5dBi omni",
+      "elevation": 42,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": false,
+      "meshRole": "repeater",
+      "channels": []
+    },
+    {
+      "id": "rep02.ip3.ipnt.uk",
+      "publicKey": "e334ec5475789d542ed9e692fbeef7444a371fcc05adcbda1f47ba6a3191b459",
+      "name": "IP3 Repeater 2",
+      "memberId": "ccz",
+      "area": "IP3",
+      "location": {
+        "lat": 52.03297,
+        "lng": 1.17543,
+        "description": "Morland Road Allotments"
+      },
+      "hardware": "Heltec T114",
+      "antenna": "Unknown",
+      "elevation": 39,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": false,
+      "meshRole": "repeater",
+      "channels": []
+    },
+    {
+      "id": "rep03.ip3.ipnt.uk",
+      "publicKey": "d0d22155abee3e227438418739937e327440a08152361ed3bbc53031a1cb2b66",
+      "name": "IP3 Repeater 3",
+      "memberId": "ccz",
+      "area": "IP3",
+      "location": {
+        "lat": 52.04499,
+        "lng": 1.18149,
+        "description": "Hatfield Road"
+      },
+      "hardware": "Heltec V3",
+      "antenna": "Unknown",
+      "elevation": 39,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": false,
+      "meshRole": "repeater",
+      "channels": []
+    },
+    {
+      "id": "rmp02.ip3.ipnt.uk",
+      "publicKey": "900fd7c80e7ffe1174088d3dd51e863b6282ff6535cf9145679f2b429fec07eb",
+      "name": "IP3 Public Room 2",
+      "memberId": "markab",
+      "area": "IP3",
+      "location": {
+        "lat": 52.045564,
+        "lng": 1.204011,
+        "description": "Brokehall"
+      },
+      "hardware": "Heltec V3",
+      "antenna": "Generic 3dBi Whip",
+      "elevation": 37,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": false,
+      "meshRole": "room",
+      "channels": []
+    },
+    {
+      "id": "rep04.ip3.ipnt.uk",
+      "publicKey": "2a4f89e766dfa1758e35a69962c1f6d352b206a5e3562a589155a3ebfe7fc2bb",
+      "name": "IP3 Repeater 4",
+      "memberId": "markab",
+      "area": "IP3",
+      "location": {
+        "lat": 52.046383,
+        "lng": 1.174542,
+        "description": "Holywells"
+      },
+      "hardware": "Sensecap Solar",
+      "antenna": "Paradar 6.5dbi Omni",
+      "elevation": 21,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": false,
+      "meshRole": "repeater",
+      "channels": []
+	  },
+    {
+      "id": "rep05.ip3.ipnt.uk",
+      "publicKey": "7295f7201062be70359e7ba12821b0dd2d028d9111fb34955b8751af86fc9121",
+      "name": "IP3 Repeater 5",
+      "memberId": "markab",
+      "area": "IP3",
+      "location": {
+        "lat": 52.052526,
+        "lng": 1.170348,
+        "description": "Back Hamlet"
+      },
+      "hardware": "Sensecap Solar",
+      "antenna": "Paradar 5dBi Whip",
+      "elevation": 38,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": false,
+      "meshRole": "repeater",
+      "channels": []
+	  },
+    {
+      "id": "rep01.ip8.ipnt.uk",
+      "publicKey": "bd7b5ac75f660675b39f368e1dbb6d1dbcefd8bd7a170e21a942954f67c8bf52",
+      "name": "IP8 Repeater 1",
+      "memberId": "walshie86",
+      "area": "IP8",
+      "location": {
+        "lat": 52.033684,
+        "lng": 1.118384,
+        "description": "Grove Hill"
+      },
+      "hardware": "Heltec V3",
+      "antenna": "McGill 3dbi Omni",
+      "elevation": 13,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": false,
+      "meshRole": "repeater",
+      "channels": []
+	  },
+    {
+      "id": "tst04.ip4.ipnt.uk",
+      "publicKey": "d3c20d962f7384c111fbafad6fbc1c1dc0e5c3ce802fb3ee11020e8d8207ed3a",
+      "name": "IP4 Test Repeater 4",
+      "memberId": "markab",
+      "area": "IP4",
+      "location": {
+        "lat": 52.052445,
+        "lng": 1.156882,
+        "description": "Wine Rack"
+      },
+      "hardware": "Heltec T114",
+      "antenna": "Generic 5dbi Whip",
+      "elevation": 50,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": true,
+      "meshRole": "repeater",
+      "channels": []
+	  }
+  ]
+}

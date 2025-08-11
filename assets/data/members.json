@@ -1,0 +1,69 @@
+{
+  "lastUpdated": "2025-07-29T12:00:00Z",
+  "members": [
+    {
+      "id": "louis",
+      "name": "Louis",
+      "joinDate": "2025-07-01",
+      "location": "Ipswich",
+      "avatar": "/assets/images/avatars/jinglemansweep.jpg",
+      "bio": "DevOps, Geek, and Mesh Networking enthusiast. Founder of IPNet.",
+      "contactPreference": "discord",
+      "isPublic": true,
+      "nodeName": "PTLK",
+      "nodePublicKey": "2369759a49261ac61aac96108a2e8cb5659ce4be23a4da24601db4e5dc638f78",
+      "socialLinks": {
+        "github": "jinglemansweep",
+        "twitter": ""
+      }
+    },
+    {
+      "id": "markab",
+      "name": "Mark",
+      "joinDate": "2025-07-01",
+      "location": "Ipswich",
+      "avatar": "/assets/images/avatars/markab.jpg",
+      "bio": "Tech and Electronics Geek",
+      "contactPreference": "discord",
+      "isPublic": true,
+      "nodeName": "TBE",
+      "nodePublicKey": "11eb7fbf4a988e8aeef7ae45023ac8444c0793ae0e312e36ae1a18f4e2858432",
+      "socialLinks": {
+        "github": "",
+        "twitter": ""
+      }
+    },
+    {
+      "id": "ccz",
+      "name": "CCZ",
+      "joinDate": "2025-07-01",
+      "location": "Ipswich",
+      "avatar": "/assets/images/avatars/ccz.jpg",
+      "bio": "",
+      "contactPreference": "discord",
+      "isPublic": true,
+      "nodeName": "CCZPortable",
+      "nodePublicKey": "68d2bf4603e920be4ebc058606fae485503a4dbc853ab0bfe9967d912fb8dffb",
+      "socialLinks": {
+        "github": "",
+        "twitter": ""
+      }
+    },
+    {
+      "id": "walshie86",
+      "name": "Walshie",
+      "joinDate": "2025-07-01",
+      "location": "Ipswich",
+      "avatar": "/assets/images/avatars/walshie86.jpg",
+      "bio": "",
+      "contactPreference": "discord",
+      "isPublic": true,
+      "nodeName": "PWC1",
+      "nodePublicKey": "ba472bc42bb9adb22f4b9b1d6414187631daebf5e83ce540a9fa6edf5033af55",
+      "socialLinks": {
+        "github": "",
+        "twitter": ""
+      }
+    }
+  ]
+}
