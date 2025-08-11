@@ -18,10 +18,10 @@ services:
       - --entrypoints.web.http.redirections.entrypoint.scheme=https
       - --log.level=DEBUG
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.localhost`)"
-      - "traefik.http.routers.traefik.entrypoints=web"
-      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.enable=false"
+      # - "traefik.http.routers.traefik.rule=Host(`traefik.localhost`)"
+      # - "traefik.http.routers.traefik.entrypoints=web"
+      # - "traefik.http.routers.traefik.service=api@internal"
 
   website:
     build: .
