@@ -9,3 +9,7 @@ pattern read $SYS/broker/clients/%c
 
 # Allow users to read their own connection state
 pattern read $SYS/broker/connection/%c/state
+
+# Allow user 'mqtt' to read and write any topic
+user mqtt
+topic readwrite #
