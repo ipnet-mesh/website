@@ -9,6 +9,7 @@ services:
       - --providers.file.watch=true
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
+      - --entrypoints.mqtt.address=:8883
       - --certificatesresolvers.cloudflare.acme.dnschallenge=true
       - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
       - --certificatesresolvers.cloudflare.acme.email=${ACME_EMAIL:-dev@ipnt.uk}
@@ -43,3 +44,18 @@ services:
       - "traefik.http.routers.website-dev.rule=Host(`beta.localhost`)"
       - "traefik.http.routers.website-dev.entrypoints=web"
       - "traefik.http.services.website-dev.loadbalancer.server.port=5000"
+
+  mosquitto:
+    labels:
+      - "traefik.enable=true"
+      # MQTT over TLS (8883) - Development with localhost
+      - "traefik.tcp.routers.mqtt-dev.rule=HostSNI(`mqtt.localhost`)"
+      - "traefik.tcp.routers.mqtt-dev.entrypoints=mqtt"
+      - "traefik.tcp.routers.mqtt-dev.service=mqtt-dev"
+      - "traefik.tcp.services.mqtt-dev.loadbalancer.server.port=1883"
+      # MQTT WebSockets for development
+      - "traefik.http.routers.mqtt-ws-dev.rule=Host(`mqtt.localhost`) && Path(`/mqtt`)"
+      - "traefik.http.routers.mqtt-ws-dev.entrypoints=web"
+      - "traefik.http.services.mqtt-ws-dev.loadbalancer.server.port=8080"
+    ports:
+      - "1883:1883"  # Direct MQTT access for development
