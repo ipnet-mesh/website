@@ -1,9 +1,10 @@
 {
-  "name": "ipnet-web",
-  "version": "1.0.0",
+  "name": "website",
+  "version": "2.0.0",
   "description": "IPNet Ipswich Mesh Network Website",
   "scripts": {
-    "build-css": "tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --watch",
+    "build": "npm run build-css-prod",
+    "build-css": "tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css",
     "build-css-prod": "tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --minify"
   },
   "devDependencies": {

@@ -10,6 +10,7 @@ This is a Flask-based website for IPNet (Ipswich Mesh Network), a local MeshCore
 
 * ALWAYS activate the virtual environment before running ANY commands
 * ALWAYS add a new-line at the end of files you edit
+* Project uses `pre-commit` hooks for code quality checks
 
 ## Architecture
 
