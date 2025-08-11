@@ -8,7 +8,6 @@ services:
       - "80:80"
       - "443:443"
       - "8883:8883"  # MQTT over TLS
-      - "8080:8080"  # Traefik dashboard
     environment:
       - CF_API_EMAIL=${CF_API_EMAIL}
       - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
@@ -38,10 +37,6 @@ services:
       - --accesslog.format=common
     labels:
       - "traefik.enable=false"
-      # - "traefik.http.routers.traefik.rule=Host(`traefik.ipnt.uk`)"
-      # - "traefik.http.routers.traefik.entrypoints=websecure"
-      # - "traefik.http.routers.traefik.tls.certresolver=cloudflare"
-      # - "traefik.http.routers.traefik.service=api@internal"
 
   website:
     image: ghcr.io/ipnet-mesh/website:main
