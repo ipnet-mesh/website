@@ -13,36 +13,8 @@ A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCo
 - **Mobile Responsive**: Optimized for all device sizes using TailwindCSS
 - **Privacy Controls**: Configurable visibility for nodes and members
 
-## Quick Start with Docker
 
-### Production Deployment
-
-Run the pre-built container from GitHub Container Registry:
-
-```bash
-# Pull and run the latest image
-docker compose up -d
-
-# Check logs
-docker compose logs -f website
-```
-
-The application will be available at http://localhost:5000
-
-### Development with Docker
-
-For local development with live code reloading:
-
-```bash
-# Build and run with development overrides
-docker compose up --build
-
-# Run in background
-docker compose up -d --build
-
-# View logs
-docker compose logs -f website
-```
+## Quick Start
 
 ## Architecture
 
@@ -69,7 +41,6 @@ docker compose logs -f website
 
 - Python 3.12+
 - Node.js 20+ (LTS)
-- Docker and Docker Compose (optional)
 
 ### Local Development
 
@@ -149,29 +120,12 @@ Edit JSON files in `assets/data/` directory:
 │   ├── nodes.html          # Nodes page
 │   ├── members.html        # Members page
 │   └── contact.html        # Contact page
-├── Dockerfile              # Container configuration
-├── docker-compose.yml      # Production setup
-└── docker-compose.override.yml # Development overrides
+└── CLAUDE.md               # Claude Code instructions
 ```
 
 ## Deployment
 
-### Docker Production
-
-The main `docker-compose.yml` uses the pre-built image from GHCR:
-
-```bash
-# Production deployment
-docker compose up -d
-
-# Update to latest version
-docker compose pull
-docker compose up -d
-```
-
-### Manual Deployment
-
-For traditional deployments without Docker:
+For traditional deployments:
 
 ```bash
 # Install dependencies
@@ -196,7 +150,7 @@ gunicorn --bind 0.0.0.0:5000 --workers 4 app:app
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/new-feature`
 3. Make your changes and test locally
-4. Build and test with Docker: `docker compose up --build`
+4. Build CSS and test the application: `npm run build-css-prod && python app.py`
 5. Commit changes: `git commit -am 'Add new feature'`
 6. Push to branch: `git push origin feature/new-feature`
 7. Create a Pull Request
