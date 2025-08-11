@@ -31,11 +31,11 @@ services:
       - --entrypoints.web.http.redirections.entrypoint.to=websecure
       - --entrypoints.web.http.redirections.entrypoint.scheme=https
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.ipnt.uk`)"
-      - "traefik.http.routers.traefik.entrypoints=websecure"
-      - "traefik.http.routers.traefik.tls.certresolver=cloudflare"
-      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.enable=false"
+      # - "traefik.http.routers.traefik.rule=Host(`traefik.ipnt.uk`)"
+      # - "traefik.http.routers.traefik.entrypoints=websecure"
+      # - "traefik.http.routers.traefik.tls.certresolver=cloudflare"
+      # - "traefik.http.routers.traefik.service=api@internal"
 
   website:
     image: ghcr.io/ipnet-mesh/website:main
