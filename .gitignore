@@ -2,4 +2,5 @@
 .venv
 node_modules
 
+mosquitto/config/acl.conf
 mosquitto/config/passwd
