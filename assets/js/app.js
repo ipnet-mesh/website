@@ -13,18 +13,12 @@ function getPathPrefix() {
 async function loadData() {
     const pathPrefix = getPathPrefix();
     try {
-        const [configResponse, nodesResponse, membersResponse] = await Promise.all([
-            fetch(`${pathPrefix}/assets/data/config.json`),
-            fetch(`${pathPrefix}/assets/data/nodes.json`),
-            fetch(`${pathPrefix}/assets/data/members.json`)
-        ]);
+        const response = await fetch(`${pathPrefix}/api/data`);
+        const data = await response.json();
 
-        config = await configResponse.json();
-        const nodesData = await nodesResponse.json();
-        const membersData = await membersResponse.json();
-
-        nodes = nodesData.nodes.filter(node => node.isPublic);
-        members = membersData.members.filter(member => member.isPublic);
+        config = data.config;
+        nodes = data.nodes; // Already filtered by server
+        members = data.members; // Already filtered by server
 
         return { config, nodes, members };
     } catch (error) {
