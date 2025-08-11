@@ -170,16 +170,16 @@ select:focus {
     .no-print {
         display: none !important;
     }
-    
+
     body {
         font-size: 12pt;
         line-height: 1.4;
     }
-    
+
     h1, h2, h3 {
         page-break-after: avoid;
     }
-    
+
     img {
         max-width: 100% !important;
     }
@@ -198,15 +198,15 @@ select:focus {
     .bg-primary {
         background-color: #000 !important;
     }
-    
+
     .text-primary {
         color: #000 !important;
     }
-    
+
     .dark .bg-primary {
         background-color: #fff !important;
     }
-    
+
     .dark .text-primary {
         color: #fff !important;
     }
@@ -252,7 +252,7 @@ select:focus {
 
 /* Hero section background pattern */
 .hero-pattern {
-    background-image: 
+    background-image:
         radial-gradient(circle at 25px 25px, rgba(255,255,255,0.2) 2%, transparent 0%),
         radial-gradient(circle at 75px 75px, rgba(255,255,255,0.1) 2%, transparent 0%);
     background-size: 100px 100px;

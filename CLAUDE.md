@@ -76,7 +76,7 @@ When updating data:
 
 ## Deployment Notes
 
-- Static assets served from `assets/` directory  
+- Static assets served from `assets/` directory
 - Templates from `templates/` directory
 - Supports both client-side and server-side data loading via `/api/data` endpoint
 - URL structure supports both full paths and short redirects for individual nodes

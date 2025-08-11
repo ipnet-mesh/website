@@ -18,25 +18,25 @@
     <meta property="twitter:description" content="{% block twitter_description %}Local MeshCore community group for Ipswich, Suffolk, UK{% endblock %}">
     <link rel="canonical" href="https://ipnt.uk/">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
-    
+
     <!-- Built Tailwind CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
-    
+
     <!-- Prevent flash of light theme -->
     <script>
         // Apply dark theme immediately to prevent flash
         (function() {
-            const isDark = localStorage.getItem('darkMode') !== 'false' && 
+            const isDark = localStorage.getItem('darkMode') !== 'false' &&
                           (localStorage.getItem('darkMode') === 'true' || !localStorage.getItem('darkMode'));
             if (isDark) {
                 document.documentElement.classList.add('dark');
             }
         })();
     </script>
-    
+
     <!-- Alpine.js -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
+
     {% block extra_head %}{% endblock %}
 </head>
 <body class="app-body">
@@ -56,7 +56,7 @@
                             <span class="nav-logo-text">IPNet</span>
                         </a>
                     </div>
-                    
+
                     <!-- Desktop Navigation -->
                     <div class="nav-desktop">
                         <a href="{{ url_for('home') }}" class="nav-link {% if request.endpoint == 'home' %}nav-link-active{% else %}nav-link-inactive{% endif %}">Home</a>
@@ -65,7 +65,7 @@
                         <a href="{{ url_for('contact') }}" class="nav-link {% if request.endpoint == 'contact' %}nav-link-active{% else %}nav-link-inactive{% endif %}">Contact</a>
                     </div>
                 </div>
-                
+
                 <!-- Dark mode toggle and mobile menu button -->
                 <div class="nav-right">
                     <!-- Dark mode toggle -->
@@ -77,7 +77,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                         </svg>
                     </button>
-                    
+
                     <!-- Mobile menu button -->
                     <button @click="mobileMenuOpen = !mobileMenuOpen" class="nav-mobile-btn">
                         <svg class="nav-mobile-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -87,7 +87,7 @@
                     </button>
                 </div>
             </div>
-            
+
             <!-- Mobile Navigation -->
             <div x-show="mobileMenuOpen" class="nav-mobile-menu">
                 <div class="nav-mobile-content">
