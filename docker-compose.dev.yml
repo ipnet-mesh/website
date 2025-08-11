@@ -1,0 +1,42 @@
+services:
+  traefik:
+    command:
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.cloudflare.acme.dnschallenge=true
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
+      - --certificatesresolvers.cloudflare.acme.email=${ACME_EMAIL:-dev@ipnt.uk}
+      - --certificatesresolvers.cloudflare.acme.storage=/acme/acme.json
+      - --certificatesresolvers.cloudflare.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory  # Staging for dev
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --log.level=DEBUG
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.localhost`)"
+      - "traefik.http.routers.traefik.entrypoints=web"
+      - "traefik.http.routers.traefik.service=api@internal"
+
+  website:
+    build: .
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=true
+    volumes:
+      - ./assets/data:/app/assets/data:ro
+      - ./templates:/app/templates:ro
+      - ./assets/js:/app/assets/js:ro
+      - ./app.py:/app/app.py:ro
+    ports:
+      - "5000:5000"  # Direct access for development
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.website-dev.rule=Host(`beta.localhost`)"
+      - "traefik.http.routers.website-dev.entrypoints=web"
+      - "traefik.http.services.website-dev.loadbalancer.server.port=5000"

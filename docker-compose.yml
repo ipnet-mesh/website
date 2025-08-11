@@ -1,14 +1,58 @@
 services:
-  website:
-    image: ghcr.io/ipnet-mesh/website:latest
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    restart: unless-stopped
     ports:
-      - "5000:5000"
+      - "80:80"
+      - "443:443"
+      - "8080:8080"  # Traefik dashboard
+    environment:
+      - CF_API_EMAIL=${CF_API_EMAIL}
+      - CF_API_KEY=${CF_API_KEY}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik:/etc/traefik:ro
+      - traefik-acme:/acme
+    command:
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.cloudflare.acme.dnschallenge=true
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
+      - --certificatesresolvers.cloudflare.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.cloudflare.acme.storage=/acme/acme.json
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.ipnt.uk`)"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.tls.certresolver=cloudflare"
+      - "traefik.http.routers.traefik.service=api@internal"
+
+  website:
+    image: ghcr.io/ipnet-mesh/website:main
+    restart: unless-stopped
     environment:
       - FLASK_ENV=production
       - FLASK_DEBUG=false
     volumes:
       - ./assets/data:/app/assets/data:ro
-    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.website.rule=Host(`beta.ipnt.uk`)"
+      - "traefik.http.routers.website.entrypoints=websecure"
+      - "traefik.http.routers.website.tls.certresolver=cloudflare"
+      - "traefik.http.services.website.loadbalancer.server.port=5000"
+
+volumes:
+  traefik-acme:
     healthcheck:
       test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:5000/', timeout=3)"]
       interval: 30s
