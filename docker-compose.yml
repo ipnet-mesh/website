@@ -63,10 +63,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
-      - ./mosquitto/config/acl.conf:/mosquitto/config/acl.conf:ro
-      - ./mosquitto/config/passwd:/mosquitto/config/passwd:ro
-      - ./mosquitto/data:/mosquitto/data
-      - ./mosquitto/log:/mosquitto/log
+      # - ./mosquitto/config/acl.conf:/mosquitto/config/acl.conf:ro
+      - mosquitto-data:/mosquitto/data
     labels:
       - "traefik.enable=true"
       # MQTT over TLS (8883) - Traefik terminates TLS and forwards to plain MQTT
@@ -83,3 +81,4 @@ services:
 
 volumes:
   traefik-acme:
+  mosquitto-data:
