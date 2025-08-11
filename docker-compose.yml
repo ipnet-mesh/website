@@ -30,6 +30,10 @@ services:
       - --certificatesresolvers.cloudflare.acme.storage=/acme/acme.json
       - --entrypoints.web.http.redirections.entrypoint.to=websecure
       - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --log.level=INFO
+      - --log.format=common
+      - --accesslog=true
+      - --accesslog.format=common
     labels:
       - "traefik.enable=false"
       # - "traefik.http.routers.traefik.rule=Host(`traefik.ipnt.uk`)"
