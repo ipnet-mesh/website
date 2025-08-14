@@ -1,20 +1,22 @@
 """Data loading and processing functions."""
 import json
 import os
+from typing import Dict, List, Any, Tuple, Optional
 
 ASSETS_DIR = 'assets'
 
 
-def load_json_data(filename):
+def load_json_data(filename: str) -> Dict[str, Any]:
     """Load JSON data from the assets/data directory"""
     try:
         with open(os.path.join(ASSETS_DIR, "data", filename), 'r') as f:
-            return json.load(f)
+            data: Dict[str, Any] = json.load(f)
+            return data
     except FileNotFoundError:
         return {}
 
 
-def get_data():
+def get_data() -> Tuple[Dict[str, Any], List[Dict[str, Any]], List[Dict[str, Any]]]:
     """Load all data files"""
     config = load_json_data('config.json')
     nodes_data = load_json_data('nodes.json')
@@ -27,7 +29,7 @@ def get_data():
     return config, nodes, members
 
 
-def calculate_coverage_area(nodes):
+def calculate_coverage_area(nodes: List[Dict[str, Any]]) -> int:
     """Calculate approximate coverage area in km²"""
     if not nodes:
         return 0
@@ -53,10 +55,10 @@ def calculate_coverage_area(nodes):
     lng_diff = max_lng - min_lng
     area = round(lat_diff * lng_diff * 12400)  # Rough conversion factor
 
-    return max(area, 50)  # Minimum 50 km²
+    return int(max(area, 50))  # Minimum 50 km²
 
 
-def calculate_node_stats(nodes):
+def calculate_node_stats(nodes: List[Dict[str, Any]]) -> Dict[str, int]:
     """Calculate node statistics for the nodes page"""
     return {
         'totalNodes': len(nodes),
@@ -65,7 +67,7 @@ def calculate_node_stats(nodes):
     }
 
 
-def find_node_by_id(nodes, area, node_id):
+def find_node_by_id(nodes: List[Dict[str, Any]], area: str, node_id: str) -> Optional[Dict[str, Any]]:
     """Find a specific node by area and node_id"""
     full_node_id = f"{node_id}.{area}.ipnt.uk"
     return next((node for node in nodes if node['id'] == full_node_id or node['id'] == node_id), None)

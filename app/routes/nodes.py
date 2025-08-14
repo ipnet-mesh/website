@@ -1,19 +1,21 @@
 """Node-related routes."""
 from flask import Blueprint, render_template, redirect, url_for
+from werkzeug.wrappers import Response
+from typing import Union, Optional
 from ..data import get_data, calculate_node_stats, find_node_by_id
 
 nodes_bp = Blueprint('nodes', __name__)
 
 
 @nodes_bp.route('/<area>/<node_id>')
-def redirect_to_nodes(area, node_id):
+def redirect_to_nodes(area: str, node_id: str) -> Response:
     """Redirect short URL format to full nodes URL"""
     return redirect(url_for('nodes.index', area=area, node_id=node_id), code=301)
 
 
 @nodes_bp.route('/nodes/')
 @nodes_bp.route('/nodes/<area>/<node_id>')
-def index(area=None, node_id=None):
+def index(area: Optional[str] = None, node_id: Optional[str] = None) -> str:
     """Nodes page with optional individual node view"""
     config, nodes, members = get_data()
 

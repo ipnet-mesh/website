@@ -1,12 +1,12 @@
 """Main page routes."""
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, Response
 from ..data import get_data, calculate_coverage_area
 
 main_bp = Blueprint('main', __name__)
 
 
 @main_bp.route('/')
-def home():
+def home() -> str:
     """Home page"""
     config, nodes, members = get_data()
 
@@ -21,7 +21,7 @@ def home():
 
 
 @main_bp.route('/contact/')
-def contact():
+def contact() -> str:
     """Contact page"""
     config, nodes, members = get_data()
     return render_template('contact.html', config=config)

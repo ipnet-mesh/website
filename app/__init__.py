@@ -5,7 +5,7 @@ import os
 ASSETS_DIR = 'assets'
 
 
-def create_app():
+def create_app() -> Flask:
     """Create and configure the Flask application"""
     # Get the directory containing this file (app/__init__.py)
     app_dir = os.path.dirname(os.path.abspath(__file__))
