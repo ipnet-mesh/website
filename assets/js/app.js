@@ -445,16 +445,46 @@ function escapeHtml(text) {
 // Dark mode persistence
 document.addEventListener('alpine:init', () => {
     Alpine.store('darkMode', {
-        on: true,
+        on: false,
 
         init() {
+            // Initialize from localStorage or OS preference
+            const storedValue = localStorage.getItem('darkMode');
+
+            if (storedValue !== null) {
+                // User has explicitly set a preference
+                this.on = storedValue === 'true';
+            } else {
+                // Default to OS preference
+                this.on = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+
             // Sync with the class that was already applied in head
-            this.on = document.documentElement.classList.contains('dark');
+            if (this.on) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+
+            // Listen for OS theme changes if user hasn't explicitly set a preference
+            if (storedValue === null) {
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                    // Only update if user hasn't manually set a preference
+                    if (localStorage.getItem('darkMode') === null) {
+                        this.on = e.matches;
+                        if (this.on) {
+                            document.documentElement.classList.add('dark');
+                        } else {
+                            document.documentElement.classList.remove('dark');
+                        }
+                    }
+                });
+            }
         },
 
         toggle() {
             this.on = !this.on;
-            localStorage.setItem('darkMode', this.on);
+            localStorage.setItem('darkMode', this.on.toString());
 
             // Update document class immediately
             if (this.on) {

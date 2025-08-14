@@ -1633,16 +1633,29 @@ select {
 .node-detail-card {
   overflow: hidden;
   border-radius: 0.5rem;
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  border-width: 1px;
   --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .node-detail-card:is(.dark *) {
+  --tw-border-opacity: 1;
+  border-color: rgb(55 65 81 / var(--tw-border-opacity, 1));
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
+}
+
+.node-detail-card {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary-border);
+}
+
+.dark .node-detail-card {
+  background-color: rgb(31 41 55);
+  /* gray-800 */
+  border-color: rgb(55 65 81);
+  /* gray-700 */
 }
 
 .node-detail-content {
@@ -1885,16 +1898,29 @@ select {
 .map-card {
   overflow: hidden;
   border-radius: 0.5rem;
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  border-width: 1px;
   --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .map-card:is(.dark *) {
+  --tw-border-opacity: 1;
+  border-color: rgb(55 65 81 / var(--tw-border-opacity, 1));
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
+}
+
+.map-card {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary-border);
+}
+
+.dark .map-card {
+  background-color: rgb(31 41 55);
+  /* gray-800 */
+  border-color: rgb(55 65 81);
+  /* gray-700 */
 }
 
 .map-header {
@@ -1980,15 +2006,28 @@ select {
 
 .stat-card {
   border-radius: 0.5rem;
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  border-width: 1px;
   padding: 1.5rem;
   text-align: center;
 }
 
 .stat-card:is(.dark *) {
+  --tw-border-opacity: 1;
+  border-color: rgb(75 85 99 / var(--tw-border-opacity, 1));
   --tw-bg-opacity: 1;
   background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1));
+}
+
+.stat-card {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary-border);
+}
+
+.dark .stat-card {
+  background-color: rgb(55 65 81);
+  /* gray-700 */
+  border-color: rgb(75 85 99);
+  /* gray-600 */
 }
 
 .stat-number {
@@ -2090,16 +2129,29 @@ select {
 .node-card {
   overflow: hidden;
   border-radius: 0.5rem;
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  border-width: 1px;
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .node-card:is(.dark *) {
+  --tw-border-opacity: 1;
+  border-color: rgb(55 65 81 / var(--tw-border-opacity, 1));
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
+}
+
+.node-card {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary-border);
+}
+
+.dark .node-card {
+  background-color: rgb(31 41 55);
+  /* gray-800 */
+  border-color: rgb(55 65 81);
+  /* gray-700 */
 }
 
 .node-card-content {
@@ -2344,8 +2396,7 @@ select {
 .member-card {
   overflow: hidden;
   border-radius: 0.5rem;
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  border-width: 1px;
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
@@ -2361,8 +2412,22 @@ select {
 }
 
 .member-card:is(.dark *) {
+  --tw-border-opacity: 1;
+  border-color: rgb(55 65 81 / var(--tw-border-opacity, 1));
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
+}
+
+.member-card {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary-border);
+}
+
+.dark .member-card {
+  background-color: rgb(31 41 55);
+  /* gray-800 */
+  border-color: rgb(55 65 81);
+  /* gray-700 */
 }
 
 .member-card-content {
@@ -3859,10 +3924,6 @@ select:focus {
   overflow: hidden;
   border-radius: 0.5rem;
   border-width: 1px;
-  --tw-border-opacity: 1;
-  border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
@@ -3876,7 +3937,16 @@ select:focus {
 }
 
 .member-card {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary-border);
   transition: all 0.3s ease;
+}
+
+.dark .member-card {
+  background-color: rgb(31 41 55);
+  /* gray-800 */
+  border-color: rgb(55 65 81);
+  /* gray-700 */
 }
 
 .member-card:hover {

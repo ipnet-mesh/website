@@ -178,7 +178,14 @@
 }
 
 .node-detail-card {
-    @apply bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden;
+    @apply dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border dark:border-gray-700;
+    background-color: var(--color-primary-light);
+    border-color: var(--color-primary-border);
+}
+
+.dark .node-detail-card {
+    background-color: rgb(31 41 55); /* gray-800 */
+    border-color: rgb(55 65 81); /* gray-700 */
 }
 
 .node-detail-content {
@@ -271,7 +278,14 @@
 }
 
 .map-card {
-    @apply bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden;
+    @apply dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border dark:border-gray-700;
+    background-color: var(--color-primary-light);
+    border-color: var(--color-primary-border);
+}
+
+.dark .map-card {
+    background-color: rgb(31 41 55); /* gray-800 */
+    border-color: rgb(55 65 81); /* gray-700 */
 }
 
 .map-header {
@@ -304,7 +318,14 @@
 }
 
 .stat-card {
-    @apply bg-white dark:bg-gray-700 rounded-lg p-6 text-center;
+    @apply dark:bg-gray-700 rounded-lg p-6 text-center border dark:border-gray-600;
+    background-color: var(--color-primary-light);
+    border-color: var(--color-primary-border);
+}
+
+.dark .stat-card {
+    background-color: rgb(55 65 81); /* gray-700 */
+    border-color: rgb(75 85 99); /* gray-600 */
 }
 
 .stat-number {
@@ -349,7 +370,14 @@
 }
 
 .node-card {
-    @apply bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden;
+    @apply dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border dark:border-gray-700;
+    background-color: var(--color-primary-light);
+    border-color: var(--color-primary-border);
+}
+
+.dark .node-card {
+    background-color: rgb(31 41 55); /* gray-800 */
+    border-color: rgb(55 65 81); /* gray-700 */
 }
 
 .node-card-content {
@@ -452,7 +480,14 @@
 
 /* Member cards */
 .member-card {
-    @apply bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow;
+    @apply dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow border dark:border-gray-700;
+    background-color: var(--color-primary-light);
+    border-color: var(--color-primary-border);
+}
+
+.dark .member-card {
+    background-color: rgb(31 41 55); /* gray-800 */
+    border-color: rgb(55 65 81); /* gray-700 */
 }
 
 .member-card-content {
@@ -975,8 +1010,15 @@ select:focus {
 
 /* Member card styles */
 .member-card {
-    @apply bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700;
+    @apply dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border dark:border-gray-700;
+    background-color: var(--color-primary-light);
+    border-color: var(--color-primary-border);
     transition: all 0.3s ease;
+}
+
+.dark .member-card {
+    background-color: rgb(31 41 55); /* gray-800 */
+    border-color: rgb(55 65 81); /* gray-700 */
 }
 
 .member-card:hover {
