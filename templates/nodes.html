@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
 {% endblock %}
 
-{% block alpine_data %} x-data="nodesData()"{% endblock %}
+{% block alpine_data %} x-data="nodesData()" {% if current_node %}data-current-node-id="{{ current_node.id }}"{% endif %}{% endblock %}
 
 {% block content %}
 <!-- Page Header -->

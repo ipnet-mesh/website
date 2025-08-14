@@ -52,6 +52,7 @@ function nodesData() {
         nodes: [],
         members: [],
         filteredNodes: [],
+        currentNode: null,
         selectedHardware: '',
         selectedRole: '',
         selectedOwner: '',
@@ -66,6 +67,12 @@ function nodesData() {
             const data = await loadData();
             this.nodes = data.nodes;
             this.members = data.members;
+
+            // Get current node ID from data attribute and find it in the nodes data
+            const currentNodeId = this.$el.getAttribute('data-current-node-id');
+            if (currentNodeId) {
+                this.currentNode = this.nodes.find(node => node.id === currentNodeId) || null;
+            }
 
             // Make this component globally accessible for popup buttons
             window.nodesPageInstance = this;
@@ -126,21 +133,28 @@ function nodesData() {
         initMap() {
             if (this.mapInitialized || typeof L === 'undefined') return;
 
-            // Calculate bounds from filtered nodes
-            const nodesWithLocation = this.filteredNodes.filter(node =>
-                node.showOnMap && node.location && node.location.lat && node.location.lng
-            );
-
             let center, zoom;
-            if (nodesWithLocation.length > 0) {
-                const bounds = L.latLngBounds(nodesWithLocation.map(node => [node.location.lat, node.location.lng]));
-                center = bounds.getCenter();
-                // Calculate appropriate zoom level
-                zoom = nodesWithLocation.length === 1 ? 13 : 11;
+
+            // If viewing an individual node, center on that node
+            if (this.currentNode && this.currentNode.location && this.currentNode.location.lat && this.currentNode.location.lng) {
+                center = { lat: this.currentNode.location.lat, lng: this.currentNode.location.lng };
+                zoom = 18; // Higher zoom for individual node view
             } else {
-                // Fallback to config or default
-                center = config.map?.center || { lat: 52.05917, lng: 1.15545 };
-                zoom = config.map?.zoom || 11;
+                // Calculate bounds from filtered nodes
+                const nodesWithLocation = this.filteredNodes.filter(node =>
+                    node.showOnMap && node.location && node.location.lat && node.location.lng
+                );
+
+                if (nodesWithLocation.length > 0) {
+                    const bounds = L.latLngBounds(nodesWithLocation.map(node => [node.location.lat, node.location.lng]));
+                    center = bounds.getCenter();
+                    // Calculate appropriate zoom level
+                    zoom = nodesWithLocation.length === 1 ? 13 : 11;
+                } else {
+                    // Fallback to config or default
+                    center = config.map?.center || { lat: 52.05917, lng: 1.15545 };
+                    zoom = config.map?.zoom || 11;
+                }
             }
 
             this.map = L.map('nodesMap').setView([center.lat, center.lng], zoom);
@@ -191,6 +205,9 @@ function nodesData() {
         fitMapToNodes() {
             if (!this.map) return;
 
+            // Don't auto-fit if we're viewing an individual node
+            if (this.currentNode) return;
+
             const nodesWithLocation = this.filteredNodes.filter(node =>
                 node.showOnMap && node.location && node.location.lat && node.location.lng
             );
@@ -231,8 +248,20 @@ function nodesData() {
             // Use cluster group if available
             const useClusterGroup = this.markerClusterGroup;
 
-            // Add markers for filtered nodes
-            this.filteredNodes.forEach(node => {
+            // Determine which nodes to show on map
+            let nodesToShow = this.filteredNodes;
+
+            // If viewing an individual node, ensure it's included even if filtered out
+            if (this.currentNode) {
+                const currentNodeInFiltered = this.filteredNodes.find(n => n.id === this.currentNode.id);
+                if (!currentNodeInFiltered) {
+                    // Add current node to the list if it's not in filtered results
+                    nodesToShow = [...this.filteredNodes, this.currentNode];
+                }
+            }
+
+            // Add markers for nodes
+            nodesToShow.forEach(node => {
                 if (!node.showOnMap || !node.location || !node.location.lat || !node.location.lng) return;
 
                 try {
@@ -243,11 +272,19 @@ function nodesData() {
                     } else {
                         statusColor = node.isOnline !== false ? '#10b981' : '#ef4444'; // green for online, red for offline
                     }
+
+                    // Make current node marker larger and more prominent
+                    const isCurrentNode = this.currentNode && node.id === this.currentNode.id;
+                    const markerSize = isCurrentNode ? 'w-8 h-8' : 'w-6 h-6';
+                    const iconSize = isCurrentNode ? [32, 32] : [24, 24];
+                    const iconAnchor = isCurrentNode ? [16, 16] : [12, 12];
+                    const borderWidth = isCurrentNode ? 'border-4' : 'border-2';
+
                     const customIcon = L.divIcon({
-                        html: `<div style="background-color: ${statusColor};" class="w-6 h-6 rounded-full border-2 border-white shadow-lg"></div>`,
+                        html: `<div style="background-color: ${statusColor};" class="${markerSize} rounded-full ${borderWidth} border-white shadow-lg ${isCurrentNode ? 'animate-pulse' : ''}"></div>`,
                         className: 'custom-marker',
-                        iconSize: [24, 24],
-                        iconAnchor: [12, 12]
+                        iconSize: iconSize,
+                        iconAnchor: iconAnchor
                     });
 
                     const marker = L.marker([node.location.lat, node.location.lng], { icon: customIcon })
