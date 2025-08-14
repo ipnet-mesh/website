@@ -1,6 +1,9 @@
 """Application factory and configuration."""
-from flask import Flask
+from flask import Flask, request, redirect, url_for
+from werkzeug.wrappers import Response
 import os
+import re
+from typing import Optional
 
 ASSETS_DIR = 'assets'
 
@@ -30,5 +33,40 @@ def create_app() -> Flask:
     app.register_blueprint(nodes_bp)
     app.register_blueprint(members_bp)
     app.register_blueprint(api_bp)
+
+    # Add subdomain detection middleware
+    @app.before_request
+    def handle_subdomain_redirect() -> Optional[Response]:
+        """Detect subdomain patterns and redirect to appropriate node pages"""
+        # Skip subdomain handling for static files and API calls
+        if request.endpoint and (request.endpoint.startswith('static') or request.endpoint.startswith('api')):
+            return None
+
+        # Get the host header
+        host = request.headers.get('Host', '')
+        if not host:
+            return None
+
+        # Extract subdomain (everything before the first dot)
+        subdomain_match = re.match(r'^([^.]+)\.', host)
+        if not subdomain_match:
+            return None
+
+        subdomain = subdomain_match.group(1)
+
+        # Skip common subdomains and localhost
+        if subdomain in ['www', 'api', 'admin', 'localhost', '127', '192']:
+            return None
+
+        # Check for node pattern: area-nodeid (e.g., "ip2-rep01")
+        node_pattern = re.match(r'^([a-zA-Z0-9]+)-([a-zA-Z0-9]+)$', subdomain)
+        if node_pattern:
+            area = node_pattern.group(1)
+            node_id = node_pattern.group(2)
+
+            # Redirect to the node page
+            return redirect(url_for('nodes.index', area=area, node_id=node_id), code=301)
+
+        return None
 
     return app
