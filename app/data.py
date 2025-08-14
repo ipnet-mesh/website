@@ -1,6 +1,7 @@
 """Data loading and processing functions."""
 import json
 import os
+from math import cos, radians
 from typing import Dict, List, Any, Tuple, Optional
 
 ASSETS_DIR = 'assets'
@@ -50,12 +51,19 @@ def calculate_coverage_area(nodes: List[Dict[str, Any]]) -> int:
     min_lat, max_lat = min(lats), max(lats)
     min_lng, max_lng = min(lngs), max(lngs)
 
-    # Rough approximation of area in km²
-    lat_diff = max_lat - min_lat
-    lng_diff = max_lng - min_lng
-    area = round(lat_diff * lng_diff * 12400)  # Rough conversion factor
+    # Convert degrees to kilometers
+    # 1 degree of latitude ≈ 111 km everywhere
+    # 1 degree of longitude varies by latitude: ≈ 111 * cos(latitude) km
+    lat_diff_km = (max_lat - min_lat) * 111
 
-    return int(max(area, 50))  # Minimum 50 km²
+    # Use average latitude for longitude conversion
+    avg_lat = (min_lat + max_lat) / 2
+    lng_diff_km = (max_lng - min_lng) * 111 * abs(cos(radians(avg_lat)))
+
+    # Calculate area in km²
+    area = round(lat_diff_km * lng_diff_km)
+
+    return int(max(area, 1))  # Minimum 1 km²
 
 
 def calculate_node_stats(nodes: List[Dict[str, Any]]) -> Dict[str, int]:
