@@ -139,8 +139,8 @@ function nodesData() {
                 zoom = nodesWithLocation.length === 1 ? 13 : 11;
             } else {
                 // Fallback to config or default
-                center = config.location?.center || { lat: 52.05917, lng: 1.15545 };
-                zoom = config.location?.zoom || 11;
+                center = config.map?.center || { lat: 52.05917, lng: 1.15545 };
+                zoom = config.map?.zoom || 11;
             }
 
             this.map = L.map('nodesMap').setView([center.lat, center.lng], zoom);

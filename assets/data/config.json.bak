@@ -6,7 +6,9 @@
   "location": {
     "city": "Ipswich",
     "region": "Suffolk",
-    "country": "United Kingdom",
+    "country": "United Kingdom"
+  },
+  "map": {
     "center": {
       "lat": 52.05917,
       "lng": 1.15545
@@ -18,19 +20,9 @@
     "discord": "https://discord.gg/hXRM2cJgtf",
     "github": "https://github.com/jinglemansweep/ipnet"
   },
-  "social": {
-    "twitter": "",
-    "facebook": ""
-  },
   "theme": {
     "primaryColor": "#10b981",
     "secondaryColor": "#6b7280",
     "accentColor": "#3b82f6"
-  },
-  "features": {
-    "darkMode": true,
-    "mapClustering": true,
-    "memberProfiles": true,
-    "nodeStatistics": true
   }
 }

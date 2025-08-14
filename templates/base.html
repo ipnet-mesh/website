@@ -22,6 +22,15 @@
     <!-- Built Tailwind CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
 
+    <!-- Dynamic Theme Colors -->
+    <style>
+        :root {
+            --color-primary: {{ config.theme.primaryColor }};
+            --color-secondary: {{ config.theme.secondaryColor }};
+            --color-accent: {{ config.theme.accentColor }};
+        }
+    </style>
+
     <!-- Prevent flash of light theme -->
     <script>
         // Apply dark theme immediately to prevent flash
