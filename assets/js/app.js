@@ -27,44 +27,12 @@ async function loadData() {
     }
 }
 
-// Home page data
+// Home page data (no longer needed for statistics, kept for potential future use)
 function homeData() {
     return {
-        stats: {
-            totalNodes: 0,
-            totalMembers: 0,
-            coverageArea: 0
-        },
-
         async init() {
-            const data = await loadData();
-            this.calculateStats(data.nodes, data.members);
-        },
-
-        calculateStats(nodesList, membersList) {
-            this.stats.totalNodes = nodesList.length;
-            this.stats.totalMembers = membersList.length;
-            this.stats.coverageArea = this.calculateCoverageArea(nodesList);
-        },
-
-        calculateCoverageArea(nodesList) {
-            if (nodesList.length === 0) return 0;
-
-            // Simple bounding box calculation for coverage area
-            const lats = nodesList.map(node => node.location.lat);
-            const lngs = nodesList.map(node => node.location.lng);
-
-            const minLat = Math.min(...lats);
-            const maxLat = Math.max(...lats);
-            const minLng = Math.min(...lngs);
-            const maxLng = Math.max(...lngs);
-
-            // Rough approximation of area in km²
-            const latDiff = maxLat - minLat;
-            const lngDiff = maxLng - minLng;
-            const area = Math.round(latDiff * lngDiff * 12400); // Rough conversion factor
-
-            return Math.max(area, 50); // Minimum 50 km²
+            // Home page no longer needs to load data for statistics
+            // Statistics are now rendered server-side
         }
     }
 }
@@ -137,6 +105,7 @@ function nodesData() {
         get repeaterNodesCount() {
             return this.filteredNodes.filter(node => node.meshRole === 'repeater').length;
         },
+
 
         focusNodeOnMap(node) {
             if (this.map) {

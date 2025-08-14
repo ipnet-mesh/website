@@ -59,12 +59,22 @@ def nodes(area=None, node_id=None):
         full_node_id = f"{node_id}.{area}.ipnt.uk"
         current_node = next((node for node in nodes if node['id'] == full_node_id or node['id'] == node_id), None)
 
+    # Calculate node statistics for list view
+    node_stats = None
+    if not current_node:
+        node_stats = {
+            'totalNodes': len(nodes),
+            'onlineNodes': len([node for node in nodes if node.get('isOnline', True)]),
+            'repeaterNodes': len([node for node in nodes if node.get('meshRole') == 'repeater'])
+        }
+
     return render_template('nodes.html',
                          config=config,
                          nodes=nodes,
                          members=members,
                          current_node=current_node,
-                         showing_individual_node=current_node is not None)
+                         showing_individual_node=current_node is not None,
+                         node_stats=node_stats)
 
 @app.route('/members/')
 def members():

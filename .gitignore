@@ -1,6 +1,10 @@
 .env
 .venv
 node_modules
+__pycache__
+*.pyc
+*.pyo
+*.pyd
 
 mosquitto/config/acl.conf
 mosquitto/config/passwd

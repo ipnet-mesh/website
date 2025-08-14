@@ -3,8 +3,6 @@
 {% block title %}IPNet - Ipswich Mesh Network{% endblock %}
 {% block description %}Local MeshCore community group serving Ipswich, Suffolk. Join our mesh network and connect with local enthusiasts.{% endblock %}
 
-{% block alpine_data %} x-data="homeData()"{% endblock %}
-
 {% block content %}
 <!-- Hero Section -->
 <div class="hero-section">
@@ -31,15 +29,15 @@
     <div class="home-stats-container">
         <div class="home-stats-grid">
             <div class="home-stat-item">
-                <div class="home-stat-number" x-text="stats.totalNodes">{{ stats.totalNodes }}</div>
+                <div class="home-stat-number">{{ stats.totalNodes }}</div>
                 <div class="home-stat-label">Active Nodes</div>
             </div>
             <div class="home-stat-item">
-                <div class="home-stat-number" x-text="stats.totalMembers">{{ stats.totalMembers }}</div>
+                <div class="home-stat-number">{{ stats.totalMembers }}</div>
                 <div class="home-stat-label">Members</div>
             </div>
             <div class="home-stat-item">
-                <div class="home-stat-number" x-text="stats.coverageArea">{{ stats.coverageArea }}</div>
+                <div class="home-stat-number">{{ stats.coverageArea }}</div>
                 <div class="home-stat-label">km² Coverage</div>
             </div>
         </div>

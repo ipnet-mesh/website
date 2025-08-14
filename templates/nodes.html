@@ -233,15 +233,15 @@
     <div class="page-header-container">
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-number stat-number-primary" x-text="filteredNodes.length">{{ nodes|length }}</div>
-                <div class="stat-label">Total Nodes</div>
+                <div class="stat-number stat-number-primary" x-text="filteredNodes.length">{{ node_stats.totalNodes }}</div>
+                <div class="stat-label">Filtered Nodes</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number stat-number-green" x-text="onlineNodesCount">{{ nodes|selectattr('isOnline')|list|length }}</div>
+                <div class="stat-number stat-number-green" x-text="onlineNodesCount">{{ node_stats.onlineNodes }}</div>
                 <div class="stat-label">Online</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number stat-number-blue" x-text="repeaterNodesCount">{{ nodes|selectattr('meshRole', 'equalto', 'repeater')|list|length }}</div>
+                <div class="stat-number stat-number-blue" x-text="repeaterNodesCount">{{ node_stats.repeaterNodes }}</div>
                 <div class="stat-label">Repeaters</div>
             </div>
         </div>
