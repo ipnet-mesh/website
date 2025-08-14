@@ -3,7 +3,7 @@ from flask import Flask, request, redirect, url_for
 from werkzeug.wrappers import Response
 import os
 import re
-from typing import Optional
+from typing import Optional, Dict, Any
 
 ASSETS_DIR = 'assets'
 
@@ -33,6 +33,17 @@ def create_app() -> Flask:
     app.register_blueprint(nodes_bp)
     app.register_blueprint(members_bp)
     app.register_blueprint(api_bp)
+
+    # Add build mode to template context
+    @app.context_processor
+    def inject_build_mode() -> Dict[str, Any]:
+        """Make build mode available to all templates"""
+        build_mode = os.environ.get('BUILD_MODE', '').lower()
+        return {
+            'build_mode': build_mode,
+            'is_beta': build_mode == 'beta',
+            'is_dev': build_mode == 'dev'
+        }
 
     # Add subdomain detection middleware
     @app.before_request

@@ -90,6 +90,13 @@
 
                 <!-- Dark mode toggle and mobile menu button -->
                 <div class="nav-right">
+                    <!-- Build mode indicator -->
+                    {% if build_mode %}
+                    <span class="nav-build-mode nav-build-mode-{{ build_mode }}">
+                        {{ build_mode.upper() }}
+                    </span>
+                    {% endif %}
+
                     <!-- Dark mode toggle -->
                     <button @click="$store.darkMode.toggle()" class="nav-theme-toggle">
                         <svg x-show="!$store.darkMode.on" class="nav-theme-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -113,6 +120,13 @@
             <!-- Mobile Navigation -->
             <div x-show="mobileMenuOpen" class="nav-mobile-menu">
                 <div class="nav-mobile-content">
+                    {% if build_mode %}
+                    <div class="px-3 py-2">
+                        <span class="nav-build-mode nav-build-mode-{{ build_mode }}">
+                            {{ build_mode.upper() }}
+                        </span>
+                    </div>
+                    {% endif %}
                     <a href="{{ url_for('main.home') }}" class="nav-mobile-link {% if request.endpoint == 'main.home' %}nav-mobile-link-active{% else %}nav-mobile-link-inactive{% endif %}">Home</a>
                     <a href="{{ url_for('nodes.index') }}" class="nav-mobile-link {% if request.endpoint == 'nodes.index' %}nav-mobile-link-active{% else %}nav-mobile-link-inactive{% endif %}">Nodes</a>
                     <a href="{{ url_for('members.index') }}" class="nav-mobile-link {% if request.endpoint == 'members.index' %}nav-mobile-link-active{% else %}nav-mobile-link-inactive{% endif %}">Members</a>

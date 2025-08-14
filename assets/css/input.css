@@ -776,6 +776,22 @@
     @apply flex items-center space-x-4;
 }
 
+.nav-build-mode {
+    @apply px-2 py-1 text-xs font-semibold rounded-md uppercase tracking-wide;
+}
+
+.nav-build-mode-beta {
+    @apply bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200;
+}
+
+.nav-build-mode-dev {
+    @apply bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200;
+}
+
+.nav-build-mode-staging {
+    @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200;
+}
+
 .nav-theme-toggle {
     @apply p-2 rounded-md text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100;
 }
