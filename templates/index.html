@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}IPNet - Ipswich Mesh Network{% endblock %}
-{% block description %}Local MeshCore community group serving Ipswich, Suffolk. Join our mesh network and connect with local enthusiasts.{% endblock %}
+{% block title %}{{ config.siteName }}{% endblock %}
+{% block description %}{{ config.description }}{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
 <div class="hero-section">
     <div class="hero-container">
         <h1 class="hero-title">
-            IPNet: Ipswich Mesh Network
+            {{ config.siteName }}
         </h1>
         <p class="hero-subtitle">
-            Local MeshCore community group serving Ipswich, Suffolk, UK. Connect with us through decentralized mesh networking.
+            {{ config.description }}. Connect with us through decentralized mesh networking.
         </p>
         <div class="hero-buttons">
             <a href="{{ url_for('nodes') }}" class="hero-btn-primary">
@@ -59,16 +59,16 @@
         <div class="about-content">
             <div class="about-text-section">
                 <h3 class="about-section-title">
-                    What is MeshCore?
+                    What is {{ config.technology }}?
                 </h3>
                 <p class="about-text">
-                    MeshCore is an open-source project that enables you to use inexpensive LoRa radios as a long-range mesh communication platform. Perfect for hiking, camping, or emergency communications.
+                    {{ config.technology }} is an open-source project that enables you to use inexpensive LoRa radios as a long-range mesh communication platform. Perfect for hiking, camping, or emergency communications.
                 </p>
                 <p class="about-text-last">
-                    Our local group maintains a network of nodes across Ipswich, Suffolk, UK, providing coverage and support for the community.
+                    Our local group maintains a network of nodes across {{ config.location.city }}, {{ config.location.region }}, {{ config.location.country }}, providing coverage and support for the community.
                 </p>
                 <a href="https://meshcore.co.uk" target="_blank" rel="noopener noreferrer" class="about-link">
-                    Learn more about MeshCore
+                    Learn more about {{ config.technology }}
                     <svg class="about-link-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                     </svg>
@@ -80,7 +80,7 @@
                     Join Our Network
                 </h4>
                 <p class="about-cta-text">
-                    Get started with your own MeshCore/Meshtastic device and connect to our local mesh network today.
+                    Get started with your own {{ config.technology }}/Meshtastic device and connect to our local mesh network today.
                 </p>
             </div>
         </div>

@@ -1,0 +1,36 @@
+{
+  "siteName": "MeshNet Bristol - Mesh Network Community",
+  "shortName": "MeshNet Bristol",
+  "description": "Community-driven mesh networking group serving Bristol and surrounding areas",
+  "technology": "Meshtastic",
+  "location": {
+    "city": "Bristol",
+    "region": "South West England",
+    "country": "United Kingdom",
+    "center": {
+      "lat": 51.4545,
+      "lng": -2.5879
+    },
+    "zoom": 12
+  },
+  "contact": {
+    "email": "hello@meshnet-bristol.uk",
+    "discord": "https://discord.gg/example123",
+    "github": "https://github.com/meshnet-bristol/network"
+  },
+  "social": {
+    "twitter": "https://twitter.com/meshnetbristol",
+    "facebook": ""
+  },
+  "theme": {
+    "primaryColor": "#10b981",
+    "secondaryColor": "#6b7280",
+    "accentColor": "#3b82f6"
+  },
+  "features": {
+    "darkMode": true,
+    "mapClustering": true,
+    "memberProfiles": true,
+    "nodeStatistics": true
+  }
+}

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
-{% block title %}Members - IPNet - Ipswich Mesh Network{% endblock %}
-{% block description %}Meet the members of the Ipswich's MeshCore Group and learn about our local mesh networking community.{% endblock %}
+{% block title %}Members - {{ config.siteName }}{% endblock %}
+{% block description %}Meet the members of {{ config.location.city }}'s {{ config.technology }} Group and learn about our local mesh networking community.{% endblock %}
 
 {% block extra_head %}
 <!-- QR Code Library -->

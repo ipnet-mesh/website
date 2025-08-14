@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
-{% block title %}Contact - IPNet - Ipswich Mesh Network{% endblock %}
-{% block description %}Get in touch with the Ipswich mesh networking group. Find our contact information, meeting details, and getting started guide.{% endblock %}
+{% block title %}Contact - {{ config.siteName }}{% endblock %}
+{% block description %}Get in touch with the {{ config.location.city }} mesh networking group. Find our contact information, meeting details, and getting started guide.{% endblock %}
 
 {% block alpine_data %} x-data="contactData()"{% endblock %}
 
@@ -26,7 +26,7 @@
                 </div>
                 <h3 class="contact-title">Discord</h3>
                 <p class="contact-description">Join our active community chat for real-time discussions and support.</p>
-                <a href="https://discord.gg/hXRM2cJgtf" target="_blank" rel="noopener noreferrer" class="contact-link">
+                <a href="{{ config.contact.discord }}" target="_blank" rel="noopener noreferrer" class="contact-link">
                     Join Discord Server
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
@@ -42,8 +42,8 @@
                 </div>
                 <h3 class="contact-title">Email</h3>
                 <p class="contact-description">Send us an email for general inquiries or detailed technical questions.</p>
-                <a href="mailto:info@ipnt.uk" class="contact-link">
-                    info@ipnt.uk
+                <a href="mailto:{{ config.contact.email }}" class="contact-link">
+                    {{ config.contact.email }}
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                     </svg>
@@ -58,7 +58,7 @@
                 </div>
                 <h3 class="contact-title">GitHub</h3>
                 <p class="contact-description">Check out our open source projects and contribute to the codebase.</p>
-                <a href="https://github.com/jinglemansweep/ipet" target="_blank" rel="noopener noreferrer" class="contact-link">
+                <a href="{{ config.contact.github }}" target="_blank" rel="noopener noreferrer" class="contact-link">
                     View Repository
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
@@ -105,32 +105,4 @@
     </div>
 </div>
 
-<!-- Local Information -->
-<div class="section-container">
-    <div class="section-container-narrow">
-        <div class="grid-2-cols">
-            <div>
-                <h2 class="content-title">Coverage Area</h2>
-                <p class="content-text">
-                    Our mesh network primarily covers Ipswich and surrounding areas in Suffolk, UK. We have nodes positioned strategically to provide the best coverage for the local community.
-                </p>
-                <p class="content-text">
-                    Current coverage includes:
-                </p>
-                <ul class="content-list">
-                    <li>Town Centre</li>
-                    <li>IP2, IP3, IP4 and IP8</li>
-                    <li>Selected outdoor locations</li>
-                </ul>
-            </div>
-
-            <div>
-                <h2 class="content-title">Meetings & Events</h2>
-                <p class="content-text">
-                    Join our Discord to stay updated on upcoming events, technical workshops, and community gatherings.
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock %}

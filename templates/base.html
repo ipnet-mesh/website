@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="path-prefix" content="">
-    <title>{% block title %}IPNet - Ipswich Mesh Network{% endblock %}</title>
-    <meta name="description" content="{% block description %}Local MeshCore community group serving Ipswich, Suffolk. Join our mesh network and connect with local enthusiasts.{% endblock %}">
+    <title>{% block title %}{{ config.siteName }}{% endblock %}</title>
+    <meta name="description" content="{% block description %}{{ config.description }}{% endblock %}">
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ipnt.uk/">
-    <meta property="og:title" content="{% block og_title %}IPNet{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}Local MeshCore community group for Ipswich, Suffolk, UK{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}{{ config.shortName }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ config.description }}{% endblock %}">
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://ipnt.uk/">
-    <meta property="twitter:title" content="{% block twitter_title %}IPNet{% endblock %}">
-    <meta property="twitter:description" content="{% block twitter_description %}Local MeshCore community group for Ipswich, Suffolk, UK{% endblock %}">
+    <meta property="twitter:title" content="{% block twitter_title %}{{ config.shortName }}{% endblock %}">
+    <meta property="twitter:description" content="{% block twitter_description %}{{ config.description }}{% endblock %}">
     <link rel="canonical" href="https://ipnt.uk/">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 
@@ -53,7 +53,7 @@
                     <!-- Logo -->
                     <div class="nav-logo">
                         <a href="{{ url_for('home') }}">
-                            <span class="nav-logo-text">IPNet</span>
+                            <span class="nav-logo-text">{{ config.shortName }}</span>
                         </a>
                     </div>
 
@@ -111,10 +111,10 @@
             <div class="footer-content">
                 <div class="footer-brand">
                     <div class="footer-brand-header">
-                        <span class="footer-brand-text">IPNet: Ipswich Mesh Network</span>
+                        <span class="footer-brand-text">{{ config.siteName }}</span>
                     </div>
                     <p class="footer-brand-description">
-                        Connecting Ipswich through decentralized mesh networking.
+                        {{ config.description }}
                     </p>
                 </div>
                 <div class="footer-section">
@@ -129,20 +129,26 @@
                 <div class="footer-section">
                     <h3 class="footer-section-title">Connect</h3>
                     <div class="footer-social-links">
-                        <a href="https://discord.gg/hXRM2cJgtf" class="footer-social-link">
+                        {% if config.contact.discord %}
+                        <a href="{{ config.contact.discord }}" class="footer-social-link">
                             Discord
                         </a>
-                        <a href="https://github.com/ipnet-mesh" class="footer-social-link">
+                        {% endif %}
+                        {% if config.contact.github %}
+                        <a href="{{ config.contact.github }}" class="footer-social-link">
                             GitHub
                         </a>
-                        <a href="mailto:info@ipnt.uk" class="footer-social-link">
+                        {% endif %}
+                        {% if config.contact.email %}
+                        <a href="mailto:{{ config.contact.email }}" class="footer-social-link">
                             Email
                         </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; IPNet. Open source community project.</p>
+                <p>&copy; {{ config.shortName }}. Open source community project.</p>
             </div>
         </div>
     </footer>
