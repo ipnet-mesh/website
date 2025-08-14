@@ -36,7 +36,8 @@ RUN useradd --create-home --shell /bin/bash app && chown -R app:app /app
 USER app
 
 # Copy application files
-COPY --chown=app:app app.py .
+COPY --chown=app:app run.py .
+COPY --chown=app:app app/ ./app/
 COPY --chown=app:app templates/ ./templates/
 COPY --chown=app:app assets/ ./assets/
 
@@ -51,4 +52,4 @@ EXPOSE 5000
 #     CMD python -c "import requests; requests.get('http://localhost:5000/', timeout=3)"
 
 # Run the application with gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "--timeout", "120", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "--timeout", "120", "run:app"]

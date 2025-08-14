@@ -25,11 +25,11 @@ build-css-prod:
 
 # Development server - builds CSS and starts Flask dev server
 dev: build-css
-	gunicorn --bind 0.0.0.0:5000 --workers 4 app:app
+	gunicorn --bind 0.0.0.0:5000 --workers 4 run:app
 
 # Production server with gunicorn
 server: build-css-prod
-	gunicorn --bind 0.0.0.0:5000 --workers 4 app:app
+	gunicorn --bind 0.0.0.0:5000 --workers 4 run:app
 
 # Clean generated files
 clean:

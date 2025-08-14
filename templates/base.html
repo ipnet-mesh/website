@@ -61,17 +61,17 @@
                 <div class="nav-left">
                     <!-- Logo -->
                     <div class="nav-logo">
-                        <a href="{{ url_for('home') }}">
+                        <a href="{{ url_for('main.home') }}">
                             <span class="nav-logo-text">{{ config.shortName }}</span>
                         </a>
                     </div>
 
                     <!-- Desktop Navigation -->
                     <div class="nav-desktop">
-                        <a href="{{ url_for('home') }}" class="nav-link {% if request.endpoint == 'home' %}nav-link-active{% else %}nav-link-inactive{% endif %}">Home</a>
-                        <a href="{{ url_for('nodes') }}" class="nav-link {% if request.endpoint == 'nodes' %}nav-link-active{% else %}nav-link-inactive{% endif %}">Nodes</a>
-                        <a href="{{ url_for('members') }}" class="nav-link {% if request.endpoint == 'members' %}nav-link-active{% else %}nav-link-inactive{% endif %}">Members</a>
-                        <a href="{{ url_for('contact') }}" class="nav-link {% if request.endpoint == 'contact' %}nav-link-active{% else %}nav-link-inactive{% endif %}">Contact</a>
+                        <a href="{{ url_for('main.home') }}" class="nav-link {% if request.endpoint == 'main.home' %}nav-link-active{% else %}nav-link-inactive{% endif %}">Home</a>
+                        <a href="{{ url_for('nodes.index') }}" class="nav-link {% if request.endpoint == 'nodes.index' %}nav-link-active{% else %}nav-link-inactive{% endif %}">Nodes</a>
+                        <a href="{{ url_for('members.index') }}" class="nav-link {% if request.endpoint == 'members.index' %}nav-link-active{% else %}nav-link-inactive{% endif %}">Members</a>
+                        <a href="{{ url_for('main.contact') }}" class="nav-link {% if request.endpoint == 'main.contact' %}nav-link-active{% else %}nav-link-inactive{% endif %}">Contact</a>
                     </div>
                 </div>
 
@@ -100,10 +100,10 @@
             <!-- Mobile Navigation -->
             <div x-show="mobileMenuOpen" class="nav-mobile-menu">
                 <div class="nav-mobile-content">
-                    <a href="{{ url_for('home') }}" class="nav-mobile-link {% if request.endpoint == 'home' %}nav-mobile-link-active{% else %}nav-mobile-link-inactive{% endif %}">Home</a>
-                    <a href="{{ url_for('nodes') }}" class="nav-mobile-link {% if request.endpoint == 'nodes' %}nav-mobile-link-active{% else %}nav-mobile-link-inactive{% endif %}">Nodes</a>
-                    <a href="{{ url_for('members') }}" class="nav-mobile-link {% if request.endpoint == 'members' %}nav-mobile-link-active{% else %}nav-mobile-link-inactive{% endif %}">Members</a>
-                    <a href="{{ url_for('contact') }}" class="nav-mobile-link {% if request.endpoint == 'contact' %}nav-mobile-link-active{% else %}nav-mobile-link-inactive{% endif %}">Contact</a>
+                    <a href="{{ url_for('main.home') }}" class="nav-mobile-link {% if request.endpoint == 'main.home' %}nav-mobile-link-active{% else %}nav-mobile-link-inactive{% endif %}">Home</a>
+                    <a href="{{ url_for('nodes.index') }}" class="nav-mobile-link {% if request.endpoint == 'nodes.index' %}nav-mobile-link-active{% else %}nav-mobile-link-inactive{% endif %}">Nodes</a>
+                    <a href="{{ url_for('members.index') }}" class="nav-mobile-link {% if request.endpoint == 'members.index' %}nav-mobile-link-active{% else %}nav-mobile-link-inactive{% endif %}">Members</a>
+                    <a href="{{ url_for('main.contact') }}" class="nav-mobile-link {% if request.endpoint == 'main.contact' %}nav-mobile-link-active{% else %}nav-mobile-link-inactive{% endif %}">Contact</a>
                 </div>
             </div>
         </div>
@@ -129,10 +129,10 @@
                 <div class="footer-section">
                     <h3 class="footer-section-title">Quick Links</h3>
                     <ul class="footer-nav-list">
-                        <li><a href="{{ url_for('home') }}" class="footer-nav-link">Home</a></li>
-                        <li><a href="{{ url_for('nodes') }}" class="footer-nav-link">Network Map</a></li>
-                        <li><a href="{{ url_for('members') }}" class="footer-nav-link">Members</a></li>
-                        <li><a href="{{ url_for('contact') }}" class="footer-nav-link">Contact</a></li>
+                        <li><a href="{{ url_for('main.home') }}" class="footer-nav-link">Home</a></li>
+                        <li><a href="{{ url_for('nodes.index') }}" class="footer-nav-link">Network Map</a></li>
+                        <li><a href="{{ url_for('members.index') }}" class="footer-nav-link">Members</a></li>
+                        <li><a href="{{ url_for('main.contact') }}" class="footer-nav-link">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">

@@ -23,7 +23,7 @@
             <nav class="flex mb-4" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-3">
                     <li class="inline-flex items-center">
-                        <a href="{{ url_for('nodes') }}" class="inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary">
+                        <a href="{{ url_for('nodes.index') }}" class="inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary">
                             Network Nodes
                         </a>
                     </li>
@@ -118,7 +118,7 @@
                             {% if current_node.isOnline %}Online{% else %}Offline{% endif %}
                         </span>
                     </div>
-                    <a href="{{ url_for('nodes') }}" class="node-close-btn">
+                    <a href="{{ url_for('nodes.index') }}" class="node-close-btn">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
@@ -190,7 +190,7 @@
                             <div class="node-info-list">
                                 <div class="node-info-row">
                                     <span class="node-info-label">Owner:</span>
-                                    <a href="{{ url_for('members') }}" class="text-primary hover:text-accent font-medium uppercase">{{ current_node.memberId }}</a>
+                                    <a href="{{ url_for('members.index') }}" class="text-primary hover:text-accent font-medium uppercase">{{ current_node.memberId }}</a>
                                 </div>
                                 <div class="node-info-row">
                                     <span class="node-info-label">Public Key:</span>
@@ -202,7 +202,7 @@
                 </div>
 
                 <div class="node-detail-footer">
-                    <a href="{{ url_for('nodes') }}" class="node-back-btn">
+                    <a href="{{ url_for('nodes.index') }}" class="node-back-btn">
                         ← Back to Node Directory
                     </a>
                 </div>
@@ -291,7 +291,7 @@
                             </div>
                             <div class="node-card-detail-row">
                                 <span class="node-card-detail-label">Owner:</span>
-                                <a href="{{ url_for('members') }}">
+                                <a href="{{ url_for('members.index') }}">
                                     <span class="node-card-detail-value uppercase" x-text="node.memberId"></span>
                                 </a>
                             </div>
