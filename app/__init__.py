@@ -75,8 +75,15 @@ def create_app() -> Flask:
             area = node_pattern.group(1)
             node_id = node_pattern.group(2)
 
-            # Redirect to the node page
-            return redirect(url_for('nodes.index', area=area, node_id=node_id), code=301)
+            # Strip subdomain and redirect to main domain
+            # Get the main domain by removing everything before the first dot
+            main_domain = re.sub(r'^[^.]+\.', '', host)
+
+            # Build the redirect URL with the main domain
+            node_url = url_for('nodes.index', area=area, node_id=node_id)
+            redirect_url = f"{request.scheme}://{main_domain}{node_url}"
+
+            return redirect(redirect_url, code=301)
 
         return None
 
