@@ -46,6 +46,119 @@ const Router = {
     }
 };
 
+    // Multiselect component
+    function multiselect(propertyName, optionsOrFunction) {
+        return {
+            open: false,
+            selectedValues: [],
+            options: [],
+
+            init() {
+                // Wait for parent to be fully initialized
+                this.$nextTick(() => {
+                    this.waitForParent();
+                });
+            },
+
+            waitForParent() {
+                // Check if parent is available and has the required properties
+                if (!this.$parent || !this.$parent.nodes) {
+                    // Wait a bit longer and try again
+                    setTimeout(() => this.waitForParent(), 200);
+                    return;
+                }
+
+                // Parent is ready, initialize the multiselect
+                this.initializeMultiselect();
+            },
+
+            initializeMultiselect() {
+                // Initialize with empty array for multiselect
+                if (!this.$parent[propertyName]) {
+                    this.$parent[propertyName] = [];
+                }
+
+                this.updateOptions();
+
+                // Set default state to all options selected
+                this.selectedValues = [...this.options];
+
+                // Watch for changes in the parent's nodes data
+                this.$watch('$parent.nodes', () => {
+                    this.updateOptions();
+                });
+
+                // Store a reference to the parent for later use
+                this.parentComponent = this.$parent;
+            },
+        
+        updateOptions() {
+            // Handle both array and function parameters
+            if (typeof optionsOrFunction === 'function') {
+                try {
+                    const result = optionsOrFunction.call(this.$parent);
+                    this.options = result || [];
+                } catch (error) {
+                    console.warn('Error getting options:', error);
+                    this.options = [];
+                }
+            } else {
+                this.options = optionsOrFunction || [];
+            }
+        },
+        
+        toggle() {
+            this.updateOptions(); // Refresh options when opening
+            this.open = !this.open;
+        },
+        
+        getDisplayText() {
+            if (this.selectedValues.length === 0) {
+                return 'All';
+            } else if (this.selectedValues.length === 1) {
+                return this.selectedValues[0];
+            } else {
+                return `${this.selectedValues.length} selected`;
+            }
+        },
+        
+                    updateSelection() {
+                // Try to get parent from stored reference or current context
+                let parent = this.parentComponent || this.$parent;
+                
+                // If still no parent, try to find it by looking up the DOM tree
+                if (!parent) {
+                    let element = this.$el;
+                    while (element && !parent) {
+                        if (element._x_dataStack && element._x_dataStack.length > 0) {
+                            const data = element._x_dataStack[0];
+                            if (data.nodes && data.applyFilters) {
+                                parent = data;
+                                break;
+                            }
+                        }
+                        element = element.parentElement;
+                    }
+                }
+                
+                if (!parent) {
+                    return;
+                }
+
+                // Update the parent component's property
+                parent[propertyName] = [...this.selectedValues];
+                
+                // Trigger filter update
+                parent.applyFilters();
+            },
+        
+                    clearAll() {
+                this.selectedValues = [];
+                this.updateSelection();
+            }
+    }
+}
+
 // Nodes page data
 function nodesData() {
     return {
@@ -53,11 +166,13 @@ function nodesData() {
         members: [],
         filteredNodes: [],
         currentNode: null,
-        selectedHardware: '',
-        selectedRole: '',
-        selectedOwner: '',
+        selectedHardware: [],
+        selectedRole: [],
+        selectedOwner: [],
         showOnlineOnly: false,
         showTesting: false,
+        clusteringEnabled: true,
+        pinLabelsEnabled: true,
         mapInitialized: false,
         map: null,
         markers: [],
@@ -85,16 +200,41 @@ function nodesData() {
                     this.initMap();
                 }, 100);
             });
+            
+            // Force refresh multiselect options after data is loaded
+            this.$nextTick(() => {
+                this.refreshMultiselectOptions();
+            });
+        },
+        
+        refreshMultiselectOptions() {
+            // Find all multiselect components and refresh their options
+            const multiselectContainers = this.$el.querySelectorAll('.multiselect-container');
+            multiselectContainers.forEach(container => {
+                if (container._x_dataStack && container._x_dataStack[0]) {
+                    const multiselectData = container._x_dataStack[0];
+                    if (multiselectData.updateOptions) {
+                        multiselectData.updateOptions();
+                    }
+                }
+            });
         },
 
         // Navigate to node details page (simpler server-side approach)
         navigateToNodeDetails(node) {
             const nodeIdParts = node.id.split('.');
-            const shortId = nodeIdParts[0]; // e.g. "rep01" from "rep01.ip3.ipnt.uk"
-            const area = node.area.toLowerCase(); // e.g. "ip3"
+            const fullNodeId = nodeIdParts[0]; // e.g. "ip2-rep01" from "ip2-rep01.ipnt.uk"
+            const area = node.area.toLowerCase(); // e.g. "ip2"
 
-            // Direct navigation to server route
-            window.location.href = `/nodes/${area}/${shortId}`;
+            // Extract just the node identifier from the full node ID (area-nodeid format)
+            const nodeParts = fullNodeId.split('-');
+            if (nodeParts.length >= 2) {
+                const nodeId = nodeParts.slice(1).join('-'); // Handle cases like "ip2-rep01" -> "rep01"
+                window.location.href = `/nodes/${area}/${nodeId}`;
+            } else {
+                // Fallback for legacy format
+                window.location.href = `/nodes/${area}/${fullNodeId}`;
+            }
         },
 
         get availableHardware() {
@@ -105,6 +245,10 @@ function nodesData() {
             return [...new Set(this.nodes.map(node => node.memberId))].sort();
         },
 
+        get availableRoles() {
+            return [...new Set(this.nodes.filter(node => node.isTesting !== true).map(node => node.meshRole))].sort();
+        },
+
         get onlineNodesCount() {
             return this.filteredNodes.filter(node => node.isOnline !== false).length;
         },
@@ -112,7 +256,6 @@ function nodesData() {
         get repeaterNodesCount() {
             return this.filteredNodes.filter(node => node.meshRole === 'repeater').length;
         },
-
 
         focusNodeOnMap(node) {
             if (this.map) {
@@ -180,7 +323,6 @@ function nodesData() {
                             disableClusteringAtZoom: 16, // Disable clustering at high zoom levels
                             animate: false // Disable animations to prevent timing issues
                         });
-                        this.map.addLayer(this.markerClusterGroup);
 
                         // Add custom cluster click handler to avoid zoom issues
                         this.markerClusterGroup.on('clusterclick', (e) => {
@@ -194,6 +336,11 @@ function nodesData() {
                                 console.warn('Error handling cluster click:', error);
                             }
                         });
+
+                        // Only add cluster group to map if clustering is enabled
+                        if (this.clusteringEnabled) {
+                            this.map.addLayer(this.markerClusterGroup);
+                        }
                     }
 
                     this.updateMapMarkers();
@@ -229,24 +376,35 @@ function nodesData() {
             if (!this.map) return;
 
             try {
-                // Clear existing markers
+                // Clear existing markers from both cluster group and direct map
                 if (this.markerClusterGroup) {
                     this.markerClusterGroup.clearLayers();
-                } else {
-                    this.markers.forEach(marker => {
-                        if (this.map.hasLayer(marker)) {
-                            this.map.removeLayer(marker);
-                        }
-                    });
                 }
+                
+                // Always clear individual markers from map
+                this.markers.forEach(marker => {
+                    if (this.map.hasLayer(marker)) {
+                        this.map.removeLayer(marker);
+                    }
+                });
                 this.markers = [];
             } catch (error) {
                 console.warn('Error clearing markers:', error);
                 this.markers = [];
             }
 
-            // Use cluster group if available
-            const useClusterGroup = this.markerClusterGroup;
+            // Use cluster group if available and clustering is enabled
+            const useClusterGroup = this.markerClusterGroup && this.clusteringEnabled;
+            
+            // Ensure cluster group is added to map if clustering is enabled
+            if (this.clusteringEnabled && this.markerClusterGroup && !this.map.hasLayer(this.markerClusterGroup)) {
+                this.map.addLayer(this.markerClusterGroup);
+            }
+            
+            // Remove cluster group from map if clustering is disabled
+            if (!this.clusteringEnabled && this.markerClusterGroup && this.map.hasLayer(this.markerClusterGroup)) {
+                this.map.removeLayer(this.markerClusterGroup);
+            }
 
             // Determine which nodes to show on map
             let nodesToShow = this.filteredNodes;
@@ -280,43 +438,54 @@ function nodesData() {
                     const iconAnchor = isCurrentNode ? [16, 16] : [12, 12];
                     const borderWidth = isCurrentNode ? 'border-4' : 'border-2';
 
+                    // Get first 2 characters of public key in lowercase, or fallback to node id
+                    const iconText = node.publicKey && node.publicKey.length >= 2 
+                        ? node.publicKey.substring(0, 2).toLowerCase() 
+                        : node.id.substring(0, 2);
+
                     const customIcon = L.divIcon({
-                        html: `<div style="background-color: ${statusColor};" class="${markerSize} rounded-full ${borderWidth} border-white shadow-lg ${isCurrentNode ? 'animate-pulse' : ''}"></div>`,
+                        html: `<div style="background-color: ${statusColor}; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 10px; line-height: 1;" class="${markerSize} rounded-full ${borderWidth} border-white shadow-lg ${isCurrentNode ? 'animate-pulse' : ''}">${iconText}</div>`,
                         className: 'custom-marker',
                         iconSize: iconSize,
                         iconAnchor: iconAnchor
                     });
 
-                    const marker = L.marker([node.location.lat, node.location.lng], { icon: customIcon })
-                        .bindTooltip(node.id, {
+                    const marker = L.marker([node.location.lat, node.location.lng], { icon: customIcon });
+                    
+                    // Add tooltip only if pin labels are enabled
+                    if (this.pinLabelsEnabled) {
+                        marker.bindTooltip(node.id, {
                             permanent: true,
                             direction: 'right',
                             offset: [15, 0],
                             className: 'node-tooltip'
-                        })
-                        .bindPopup(`
-                            <div class="max-w-xs">
-                                <strong class="text-lg">${node.name}</strong><br>
-                                <div class="mt-2 space-y-1 text-sm">
-                                    <div><em>Owner:</em> ${this.getMemberName(node.memberId)}</div>
-                                    <!--
-                                    <div class="flex items-center mt-2">
-                                        <div class="w-2 h-2 rounded-full mr-2" style="background-color: ${statusColor}"></div>
-                                        <span class="font-medium">${node.isOnline !== false ? 'Online' : 'Offline'}</span>
-                                    </div>
-                                    -->
-                                </div>
-                                <div class="mt-3 pt-2 border-t border-gray-200">
-                                    <button onclick="window.nodesPageInstance.navigateToNodeDetails({id: '${node.id}', area: '${node.area}'})" class="text-primary hover:text-accent text-sm font-medium">
-                                        View Node Details
-                                    </button>
-                                </div>
-                            </div>
-                        `, {
-                            closeOnClick: false,
-                            autoClose: false,
-                            closeButton: true
                         });
+                    }
+                    
+                    // Add popup
+                    marker.bindPopup(`
+                        <div class="max-w-xs">
+                            <strong class="text-lg">${node.name}</strong><br>
+                            <div class="mt-2 space-y-1 text-sm">
+                                <div><em>Owner:</em> ${this.getMemberName(node.memberId)}</div>
+                                <!--
+                                <div class="flex items-center mt-2">
+                                    <div class="w-2 h-2 rounded-full mr-2" style="background-color: ${statusColor}"></div>
+                                    <span class="font-medium">${node.isOnline !== false ? 'Online' : 'Offline'}</span>
+                                </div>
+                                -->
+                            </div>
+                            <div class="mt-3 pt-2 border-t border-gray-200">
+                                <button onclick="window.nodesPageInstance.navigateToNodeDetails({id: '${node.id}', area: '${node.area}'})" class="text-primary hover:text-accent text-sm font-medium">
+                                    View Node Details
+                                </button>
+                            </div>
+                        </div>
+                    `, {
+                        closeOnClick: false,
+                        autoClose: false,
+                        closeButton: true
+                    });
 
                     // Add to cluster group if clustering is enabled, otherwise directly to map
                     if (useClusterGroup) {
@@ -334,15 +503,18 @@ function nodesData() {
 
         applyFilters() {
             this.filteredNodes = this.nodes.filter(node => {
-                const hardwareMatch = !this.selectedHardware ||
-                    node.hardware.toLowerCase().includes(this.selectedHardware.toLowerCase());
-                const roleMatch = !this.selectedRole ||
-                    node.meshRole === this.selectedRole;
-                const ownerMatch = !this.selectedOwner ||
-                    node.memberId === this.selectedOwner;
+                const hardwareMatch = this.selectedHardware.length === 0 ||
+                    this.selectedHardware.some(hw => node.hardware.toLowerCase().includes(hw.toLowerCase()));
+                const roleMatch = this.selectedRole.length === 0 ||
+                    this.selectedRole.includes(node.meshRole);
+                const ownerMatch = this.selectedOwner.length === 0 ||
+                    this.selectedOwner.includes(node.memberId);
                 const onlineMatch = !this.showOnlineOnly || node.isOnline !== false;
                 const testingMatch = this.showTesting || node.isTesting !== true;
-                return hardwareMatch && roleMatch && ownerMatch && onlineMatch && testingMatch;
+                
+                const matches = hardwareMatch && roleMatch && ownerMatch && onlineMatch && testingMatch;
+                
+                return matches;
             }).sort((a, b) => {
                 // Sort by area first, then by ID
                 const areaComparison = a.area.localeCompare(b.area);
@@ -367,6 +539,18 @@ function nodesData() {
 
         getUniqueRoles() {
             return [...new Set(this.nodes.map(node => node.meshRole))];
+        },
+
+        toggleClustering() {
+            if (this.map) {
+                this.updateMapMarkers();
+            }
+        },
+
+        togglePinLabels() {
+            if (this.map) {
+                this.updateMapMarkers();
+            }
         }
     }
 }

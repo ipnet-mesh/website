@@ -65,32 +65,87 @@
         <div class="filter-group">
             <div class="filter-item">
                 <label class="filter-label">Hardware:</label>
-                <select x-model="selectedHardware" @change="applyFilters()" class="filter-select">
-                    <option value="">All</option>
-                    <template x-for="hardware in availableHardware" :key="hardware">
-                        <option :value="hardware" x-text="hardware"></option>
-                    </template>
-                </select>
+                <div class="multiselect-container" x-data="multiselect('selectedHardware', () => availableHardware)">
+                    <div class="multiselect-trigger" @click="toggle()">
+                        <span class="multiselect-display" x-text="getDisplayText()"></span>
+                        <svg class="multiselect-arrow" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div class="multiselect-dropdown" x-show="open" @click.away="open = false">
+                        <div class="multiselect-options">
+                            <template x-for="option in options" :key="option">
+                                <label class="multiselect-option">
+                                    <input type="checkbox" 
+                                           :value="option" 
+                                           x-model="selectedValues" 
+                                           @change="updateSelection()"
+                                           class="multiselect-checkbox">
+                                    <span class="multiselect-option-text" x-text="option"></span>
+                                </label>
+                            </template>
+                        </div>
+                        <div class="multiselect-actions">
+                            <button @click="clearAll()" class="multiselect-action-btn">Clear</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="filter-item">
                 <label class="filter-label">Role:</label>
-                <select x-model="selectedRole" @change="applyFilters()" class="filter-select">
-                    <option value="">All</option>
-                    <option value="client">Client</option>
-                    <option value="repeater">Repeater</option>
-                    <option value="room">Room</option>
-                    <option value="integration">Integration</option>
-                    <option value="test">Testing</option>
-                </select>
+                <div class="multiselect-container" x-data="multiselect('selectedRole', () => availableRoles)">
+                    <div class="multiselect-trigger" @click="toggle()">
+                        <span class="multiselect-display" x-text="getDisplayText()"></span>
+                        <svg class="multiselect-arrow" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div class="multiselect-dropdown" x-show="open" @click.away="open = false">
+                        <div class="multiselect-options">
+                            <template x-for="option in options" :key="option">
+                                <label class="multiselect-option">
+                                    <input type="checkbox" 
+                                           :value="option" 
+                                           x-model="selectedValues" 
+                                           @change="updateSelection()"
+                                           class="multiselect-checkbox">
+                                    <span class="multiselect-option-text" x-text="option.charAt(0).toUpperCase() + option.slice(1)"></span>
+                                </label>
+                            </template>
+                        </div>
+                        <div class="multiselect-actions">
+                            <button @click="clearAll()" class="multiselect-action-btn">Clear</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="filter-item">
                 <label class="filter-label">Maintainer:</label>
-                <select x-model="selectedOwner" @change="applyFilters()" class="filter-select">
-                    <option value="">All</option>
-                    <template x-for="owner in availableOwners" :key="owner">
-                        <option :value="owner" x-text="owner.toUpperCase()"></option>
-                    </template>
-                </select>
+                <div class="multiselect-container" x-data="multiselect('selectedOwner', () => availableOwners)">
+                    <div class="multiselect-trigger" @click="toggle()">
+                        <span class="multiselect-display" x-text="getDisplayText()"></span>
+                        <svg class="multiselect-arrow" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                    <div class="multiselect-dropdown" x-show="open" @click.away="open = false">
+                        <div class="multiselect-options">
+                            <template x-for="option in options" :key="option">
+                                <label class="multiselect-option">
+                                    <input type="checkbox" 
+                                           :value="option" 
+                                           x-model="selectedValues" 
+                                           @change="updateSelection()"
+                                           class="multiselect-checkbox">
+                                    <span class="multiselect-option-text" x-text="option.toUpperCase()"></span>
+                                </label>
+                            </template>
+                        </div>
+                        <div class="multiselect-actions">
+                            <button @click="clearAll()" class="multiselect-action-btn">Clear</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="filter-item">
                 <input type="checkbox" x-model="showOnlineOnly" @change="applyFilters()" id="onlineOnly" class="filter-checkbox">
@@ -217,8 +272,22 @@
     <div class="page-header-container">
         <div class="map-card">
             <div class="map-header">
-                <h2 class="map-title">Network Map</h2>
-                <p class="map-subtitle">Interactive map showing all registered nodes</p>
+                <div class="map-header-content">
+                    <div class="map-header-text">
+                        <h2 class="map-title">Network Map</h2>
+                        <p class="map-subtitle">Interactive map showing all registered nodes</p>
+                    </div>
+                    <div class="map-controls">
+                        <label class="map-toggle-label">
+                            <input type="checkbox" x-model="clusteringEnabled" @change="toggleClustering()" class="map-toggle-checkbox">
+                            <span class="map-toggle-text">Marker Clustering</span>
+                        </label>
+                        <label class="map-toggle-label ml-4">
+                            <input type="checkbox" x-model="pinLabelsEnabled" @change="togglePinLabels()" class="map-toggle-checkbox">
+                            <span class="map-toggle-text">Pin Labels</span>
+                        </label>
+                    </div>
+                </div>
             </div>
             <div class="map-container">
                 <div id="nodesMap" class="map-content"></div>

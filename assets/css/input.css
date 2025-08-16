@@ -292,6 +292,30 @@
     @apply px-6 py-4 border-b border-gray-200 dark:border-gray-700;
 }
 
+.map-header-content {
+    @apply flex items-center justify-between;
+}
+
+.map-header-text {
+    @apply flex-1;
+}
+
+.map-controls {
+    @apply flex items-center;
+}
+
+.map-toggle-label {
+    @apply flex items-center cursor-pointer;
+}
+
+.map-toggle-checkbox {
+    @apply mr-2 w-4 h-4 text-primary border-gray-300 dark:border-gray-600 rounded focus:ring-primary;
+}
+
+.map-toggle-text {
+    @apply text-sm text-gray-700 dark:text-gray-300 font-medium;
+}
+
 .map-title {
     @apply text-lg font-semibold text-gray-900 dark:text-gray-100;
 }
@@ -1308,4 +1332,57 @@ select:focus {
 
 .dark .node-tooltip::before {
     border-right-color: rgba(55, 65, 81, 0.95) !important;
+}
+
+/* Multiselect styles */
+.multiselect-container {
+    @apply relative;
+    z-index: 9999;
+}
+
+.multiselect-trigger {
+    @apply flex items-center justify-between w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 rounded-md cursor-pointer hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary;
+    min-height: 2.5rem;
+}
+
+.multiselect-display {
+    @apply text-gray-900 dark:text-gray-100;
+}
+
+.multiselect-arrow {
+    @apply w-4 h-4 text-gray-400 transition-transform duration-200;
+}
+
+.multiselect-dropdown {
+    @apply absolute mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg;
+    z-index: 9999;
+    min-width: 300px;
+    width: max-content;
+    max-width: 500px;
+    max-height: 80vh;
+}
+
+.multiselect-options {
+    @apply overflow-y-auto;
+    max-height: calc(80vh - 60px);
+}
+
+.multiselect-option {
+    @apply flex items-center px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer;
+}
+
+.multiselect-checkbox {
+    @apply mr-2 text-primary border-gray-300 dark:border-gray-600 rounded;
+}
+
+.multiselect-option-text {
+    @apply text-sm text-gray-900 dark:text-gray-100;
+}
+
+.multiselect-actions {
+    @apply flex border-t border-gray-200 dark:border-gray-600;
+}
+
+.multiselect-action-btn {
+    @apply flex-1 px-3 py-2 text-xs text-primary hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors;
 }

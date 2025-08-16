@@ -2,7 +2,7 @@
   "lastUpdated": "2025-07-29T12:00:00Z",
   "nodes": [
     {
-      "id": "rep01.ip2.ipnt.uk",
+      "id": "ip2-rep01.ipnt.uk",
       "publicKey": "A0722F9DE381484DA5AAECDB61586171E2FC4A4714072BBF04FD8F09B4768DED",
       "name": "IP2 Repeater 1",
       "memberId": "louis",
@@ -14,7 +14,7 @@
       },
       "hardware": "Heltec V3",
       "antenna": "Paradar 8.5dBi omni",
-      "elevation": 120,
+      "elevation": 31,
       "showOnMap": true,
       "isPublic": true,
       "isOnline": true,
@@ -23,7 +23,7 @@
       "channels": []
     },
     {
-      "id": "rep02.ip2.ipnt.uk",
+      "id": "ip2-rep02.ipnt.uk",
       "publicKey": "815EBCB3C74CC07BB37569E8C086CC4D4138948A1D4AEE1C51D57FEC071DDCC3",
       "name": "IP2 Repeater 2",
       "memberId": "louis",
@@ -35,7 +35,7 @@
       },
       "hardware": "Heltec V3",
       "antenna": "Generic 5dBi Whip",
-      "elevation": 120,
+      "elevation": 44,
       "showOnMap": true,
       "isPublic": true,
       "isOnline": true,
@@ -44,7 +44,7 @@
       "channels": []
     },
     {
-      "id": "rep03.ip2.ipnt.uk",
+      "id": "ip2-rep03.ipnt.uk",
       "publicKey": "3DC903EC46BB61A837BBC5212BB6000ED93E13F3FE4A04B390A8AD80C7D5357A",
       "name": "IP2 Repeater 3",
       "memberId": "louis",
@@ -56,7 +56,7 @@
       },
       "hardware": "Heltec V3",
       "antenna": "Paradar 8.5dBi omni",
-      "elevation": 120,
+      "elevation": 52,
       "showOnMap": true,
       "isPublic": true,
       "isOnline": true,
@@ -65,7 +65,7 @@
       "channels": []
     },
         {
-      "id": "int01.ip2.ipnt.uk",
+      "id": "ip2-int01.ipnt.uk",
       "publicKey": "",
       "name": "IP2 Integration 1",
       "memberId": "louis",
@@ -77,7 +77,7 @@
       },
       "hardware": "Heltec V3",
       "antenna": "Generic 5dBi Whip",
-      "elevation": 120,
+      "elevation": 25,
       "showOnMap": false,
       "isPublic": true,
       "isOnline": true,
@@ -107,7 +107,7 @@
       "channels": []
     },
     {
-      "id": "rep02.ip3.ipnt.uk",
+      "id": "ip3-rep02.ipnt.uk",
       "publicKey": "e334ec5475789d542ed9e692fbeef7444a371fcc05adcbda1f47ba6a3191b459",
       "name": "IP3 Repeater 2",
       "memberId": "ccz",
@@ -128,7 +128,7 @@
       "channels": []
     },
     {
-      "id": "rep03.ip3.ipnt.uk",
+      "id": "ip3-rep03.ipnt.uk",
       "publicKey": "d0d22155abee3e227438418739937e327440a08152361ed3bbc53031a1cb2b66",
       "name": "IP3 Repeater 3",
       "memberId": "ccz",
@@ -149,7 +149,7 @@
       "channels": []
     },
     {
-      "id": "rmp02.ip3.ipnt.uk",
+      "id": "ip3-rmp02.ipnt.uk",
       "publicKey": "900fd7c80e7ffe1174088d3dd51e863b6282ff6535cf9145679f2b429fec07eb",
       "name": "IP3 Public Room 2",
       "memberId": "markab",
@@ -212,7 +212,7 @@
       "channels": []
 	  },
     {
-      "id": "rep01.ip8.ipnt.uk",
+      "id": "ip8-rep01.ipnt.uk",
       "publicKey": "bd7b5ac75f660675b39f368e1dbb6d1dbcefd8bd7a170e21a942954f67c8bf52",
       "name": "IP8 Repeater 1",
       "memberId": "walshie86",

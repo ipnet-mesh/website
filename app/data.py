@@ -77,5 +77,8 @@ def calculate_node_stats(nodes: List[Dict[str, Any]]) -> Dict[str, int]:
 
 def find_node_by_id(nodes: List[Dict[str, Any]], area: str, node_id: str) -> Optional[Dict[str, Any]]:
     """Find a specific node by area and node_id"""
-    full_node_id = f"{node_id}.{area}.ipnt.uk"
-    return next((node for node in nodes if node['id'] == full_node_id or node['id'] == node_id), None)
+    # New format: {area}-{node_id}.ipnt.uk (e.g., "ip2-rep01.ipnt.uk")
+    full_node_id = f"{area}-{node_id}.ipnt.uk"
+    # Also check legacy format: {node_id}.{area}.ipnt.uk for backward compatibility
+    legacy_node_id = f"{node_id}.{area}.ipnt.uk"
+    return next((node for node in nodes if node['id'] == full_node_id or node['id'] == legacy_node_id or node['id'] == node_id), None)
