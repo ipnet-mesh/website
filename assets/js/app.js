@@ -431,8 +431,13 @@ function nodesData() {
                     const iconAnchor = isCurrentNode ? [16, 16] : [12, 12];
                     const borderWidth = isCurrentNode ? 'border-4' : 'border-2';
 
+                    // Get first 2 characters of public key in lowercase, or fallback to node id
+                    const iconText = node.publicKey && node.publicKey.length >= 2 
+                        ? node.publicKey.substring(0, 2).toLowerCase() 
+                        : node.id.substring(0, 2);
+
                     const customIcon = L.divIcon({
-                        html: `<div style="background-color: ${statusColor};" class="${markerSize} rounded-full ${borderWidth} border-white shadow-lg ${isCurrentNode ? 'animate-pulse' : ''}"></div>`,
+                        html: `<div style="background-color: ${statusColor}; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 10px; line-height: 1;" class="${markerSize} rounded-full ${borderWidth} border-white shadow-lg ${isCurrentNode ? 'animate-pulse' : ''}">${iconText}</div>`,
                         className: 'custom-marker',
                         iconSize: iconSize,
                         iconAnchor: iconAnchor
