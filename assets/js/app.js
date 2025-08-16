@@ -46,6 +46,119 @@ const Router = {
     }
 };
 
+    // Multiselect component
+    function multiselect(propertyName, optionsOrFunction) {
+        return {
+            open: false,
+            selectedValues: [],
+            options: [],
+
+            init() {
+                // Wait for parent to be fully initialized
+                this.$nextTick(() => {
+                    this.waitForParent();
+                });
+            },
+
+            waitForParent() {
+                // Check if parent is available and has the required properties
+                if (!this.$parent || !this.$parent.nodes) {
+                    // Wait a bit longer and try again
+                    setTimeout(() => this.waitForParent(), 200);
+                    return;
+                }
+
+                // Parent is ready, initialize the multiselect
+                this.initializeMultiselect();
+            },
+
+            initializeMultiselect() {
+                // Initialize with empty array for multiselect
+                if (!this.$parent[propertyName]) {
+                    this.$parent[propertyName] = [];
+                }
+
+                this.updateOptions();
+
+                // Set default state to all options selected
+                this.selectedValues = [...this.options];
+
+                // Watch for changes in the parent's nodes data
+                this.$watch('$parent.nodes', () => {
+                    this.updateOptions();
+                });
+
+                // Store a reference to the parent for later use
+                this.parentComponent = this.$parent;
+            },
+        
+        updateOptions() {
+            // Handle both array and function parameters
+            if (typeof optionsOrFunction === 'function') {
+                try {
+                    const result = optionsOrFunction.call(this.$parent);
+                    this.options = result || [];
+                } catch (error) {
+                    console.warn('Error getting options:', error);
+                    this.options = [];
+                }
+            } else {
+                this.options = optionsOrFunction || [];
+            }
+        },
+        
+        toggle() {
+            this.updateOptions(); // Refresh options when opening
+            this.open = !this.open;
+        },
+        
+        getDisplayText() {
+            if (this.selectedValues.length === 0) {
+                return 'All';
+            } else if (this.selectedValues.length === 1) {
+                return this.selectedValues[0];
+            } else {
+                return `${this.selectedValues.length} selected`;
+            }
+        },
+        
+                    updateSelection() {
+                // Try to get parent from stored reference or current context
+                let parent = this.parentComponent || this.$parent;
+                
+                // If still no parent, try to find it by looking up the DOM tree
+                if (!parent) {
+                    let element = this.$el;
+                    while (element && !parent) {
+                        if (element._x_dataStack && element._x_dataStack.length > 0) {
+                            const data = element._x_dataStack[0];
+                            if (data.nodes && data.applyFilters) {
+                                parent = data;
+                                break;
+                            }
+                        }
+                        element = element.parentElement;
+                    }
+                }
+                
+                if (!parent) {
+                    return;
+                }
+
+                // Update the parent component's property
+                parent[propertyName] = [...this.selectedValues];
+                
+                // Trigger filter update
+                parent.applyFilters();
+            },
+        
+                    clearAll() {
+                this.selectedValues = [];
+                this.updateSelection();
+            }
+    }
+}
+
 // Nodes page data
 function nodesData() {
     return {
@@ -53,9 +166,9 @@ function nodesData() {
         members: [],
         filteredNodes: [],
         currentNode: null,
-        selectedHardware: '',
-        selectedRole: '',
-        selectedOwner: '',
+        selectedHardware: [],
+        selectedRole: [],
+        selectedOwner: [],
         showOnlineOnly: false,
         showTesting: false,
         mapInitialized: false,
@@ -85,6 +198,24 @@ function nodesData() {
                     this.initMap();
                 }, 100);
             });
+            
+            // Force refresh multiselect options after data is loaded
+            this.$nextTick(() => {
+                this.refreshMultiselectOptions();
+            });
+        },
+        
+        refreshMultiselectOptions() {
+            // Find all multiselect components and refresh their options
+            const multiselectContainers = this.$el.querySelectorAll('.multiselect-container');
+            multiselectContainers.forEach(container => {
+                if (container._x_dataStack && container._x_dataStack[0]) {
+                    const multiselectData = container._x_dataStack[0];
+                    if (multiselectData.updateOptions) {
+                        multiselectData.updateOptions();
+                    }
+                }
+            });
         },
 
         // Navigate to node details page (simpler server-side approach)
@@ -112,6 +243,10 @@ function nodesData() {
             return [...new Set(this.nodes.map(node => node.memberId))].sort();
         },
 
+        get availableRoles() {
+            return [...new Set(this.nodes.filter(node => node.isTesting !== true).map(node => node.meshRole))].sort();
+        },
+
         get onlineNodesCount() {
             return this.filteredNodes.filter(node => node.isOnline !== false).length;
         },
@@ -119,7 +254,6 @@ function nodesData() {
         get repeaterNodesCount() {
             return this.filteredNodes.filter(node => node.meshRole === 'repeater').length;
         },
-
 
         focusNodeOnMap(node) {
             if (this.map) {
@@ -341,15 +475,18 @@ function nodesData() {
 
         applyFilters() {
             this.filteredNodes = this.nodes.filter(node => {
-                const hardwareMatch = !this.selectedHardware ||
-                    node.hardware.toLowerCase().includes(this.selectedHardware.toLowerCase());
-                const roleMatch = !this.selectedRole ||
-                    node.meshRole === this.selectedRole;
-                const ownerMatch = !this.selectedOwner ||
-                    node.memberId === this.selectedOwner;
+                const hardwareMatch = this.selectedHardware.length === 0 ||
+                    this.selectedHardware.some(hw => node.hardware.toLowerCase().includes(hw.toLowerCase()));
+                const roleMatch = this.selectedRole.length === 0 ||
+                    this.selectedRole.includes(node.meshRole);
+                const ownerMatch = this.selectedOwner.length === 0 ||
+                    this.selectedOwner.includes(node.memberId);
                 const onlineMatch = !this.showOnlineOnly || node.isOnline !== false;
                 const testingMatch = this.showTesting || node.isTesting !== true;
-                return hardwareMatch && roleMatch && ownerMatch && onlineMatch && testingMatch;
+                
+                const matches = hardwareMatch && roleMatch && ownerMatch && onlineMatch && testingMatch;
+                
+                return matches;
             }).sort((a, b) => {
                 // Sort by area first, then by ID
                 const areaComparison = a.area.localeCompare(b.area);
