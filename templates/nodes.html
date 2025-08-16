@@ -272,8 +272,22 @@
     <div class="page-header-container">
         <div class="map-card">
             <div class="map-header">
-                <h2 class="map-title">Network Map</h2>
-                <p class="map-subtitle">Interactive map showing all registered nodes</p>
+                <div class="map-header-content">
+                    <div class="map-header-text">
+                        <h2 class="map-title">Network Map</h2>
+                        <p class="map-subtitle">Interactive map showing all registered nodes</p>
+                    </div>
+                    <div class="map-controls">
+                        <label class="map-toggle-label">
+                            <input type="checkbox" x-model="clusteringEnabled" @change="toggleClustering()" class="map-toggle-checkbox">
+                            <span class="map-toggle-text">Marker Clustering</span>
+                        </label>
+                        <label class="map-toggle-label ml-4">
+                            <input type="checkbox" x-model="pinLabelsEnabled" @change="togglePinLabels()" class="map-toggle-checkbox">
+                            <span class="map-toggle-text">Pin Labels</span>
+                        </label>
+                    </div>
+                </div>
             </div>
             <div class="map-container">
                 <div id="nodesMap" class="map-content"></div>
