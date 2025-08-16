@@ -153,11 +153,11 @@
 }
 
 .filter-group {
-    @apply flex flex-wrap gap-4;
+    @apply flex flex-col gap-4 sm:flex-row sm:flex-wrap;
 }
 
 .filter-item {
-    @apply flex items-center space-x-2;
+    @apply flex flex-col space-y-1 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-2 min-w-0 flex-shrink-0;
 }
 
 .filter-label {
@@ -293,7 +293,7 @@
 }
 
 .map-header-content {
-    @apply flex items-center justify-between;
+    @apply flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between;
 }
 
 .map-header-text {
@@ -301,7 +301,7 @@
 }
 
 .map-controls {
-    @apply flex items-center;
+    @apply flex flex-col gap-2 sm:flex-row sm:items-center;
 }
 
 .map-toggle-label {
@@ -325,11 +325,13 @@
 }
 
 .map-container {
-    @apply h-[50vh] lg:h-[75vh];
+    @apply h-[50vh] lg:h-[75vh] relative;
+    z-index: 1;
 }
 
 .map-content {
     @apply h-full w-full;
+    z-index: 1;
 }
 
 /* Statistics section */
@@ -967,10 +969,13 @@ select:focus {
 /* Map container styles */
 #nodesMap {
     border-radius: 0.5rem;
+    z-index: 1;
+    position: relative;
 }
 
 .leaflet-container {
     background: #f8fafc;
+    z-index: 1 !important;
 }
 
 .dark .leaflet-container {
@@ -1336,8 +1341,12 @@ select:focus {
 
 /* Multiselect styles */
 .multiselect-container {
-    @apply relative;
-    z-index: 9999;
+    @apply relative w-full sm:w-auto;
+    z-index: 10;
+}
+
+.multiselect-container.open {
+    z-index: 100;
 }
 
 .multiselect-trigger {
@@ -1355,7 +1364,7 @@ select:focus {
 
 .multiselect-dropdown {
     @apply absolute mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg;
-    z-index: 9999;
+    z-index: 50;
     min-width: 300px;
     width: max-content;
     max-width: 500px;

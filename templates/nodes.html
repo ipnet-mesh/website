@@ -65,7 +65,7 @@
         <div class="filter-group">
             <div class="filter-item">
                 <label class="filter-label">Hardware:</label>
-                <div class="multiselect-container" x-data="multiselect('selectedHardware', () => availableHardware)">
+                <div class="multiselect-container" :class="{ 'open': open }" x-data="multiselect('selectedHardware', () => availableHardware)">
                     <div class="multiselect-trigger" @click="toggle()">
                         <span class="multiselect-display" x-text="getDisplayText()"></span>
                         <svg class="multiselect-arrow" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -76,9 +76,9 @@
                         <div class="multiselect-options">
                             <template x-for="option in options" :key="option">
                                 <label class="multiselect-option">
-                                    <input type="checkbox" 
-                                           :value="option" 
-                                           x-model="selectedValues" 
+                                    <input type="checkbox"
+                                           :value="option"
+                                           x-model="selectedValues"
                                            @change="updateSelection()"
                                            class="multiselect-checkbox">
                                     <span class="multiselect-option-text" x-text="option"></span>
@@ -93,7 +93,7 @@
             </div>
             <div class="filter-item">
                 <label class="filter-label">Role:</label>
-                <div class="multiselect-container" x-data="multiselect('selectedRole', () => availableRoles)">
+                <div class="multiselect-container" :class="{ 'open': open }" x-data="multiselect('selectedRole', () => availableRoles)">
                     <div class="multiselect-trigger" @click="toggle()">
                         <span class="multiselect-display" x-text="getDisplayText()"></span>
                         <svg class="multiselect-arrow" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -104,9 +104,9 @@
                         <div class="multiselect-options">
                             <template x-for="option in options" :key="option">
                                 <label class="multiselect-option">
-                                    <input type="checkbox" 
-                                           :value="option" 
-                                           x-model="selectedValues" 
+                                    <input type="checkbox"
+                                           :value="option"
+                                           x-model="selectedValues"
                                            @change="updateSelection()"
                                            class="multiselect-checkbox">
                                     <span class="multiselect-option-text" x-text="option.charAt(0).toUpperCase() + option.slice(1)"></span>
@@ -121,7 +121,7 @@
             </div>
             <div class="filter-item">
                 <label class="filter-label">Maintainer:</label>
-                <div class="multiselect-container" x-data="multiselect('selectedOwner', () => availableOwners)">
+                <div class="multiselect-container" :class="{ 'open': open }" x-data="multiselect('selectedOwner', () => availableOwners)">
                     <div class="multiselect-trigger" @click="toggle()">
                         <span class="multiselect-display" x-text="getDisplayText()"></span>
                         <svg class="multiselect-arrow" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -132,9 +132,9 @@
                         <div class="multiselect-options">
                             <template x-for="option in options" :key="option">
                                 <label class="multiselect-option">
-                                    <input type="checkbox" 
-                                           :value="option" 
-                                           x-model="selectedValues" 
+                                    <input type="checkbox"
+                                           :value="option"
+                                           x-model="selectedValues"
                                            @change="updateSelection()"
                                            class="multiselect-checkbox">
                                     <span class="multiselect-option-text" x-text="option.toUpperCase()"></span>
@@ -282,7 +282,7 @@
                             <input type="checkbox" x-model="clusteringEnabled" @change="toggleClustering()" class="map-toggle-checkbox">
                             <span class="map-toggle-text">Marker Clustering</span>
                         </label>
-                        <label class="map-toggle-label ml-4">
+                        <label class="map-toggle-label">
                             <input type="checkbox" x-model="pinLabelsEnabled" @change="togglePinLabels()" class="map-toggle-checkbox">
                             <span class="map-toggle-text">Pin Labels</span>
                         </label>
