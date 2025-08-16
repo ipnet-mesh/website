@@ -171,6 +171,8 @@ function nodesData() {
         selectedOwner: [],
         showOnlineOnly: false,
         showTesting: false,
+        clusteringEnabled: true,
+        pinLabelsEnabled: true,
         mapInitialized: false,
         map: null,
         markers: [],
@@ -321,7 +323,6 @@ function nodesData() {
                             disableClusteringAtZoom: 16, // Disable clustering at high zoom levels
                             animate: false // Disable animations to prevent timing issues
                         });
-                        this.map.addLayer(this.markerClusterGroup);
 
                         // Add custom cluster click handler to avoid zoom issues
                         this.markerClusterGroup.on('clusterclick', (e) => {
@@ -335,6 +336,11 @@ function nodesData() {
                                 console.warn('Error handling cluster click:', error);
                             }
                         });
+
+                        // Only add cluster group to map if clustering is enabled
+                        if (this.clusteringEnabled) {
+                            this.map.addLayer(this.markerClusterGroup);
+                        }
                     }
 
                     this.updateMapMarkers();
@@ -370,24 +376,35 @@ function nodesData() {
             if (!this.map) return;
 
             try {
-                // Clear existing markers
+                // Clear existing markers from both cluster group and direct map
                 if (this.markerClusterGroup) {
                     this.markerClusterGroup.clearLayers();
-                } else {
-                    this.markers.forEach(marker => {
-                        if (this.map.hasLayer(marker)) {
-                            this.map.removeLayer(marker);
-                        }
-                    });
                 }
+                
+                // Always clear individual markers from map
+                this.markers.forEach(marker => {
+                    if (this.map.hasLayer(marker)) {
+                        this.map.removeLayer(marker);
+                    }
+                });
                 this.markers = [];
             } catch (error) {
                 console.warn('Error clearing markers:', error);
                 this.markers = [];
             }
 
-            // Use cluster group if available
-            const useClusterGroup = this.markerClusterGroup;
+            // Use cluster group if available and clustering is enabled
+            const useClusterGroup = this.markerClusterGroup && this.clusteringEnabled;
+            
+            // Ensure cluster group is added to map if clustering is enabled
+            if (this.clusteringEnabled && this.markerClusterGroup && !this.map.hasLayer(this.markerClusterGroup)) {
+                this.map.addLayer(this.markerClusterGroup);
+            }
+            
+            // Remove cluster group from map if clustering is disabled
+            if (!this.clusteringEnabled && this.markerClusterGroup && this.map.hasLayer(this.markerClusterGroup)) {
+                this.map.removeLayer(this.markerClusterGroup);
+            }
 
             // Determine which nodes to show on map
             let nodesToShow = this.filteredNodes;
@@ -421,43 +438,54 @@ function nodesData() {
                     const iconAnchor = isCurrentNode ? [16, 16] : [12, 12];
                     const borderWidth = isCurrentNode ? 'border-4' : 'border-2';
 
+                    // Get first 2 characters of public key in lowercase, or fallback to node id
+                    const iconText = node.publicKey && node.publicKey.length >= 2 
+                        ? node.publicKey.substring(0, 2).toLowerCase() 
+                        : node.id.substring(0, 2);
+
                     const customIcon = L.divIcon({
-                        html: `<div style="background-color: ${statusColor};" class="${markerSize} rounded-full ${borderWidth} border-white shadow-lg ${isCurrentNode ? 'animate-pulse' : ''}"></div>`,
+                        html: `<div style="background-color: ${statusColor}; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 10px; line-height: 1;" class="${markerSize} rounded-full ${borderWidth} border-white shadow-lg ${isCurrentNode ? 'animate-pulse' : ''}">${iconText}</div>`,
                         className: 'custom-marker',
                         iconSize: iconSize,
                         iconAnchor: iconAnchor
                     });
 
-                    const marker = L.marker([node.location.lat, node.location.lng], { icon: customIcon })
-                        .bindTooltip(node.id, {
+                    const marker = L.marker([node.location.lat, node.location.lng], { icon: customIcon });
+                    
+                    // Add tooltip only if pin labels are enabled
+                    if (this.pinLabelsEnabled) {
+                        marker.bindTooltip(node.id, {
                             permanent: true,
                             direction: 'right',
                             offset: [15, 0],
                             className: 'node-tooltip'
-                        })
-                        .bindPopup(`
-                            <div class="max-w-xs">
-                                <strong class="text-lg">${node.name}</strong><br>
-                                <div class="mt-2 space-y-1 text-sm">
-                                    <div><em>Owner:</em> ${this.getMemberName(node.memberId)}</div>
-                                    <!--
-                                    <div class="flex items-center mt-2">
-                                        <div class="w-2 h-2 rounded-full mr-2" style="background-color: ${statusColor}"></div>
-                                        <span class="font-medium">${node.isOnline !== false ? 'Online' : 'Offline'}</span>
-                                    </div>
-                                    -->
-                                </div>
-                                <div class="mt-3 pt-2 border-t border-gray-200">
-                                    <button onclick="window.nodesPageInstance.navigateToNodeDetails({id: '${node.id}', area: '${node.area}'})" class="text-primary hover:text-accent text-sm font-medium">
-                                        View Node Details
-                                    </button>
-                                </div>
-                            </div>
-                        `, {
-                            closeOnClick: false,
-                            autoClose: true,
-                            closeButton: true
                         });
+                    }
+                    
+                    // Add popup
+                    marker.bindPopup(`
+                        <div class="max-w-xs">
+                            <strong class="text-lg">${node.name}</strong><br>
+                            <div class="mt-2 space-y-1 text-sm">
+                                <div><em>Owner:</em> ${this.getMemberName(node.memberId)}</div>
+                                <!--
+                                <div class="flex items-center mt-2">
+                                    <div class="w-2 h-2 rounded-full mr-2" style="background-color: ${statusColor}"></div>
+                                    <span class="font-medium">${node.isOnline !== false ? 'Online' : 'Offline'}</span>
+                                </div>
+                                -->
+                            </div>
+                            <div class="mt-3 pt-2 border-t border-gray-200">
+                                <button onclick="window.nodesPageInstance.navigateToNodeDetails({id: '${node.id}', area: '${node.area}'})" class="text-primary hover:text-accent text-sm font-medium">
+                                    View Node Details
+                                </button>
+                            </div>
+                        </div>
+                    `, {
+                        closeOnClick: false,
+                        autoClose: false,
+                        closeButton: true
+                    });
 
                     // Add to cluster group if clustering is enabled, otherwise directly to map
                     if (useClusterGroup) {
@@ -511,6 +539,18 @@ function nodesData() {
 
         getUniqueRoles() {
             return [...new Set(this.nodes.map(node => node.meshRole))];
+        },
+
+        toggleClustering() {
+            if (this.map) {
+                this.updateMapMarkers();
+            }
+        },
+
+        togglePinLabels() {
+            if (this.map) {
+                this.updateMapMarkers();
+            }
         }
     }
 }
