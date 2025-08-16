@@ -233,6 +233,27 @@
       "channels": []
 	  },
     {
+      "id": "rep02.ip8.ipnt.uk",
+      "publicKey": "9cf300c40112ea34d0a59858270948b27ab6cd87e840de338f3ca782c17537b2",
+      "name": "IP8 Repeater 2",
+      "memberId": "walshie86",
+      "area": "IP8",
+      "location": {
+        "lat": 52.035648,
+        "lng": 1.073271,
+        "description": "Washbrook"
+      },
+      "hardware": "Sensecap Solar",
+      "antenna": "",
+      "elevation": 13,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": false,
+      "meshRole": "repeater",
+      "channels": []
+	  },
+    {
       "id": "ip4-rep01.ipnt.uk",
       "publicKey": "d3c20d962f7384c111fbafad6fbc1c1dc0e5c3ce802fb3ee11020e8d8207ed3a",
       "name": "IP4 Repeater 1",
