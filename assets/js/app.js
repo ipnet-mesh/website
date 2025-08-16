@@ -90,11 +90,18 @@ function nodesData() {
         // Navigate to node details page (simpler server-side approach)
         navigateToNodeDetails(node) {
             const nodeIdParts = node.id.split('.');
-            const shortId = nodeIdParts[0]; // e.g. "rep01" from "rep01.ip3.ipnt.uk"
-            const area = node.area.toLowerCase(); // e.g. "ip3"
+            const fullNodeId = nodeIdParts[0]; // e.g. "ip2-rep01" from "ip2-rep01.ipnt.uk"
+            const area = node.area.toLowerCase(); // e.g. "ip2"
 
-            // Direct navigation to server route
-            window.location.href = `/nodes/${area}/${shortId}`;
+            // Extract just the node identifier from the full node ID (area-nodeid format)
+            const nodeParts = fullNodeId.split('-');
+            if (nodeParts.length >= 2) {
+                const nodeId = nodeParts.slice(1).join('-'); // Handle cases like "ip2-rep01" -> "rep01"
+                window.location.href = `/nodes/${area}/${nodeId}`;
+            } else {
+                // Fallback for legacy format
+                window.location.href = `/nodes/${area}/${fullNodeId}`;
+            }
         },
 
         get availableHardware() {
@@ -314,7 +321,7 @@ function nodesData() {
                             </div>
                         `, {
                             closeOnClick: false,
-                            autoClose: false,
+                            autoClose: true,
                             closeButton: true
                         });
 

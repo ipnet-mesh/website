@@ -107,7 +107,7 @@
       "channels": []
     },
     {
-      "id": "rep02.ip3.ipnt.uk",
+      "id": "ip3-rep02.ipnt.uk",
       "publicKey": "e334ec5475789d542ed9e692fbeef7444a371fcc05adcbda1f47ba6a3191b459",
       "name": "IP3 Repeater 2",
       "memberId": "ccz",
@@ -128,7 +128,7 @@
       "channels": []
     },
     {
-      "id": "rep03.ip3.ipnt.uk",
+      "id": "ip3-rep03.ipnt.uk",
       "publicKey": "d0d22155abee3e227438418739937e327440a08152361ed3bbc53031a1cb2b66",
       "name": "IP3 Repeater 3",
       "memberId": "ccz",
@@ -149,7 +149,7 @@
       "channels": []
     },
     {
-      "id": "rmp02.ip3.ipnt.uk",
+      "id": "ip3-rmp02.ipnt.uk",
       "publicKey": "900fd7c80e7ffe1174088d3dd51e863b6282ff6535cf9145679f2b429fec07eb",
       "name": "IP3 Public Room 2",
       "memberId": "markab",
@@ -212,7 +212,7 @@
       "channels": []
 	  },
     {
-      "id": "rep01.ip8.ipnt.uk",
+      "id": "ip8-rep01.ipnt.uk",
       "publicKey": "bd7b5ac75f660675b39f368e1dbb6d1dbcefd8bd7a170e21a942954f67c8bf52",
       "name": "IP8 Repeater 1",
       "memberId": "walshie86",
