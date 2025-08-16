@@ -86,7 +86,7 @@
       "channels": []
     },
     {
-      "id": "rep01.ip3.ipnt.uk",
+      "id": "ip3-rep01.ipnt.uk",
       "publicKey": "b58dc510a30b1675dd9a9ac7ab05ac601e5eee7b0a8ee5ca7189de4056b9ae49",
       "name": "IP3 Repeater 1",
       "memberId": "markab",
@@ -170,7 +170,7 @@
       "channels": []
     },
     {
-      "id": "rep04.ip3.ipnt.uk",
+      "id": "ip3-rep04.ipnt.uk",
       "publicKey": "2a4f89e766dfa1758e35a69962c1f6d352b206a5e3562a589155a3ebfe7fc2bb",
       "name": "IP3 Repeater 4",
       "memberId": "markab",
@@ -191,18 +191,18 @@
       "channels": []
 	  },
     {
-      "id": "rep05.ip3.ipnt.uk",
-      "publicKey": "7295f7201062be70359e7ba12821b0dd2d028d9111fb34955b8751af86fc9121",
+      "id": "ip3-rep05.ipnt.uk",
+      "publicKey": "e790b73b2d6e377dd0f575c847f3ef42232f610eb9a19af57083fc4f647309ac",
       "name": "IP3 Repeater 5",
       "memberId": "markab",
       "area": "IP3",
       "location": {
-        "lat": 52.052526,
-        "lng": 1.170348,
+        "lat": 52.05252,
+        "lng": 1.17034,
         "description": "Back Hamlet"
       },
-      "hardware": "Sensecap Solar",
-      "antenna": "Paradar 5dBi Whip",
+      "hardware": "Heltec T114",
+      "antenna": "Paradar 6.5dBi Omni",
       "elevation": 38,
       "showOnMap": true,
       "isPublic": true,
@@ -233,9 +233,9 @@
       "channels": []
 	  },
     {
-      "id": "tst04.ip4.ipnt.uk",
+      "id": "ip4-rep01.ipnt.uk",
       "publicKey": "d3c20d962f7384c111fbafad6fbc1c1dc0e5c3ce802fb3ee11020e8d8207ed3a",
-      "name": "IP4 Test Repeater 4",
+      "name": "IP4 Repeater 1",
       "memberId": "markab",
       "area": "IP4",
       "location": {
@@ -249,7 +249,7 @@
       "showOnMap": true,
       "isPublic": true,
       "isOnline": true,
-      "isTesting": true,
+      "isTesting": false,
       "meshRole": "repeater",
       "channels": []
 	  }
