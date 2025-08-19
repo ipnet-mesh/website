@@ -64,7 +64,7 @@
       "meshRole": "repeater",
       "channels": []
     },
-        {
+    {
       "id": "ip2-int01.ipnt.uk",
       "publicKey": "",
       "name": "IP2 Integration 1",
@@ -87,7 +87,7 @@
     },
     {
       "id": "ip3-rep01.ipnt.uk",
-      "publicKey": "b58dc510a30b1675dd9a9ac7ab05ac601e5eee7b0a8ee5ca7189de4056b9ae49",
+      "publicKey": "9135986b83815ada92883358435cc6528c7db60cb647f9b6547739a1ce5eb1c8",
       "name": "IP3 Repeater 1",
       "memberId": "markab",
       "area": "IP3",
@@ -129,7 +129,7 @@
     },
     {
       "id": "ip3-rep03.ipnt.uk",
-      "publicKey": "d0d22155abee3e227438418739937e327440a08152361ed3bbc53031a1cb2b66",
+      "publicKey": "cdc0381c5f8860d107ae4cc78cbce4edb16b793e755e5aaa8bafea8689d7602e",
       "name": "IP3 Repeater 3",
       "memberId": "ccz",
       "area": "IP3",
@@ -149,24 +149,24 @@
       "channels": []
     },
     {
-      "id": "ip3-rmp02.ipnt.uk",
-      "publicKey": "900fd7c80e7ffe1174088d3dd51e863b6282ff6535cf9145679f2b429fec07eb",
-      "name": "IP3 Public Room 2",
+      "id": "ip3-int01.ipnt.uk",
+      "publicKey": "22309435fbd9dd1f14870a1895dc854779f6b2af72b08542f6105d264a493ebe",
+      "name": "IP3 Integration 1",
       "memberId": "markab",
       "area": "IP3",
       "location": {
-        "lat": 52.045564,
-        "lng": 1.204011,
+        "lat": 52.045773,
+        "lng": 1.212808,
         "description": "Brokehall"
       },
       "hardware": "Heltec V3",
       "antenna": "Generic 3dBi Whip",
       "elevation": 37,
-      "showOnMap": true,
+      "showOnMap": false,
       "isPublic": true,
       "isOnline": true,
       "isTesting": false,
-      "meshRole": "room",
+      "meshRole": "integration",
       "channels": []
     },
     {
@@ -212,7 +212,7 @@
       "channels": []
 	  },
     {
-      "id": "ip8-rep01.ipnt.uk",
+      "id": "rep01.ip8.ipnt.uk",
       "publicKey": "bd7b5ac75f660675b39f368e1dbb6d1dbcefd8bd7a170e21a942954f67c8bf52",
       "name": "IP8 Repeater 1",
       "memberId": "walshie86",
@@ -271,6 +271,27 @@
       "isPublic": true,
       "isOnline": true,
       "isTesting": false,
+      "meshRole": "repeater",
+      "channels": []
+	  },
+    {
+      "id": "ip3-tst01.ipnt.uk",
+      "publicKey": "69fb8431e7ab307513797544fab99ce53ce24c46ec2d3a11767fe70f2ca37b23",
+      "name": "IP3 Test Repeater 1",
+      "memberId": "markab",
+      "area": "IP3",
+      "location": {
+        "lat": 52.04536,
+        "lng": 1.222629,
+        "description": "Brokehall"
+      },
+      "hardware": "Station G2",
+      "antenna": "Generic 5dbi Whip",
+      "elevation": 37,
+      "showOnMap": false,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": true,
       "meshRole": "repeater",
       "channels": []
 	  }
