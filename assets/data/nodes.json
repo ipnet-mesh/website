@@ -129,7 +129,7 @@
     },
     {
       "id": "ip3-rep03.ipnt.uk",
-      "publicKey": "cdc0381c5f8860d107ae4cc78cbce4edb16b793e755e5aaa8bafea8689d7602e",
+      "publicKey": "cc15fb33e98f2e098a543f516f770dc3061a1a6b30f79b84780663bf68ae6b53",
       "name": "IP3 Repeater 3",
       "memberId": "ccz",
       "area": "IP3",
@@ -203,6 +203,27 @@
       },
       "hardware": "Heltec T114",
       "antenna": "Paradar 6.5dBi Omni",
+      "elevation": 38,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": false,
+      "meshRole": "repeater",
+      "channels": []
+	  },
+    {
+      "id": "ip3-rep06.ipnt.uk",
+      "publicKey": "20ed75ffc0f9777951716bb3d308d7f041fd2ad32fe2e998e600d0361e1fe2ac",
+      "name": "IP3 Repeater 6",
+      "memberId": "ccz",
+      "area": "IP3",
+      "location": {
+        "lat": 52.04893,
+        "lng": 1.18965,
+        "description": "Dover Road"
+      },
+      "hardware": "Unknown",
+      "antenna": "Generic 5dBi Whip",
       "elevation": 38,
       "showOnMap": true,
       "isPublic": true,
@@ -286,7 +307,7 @@
         "description": "Brokehall"
       },
       "hardware": "Station G2",
-      "antenna": "Generic 5dbi Whip",
+      "antenna": "McGill 10dBi Panel",
       "elevation": 37,
       "showOnMap": false,
       "isPublic": true,
