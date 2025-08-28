@@ -2,7 +2,7 @@
 
 [![Docker Build and Push](https://github.com/ipnet-mesh/website/actions/workflows/docker-build.yml/badge.svg)](https://github.com/ipnet-mesh/website/actions/workflows/docker-build.yml)
 
-A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCore community group serving Ipswich, Suffolk, UK. The site displays mesh network nodes, member profiles, and provides community information with interactive maps and statistics.
+A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCore community group serving Ipswich, Suffolk in the UK. The site displays mesh network nodes, member profiles, and provides community information with interactive maps and statistics.
 
 ## Features
 
@@ -36,9 +36,6 @@ A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCo
 
 ### Database Structure
 - **PostgreSQL**: Hosted on Supabase with real-time capabilities
-- **Members Table**: User profiles with social links and privacy controls
-- **Nodes Table**: Mesh network node data with separate location fields (latitude, longitude, location_description)
-- **Raw Database Structure**: Templates and JavaScript use native Supabase field names directly (no data transformation)
 - **Real-time Subscriptions**: Live updates for node status changes and new data
 - **Row Level Security**: Database-level privacy and access controls
 
@@ -60,8 +57,8 @@ A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCo
 
 2. **Set up Python environment**
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   python -m venv .venv
+   source .venv/bin/activate
    pip install -r requirements.txt
    ```
 
@@ -127,8 +124,6 @@ Data is stored in Supabase PostgreSQL database:
 - **Privacy Controls**: Use `is_public` flag to control visibility
 - **Node Status**: Update node online status via database
 - **Member Profiles**: Manage member information with social links
-- **Geographic Data**: Store coordinates in separate `latitude`, `longitude`, and `location_description` columns
-- **Raw Field Names**: Templates and JavaScript use database field names directly (`node_id`, `is_online`, `mesh_role`, etc.)
 
 #### File Structure
 ```
@@ -143,8 +138,7 @@ Data is stored in Supabase PostgreSQL database:
 │   └── routes/             # Route blueprints
 ├── db/
 │   ├── schema.sql          # Database schema
-│   ├── migrate_data.py     # Data migration script
-│   └── migrate_location_fields.sql # Schema migration for location fields
+│   └── migrate_data.py     # Data migration script
 ├── assets/
 │   ├── css/
 │   │   ├── input.css       # TailwindCSS source
@@ -177,7 +171,7 @@ npm install && npm run build-css-prod
 gunicorn --bind 0.0.0.0:5000 --workers 4 run:app
 ```
 
-## API Endpoints
+## Endpoints
 
 - `GET /`: Homepage with network statistics
 - `GET /nodes/`: All nodes page
