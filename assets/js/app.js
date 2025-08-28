@@ -46,52 +46,52 @@ const Router = {
     }
 };
 
-    // Multiselect component
-    function multiselect(propertyName, optionsOrFunction) {
-        return {
-            open: false,
-            selectedValues: [],
-            options: [],
+// Multiselect component
+function multiselect(propertyName, optionsOrFunction) {
+    return {
+        open: false,
+        selectedValues: [],
+        options: [],
 
-            init() {
-                // Wait for parent to be fully initialized
-                this.$nextTick(() => {
-                    this.waitForParent();
-                });
-            },
+        init() {
+            // Wait for parent to be fully initialized
+            this.$nextTick(() => {
+                this.waitForParent();
+            });
+        },
 
-            waitForParent() {
-                // Check if parent is available and has the required properties
-                if (!this.$parent || !this.$parent.nodes) {
-                    // Wait a bit longer and try again
-                    setTimeout(() => this.waitForParent(), 200);
-                    return;
-                }
+        waitForParent() {
+            // Check if parent is available and has the required properties
+            if (!this.$parent || !this.$parent.nodes) {
+                // Wait a bit longer and try again
+                setTimeout(() => this.waitForParent(), 200);
+                return;
+            }
 
-                // Parent is ready, initialize the multiselect
-                this.initializeMultiselect();
-            },
+            // Parent is ready, initialize the multiselect
+            this.initializeMultiselect();
+        },
 
-            initializeMultiselect() {
-                // Initialize with empty array for multiselect
-                if (!this.$parent[propertyName]) {
-                    this.$parent[propertyName] = [];
-                }
+        initializeMultiselect() {
+            // Initialize with empty array for multiselect
+            if (!this.$parent[propertyName]) {
+                this.$parent[propertyName] = [];
+            }
 
+            this.updateOptions();
+
+            // Set default state to all options selected
+            this.selectedValues = [...this.options];
+
+            // Watch for changes in the parent's nodes data
+            this.$watch('$parent.nodes', () => {
                 this.updateOptions();
+            });
 
-                // Set default state to all options selected
-                this.selectedValues = [...this.options];
+            // Store a reference to the parent for later use
+            this.parentComponent = this.$parent;
+        },
 
-                // Watch for changes in the parent's nodes data
-                this.$watch('$parent.nodes', () => {
-                    this.updateOptions();
-                });
-
-                // Store a reference to the parent for later use
-                this.parentComponent = this.$parent;
-            },
-        
         updateOptions() {
             // Handle both array and function parameters
             if (typeof optionsOrFunction === 'function') {
@@ -106,12 +106,12 @@ const Router = {
                 this.options = optionsOrFunction || [];
             }
         },
-        
+
         toggle() {
             this.updateOptions(); // Refresh options when opening
             this.open = !this.open;
         },
-        
+
         getDisplayText() {
             if (this.selectedValues.length === 0) {
                 return 'All';
@@ -121,41 +121,41 @@ const Router = {
                 return `${this.selectedValues.length} selected`;
             }
         },
-        
-                    updateSelection() {
-                // Try to get parent from stored reference or current context
-                let parent = this.parentComponent || this.$parent;
-                
-                // If still no parent, try to find it by looking up the DOM tree
-                if (!parent) {
-                    let element = this.$el;
-                    while (element && !parent) {
-                        if (element._x_dataStack && element._x_dataStack.length > 0) {
-                            const data = element._x_dataStack[0];
-                            if (data.nodes && data.applyFilters) {
-                                parent = data;
-                                break;
-                            }
-                        }
-                        element = element.parentElement;
-                    }
-                }
-                
-                if (!parent) {
-                    return;
-                }
 
-                // Update the parent component's property
-                parent[propertyName] = [...this.selectedValues];
-                
-                // Trigger filter update
-                parent.applyFilters();
-            },
-        
-                    clearAll() {
-                this.selectedValues = [];
-                this.updateSelection();
+        updateSelection() {
+            // Try to get parent from stored reference or current context
+            let parent = this.parentComponent || this.$parent;
+
+            // If still no parent, try to find it by looking up the DOM tree
+            if (!parent) {
+                let element = this.$el;
+                while (element && !parent) {
+                    if (element._x_dataStack && element._x_dataStack.length > 0) {
+                        const data = element._x_dataStack[0];
+                        if (data.nodes && data.applyFilters) {
+                            parent = data;
+                            break;
+                        }
+                    }
+                    element = element.parentElement;
+                }
             }
+
+            if (!parent) {
+                return;
+            }
+
+            // Update the parent component's property
+            parent[propertyName] = [...this.selectedValues];
+
+            // Trigger filter update
+            parent.applyFilters();
+        },
+
+        clearAll() {
+            this.selectedValues = [];
+            this.updateSelection();
+        }
     }
 }
 
@@ -186,7 +186,7 @@ function nodesData() {
             // Get current node ID from data attribute and find it in the nodes data
             const currentNodeId = this.$el.getAttribute('data-current-node-id');
             if (currentNodeId) {
-                this.currentNode = this.nodes.find(node => node.id === currentNodeId) || null;
+                this.currentNode = this.nodes.find(node => node.node_id === currentNodeId) || null;
             }
 
             // Make this component globally accessible for popup buttons
@@ -200,13 +200,13 @@ function nodesData() {
                     this.initMap();
                 }, 100);
             });
-            
+
             // Force refresh multiselect options after data is loaded
             this.$nextTick(() => {
                 this.refreshMultiselectOptions();
             });
         },
-        
+
         refreshMultiselectOptions() {
             // Find all multiselect components and refresh their options
             const multiselectContainers = this.$el.querySelectorAll('.multiselect-container');
@@ -222,7 +222,7 @@ function nodesData() {
 
         // Navigate to node details page (simpler server-side approach)
         navigateToNodeDetails(node) {
-            const nodeIdParts = node.id.split('.');
+            const nodeIdParts = node.node_id.split('.');
             const fullNodeId = nodeIdParts[0]; // e.g. "ip2-rep01" from "ip2-rep01.ipnt.uk"
             const area = node.area.toLowerCase(); // e.g. "ip2"
 
@@ -242,24 +242,24 @@ function nodesData() {
         },
 
         get availableOwners() {
-            return [...new Set(this.nodes.map(node => node.memberId))].sort();
+            return [...new Set(this.nodes.map(node => node.member_id))].sort();
         },
 
         get availableRoles() {
-            return [...new Set(this.nodes.filter(node => node.isTesting !== true).map(node => node.meshRole))].sort();
+            return [...new Set(this.nodes.filter(node => node.is_testing !== true).map(node => node.mesh_role))].sort();
         },
 
         get onlineNodesCount() {
-            return this.filteredNodes.filter(node => node.isOnline !== false).length;
+            return this.filteredNodes.filter(node => node.is_online !== false).length;
         },
 
         get repeaterNodesCount() {
-            return this.filteredNodes.filter(node => node.meshRole === 'repeater').length;
+            return this.filteredNodes.filter(node => node.mesh_role === 'repeater').length;
         },
 
         focusNodeOnMap(node) {
             if (this.map) {
-                this.map.setView([node.location.lat, node.location.lng], 15);
+                this.map.setView([node.latitude, node.longitude], 15);
             }
             // Also navigate to the node page
             this.navigateToNode(node);
@@ -279,17 +279,17 @@ function nodesData() {
             let center, zoom;
 
             // If viewing an individual node, center on that node
-            if (this.currentNode && this.currentNode.location && this.currentNode.location.lat && this.currentNode.location.lng) {
-                center = { lat: this.currentNode.location.lat, lng: this.currentNode.location.lng };
+            if (this.currentNode && this.currentNode.latitude && this.currentNode.longitude) {
+                center = { lat: this.currentNode.latitude, lng: this.currentNode.longitude };
                 zoom = 18; // Higher zoom for individual node view
             } else {
                 // Calculate bounds from filtered nodes
                 const nodesWithLocation = this.filteredNodes.filter(node =>
-                    node.showOnMap && node.location && node.location.lat && node.location.lng
+                    node.show_on_map && node.latitude && node.longitude
                 );
 
                 if (nodesWithLocation.length > 0) {
-                    const bounds = L.latLngBounds(nodesWithLocation.map(node => [node.location.lat, node.location.lng]));
+                    const bounds = L.latLngBounds(nodesWithLocation.map(node => [node.latitude, node.longitude]));
                     center = bounds.getCenter();
                     // Calculate appropriate zoom level
                     zoom = nodesWithLocation.length === 1 ? 13 : 11;
@@ -356,19 +356,19 @@ function nodesData() {
             if (this.currentNode) return;
 
             const nodesWithLocation = this.filteredNodes.filter(node =>
-                node.showOnMap && node.location && node.location.lat && node.location.lng
+                node.show_on_map && node.latitude && node.longitude
             );
 
             if (nodesWithLocation.length > 1) {
                 try {
-                    const bounds = L.latLngBounds(nodesWithLocation.map(node => [node.location.lat, node.location.lng]));
+                    const bounds = L.latLngBounds(nodesWithLocation.map(node => [node.latitude, node.longitude]));
                     this.map.fitBounds(bounds, { padding: [20, 20], maxZoom: 13 });
                 } catch (error) {
                     console.warn('Error fitting map to nodes:', error);
                 }
             } else if (nodesWithLocation.length === 1) {
                 const node = nodesWithLocation[0];
-                this.map.setView([node.location.lat, node.location.lng], 13);
+                this.map.setView([node.latitude, node.longitude], 13);
             }
         },
 
@@ -380,7 +380,7 @@ function nodesData() {
                 if (this.markerClusterGroup) {
                     this.markerClusterGroup.clearLayers();
                 }
-                
+
                 // Always clear individual markers from map
                 this.markers.forEach(marker => {
                     if (this.map.hasLayer(marker)) {
@@ -395,12 +395,12 @@ function nodesData() {
 
             // Use cluster group if available and clustering is enabled
             const useClusterGroup = this.markerClusterGroup && this.clusteringEnabled;
-            
+
             // Ensure cluster group is added to map if clustering is enabled
             if (this.clusteringEnabled && this.markerClusterGroup && !this.map.hasLayer(this.markerClusterGroup)) {
                 this.map.addLayer(this.markerClusterGroup);
             }
-            
+
             // Remove cluster group from map if clustering is disabled
             if (!this.clusteringEnabled && this.markerClusterGroup && this.map.hasLayer(this.markerClusterGroup)) {
                 this.map.removeLayer(this.markerClusterGroup);
@@ -411,7 +411,7 @@ function nodesData() {
 
             // If viewing an individual node, ensure it's included even if filtered out
             if (this.currentNode) {
-                const currentNodeInFiltered = this.filteredNodes.find(n => n.id === this.currentNode.id);
+                const currentNodeInFiltered = this.filteredNodes.find(n => n.node_id === this.currentNode.node_id);
                 if (!currentNodeInFiltered) {
                     // Add current node to the list if it's not in filtered results
                     nodesToShow = [...this.filteredNodes, this.currentNode];
@@ -420,28 +420,28 @@ function nodesData() {
 
             // Add markers for nodes
             nodesToShow.forEach(node => {
-                if (!node.showOnMap || !node.location || !node.location.lat || !node.location.lng) return;
+                if (!node.show_on_map || !node.latitude || !node.longitude) return;
 
                 try {
                     // Create status indicator icon
                     let statusColor;
-                    if (node.isTesting === true) {
+                    if (node.is_testing === true) {
                         statusColor = '#6633ff'; // blue for testing nodes
                     } else {
-                        statusColor = node.isOnline !== false ? '#10b981' : '#ef4444'; // green for online, red for offline
+                        statusColor = node.is_online !== false ? '#10b981' : '#ef4444'; // green for online, red for offline
                     }
 
                     // Make current node marker larger and more prominent
-                    const isCurrentNode = this.currentNode && node.id === this.currentNode.id;
+                    const isCurrentNode = this.currentNode && node.node_id === this.currentNode.node_id;
                     const markerSize = isCurrentNode ? 'w-8 h-8' : 'w-6 h-6';
                     const iconSize = isCurrentNode ? [32, 32] : [24, 24];
                     const iconAnchor = isCurrentNode ? [16, 16] : [12, 12];
                     const borderWidth = isCurrentNode ? 'border-4' : 'border-2';
 
                     // Get first 2 characters of public key in lowercase, or fallback to node id
-                    const iconText = node.publicKey && node.publicKey.length >= 2 
-                        ? node.publicKey.substring(0, 2).toLowerCase() 
-                        : node.id.substring(0, 2);
+                    const iconText = node.public_key && node.public_key.length >= 2
+                        ? node.public_key.substring(0, 2).toLowerCase()
+                        : node.node_id.substring(0, 2);
 
                     const customIcon = L.divIcon({
                         html: `<div style="background-color: ${statusColor}; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 10px; line-height: 1;" class="${markerSize} rounded-full ${borderWidth} border-white shadow-lg ${isCurrentNode ? 'animate-pulse' : ''}">${iconText}</div>`,
@@ -450,33 +450,33 @@ function nodesData() {
                         iconAnchor: iconAnchor
                     });
 
-                    const marker = L.marker([node.location.lat, node.location.lng], { icon: customIcon });
-                    
+                    const marker = L.marker([node.latitude, node.longitude], { icon: customIcon });
+
                     // Add tooltip only if pin labels are enabled
                     if (this.pinLabelsEnabled) {
-                        marker.bindTooltip(node.id, {
+                        marker.bindTooltip(node.node_id, {
                             permanent: true,
                             direction: 'right',
                             offset: [15, 0],
                             className: 'node-tooltip'
                         });
                     }
-                    
+
                     // Add popup
                     marker.bindPopup(`
                         <div class="max-w-xs">
                             <strong class="text-lg">${node.name}</strong><br>
                             <div class="mt-2 space-y-1 text-sm">
-                                <div><em>Owner:</em> ${this.getMemberName(node.memberId)}</div>
+                                <div><em>Owner:</em> ${this.getMemberName(node.member_id)}</div>
                                 <!--
                                 <div class="flex items-center mt-2">
                                     <div class="w-2 h-2 rounded-full mr-2" style="background-color: ${statusColor}"></div>
-                                    <span class="font-medium">${node.isOnline !== false ? 'Online' : 'Offline'}</span>
+                                    <span class="font-medium">${node.is_online !== false ? 'Online' : 'Offline'}</span>
                                 </div>
                                 -->
                             </div>
                             <div class="mt-3 pt-2 border-t border-gray-200">
-                                <button onclick="window.nodesPageInstance.navigateToNodeDetails({id: '${node.id}', area: '${node.area}'})" class="text-primary hover:text-accent text-sm font-medium">
+                                <button onclick="window.nodesPageInstance.navigateToNodeDetails({node_id: '${node.node_id}', area: '${node.area}'})" class="text-primary hover:text-accent text-sm font-medium">
                                     View Node Details
                                 </button>
                             </div>
@@ -496,7 +496,7 @@ function nodesData() {
 
                     this.markers.push(marker);
                 } catch (error) {
-                    console.warn('Error adding marker for node:', node.id, error);
+                    console.warn('Error adding marker for node:', node.node_id, error);
                 }
             });
         },
@@ -506,14 +506,14 @@ function nodesData() {
                 const hardwareMatch = this.selectedHardware.length === 0 ||
                     this.selectedHardware.some(hw => node.hardware.toLowerCase().includes(hw.toLowerCase()));
                 const roleMatch = this.selectedRole.length === 0 ||
-                    this.selectedRole.includes(node.meshRole);
+                    this.selectedRole.includes(node.mesh_role);
                 const ownerMatch = this.selectedOwner.length === 0 ||
-                    this.selectedOwner.includes(node.memberId);
-                const onlineMatch = !this.showOnlineOnly || node.isOnline !== false;
-                const testingMatch = this.showTesting || node.isTesting !== true;
-                
+                    this.selectedOwner.includes(node.member_id);
+                const onlineMatch = !this.showOnlineOnly || node.is_online !== false;
+                const testingMatch = this.showTesting || node.is_testing !== true;
+
                 const matches = hardwareMatch && roleMatch && ownerMatch && onlineMatch && testingMatch;
-                
+
                 return matches;
             }).sort((a, b) => {
                 // Sort by area first, then by ID
@@ -521,7 +521,7 @@ function nodesData() {
                 if (areaComparison !== 0) return areaComparison;
 
                 // If areas are the same, sort by ID
-                return a.id.localeCompare(b.id);
+                return a.node_id.localeCompare(b.node_id);
             });
 
             this.updateMapMarkers();
@@ -529,7 +529,7 @@ function nodesData() {
         },
 
         getMemberName(memberId) {
-            const member = this.members.find(m => m.id === memberId);
+            const member = this.members.find(m => m.member_id === memberId);
             return member ? member.name : 'Unknown';
         },
 
@@ -538,7 +538,7 @@ function nodesData() {
         },
 
         getUniqueRoles() {
-            return [...new Set(this.nodes.map(node => node.meshRole))];
+            return [...new Set(this.nodes.map(node => node.mesh_role))];
         },
 
         toggleClustering() {
@@ -568,7 +568,7 @@ function membersData() {
         },
 
         getNodeCount(memberId) {
-            return this.nodes.filter(node => node.memberId === memberId && node.isPublic).length;
+            return this.nodes.filter(node => node.member_id === memberId && node.is_public).length;
         },
 
         formatDate(dateString) {
@@ -588,7 +588,7 @@ function membersData() {
 }
 
 // Global QR Code generation function
-window.generateQRCode = function(nodeUri, canvasId) {
+window.generateQRCode = function (nodeUri, canvasId) {
     if (!nodeUri || typeof qrcode === 'undefined') {
         console.error('Missing nodeUri or qrcode library not loaded');
         return;

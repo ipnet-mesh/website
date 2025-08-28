@@ -2,7 +2,7 @@
 from flask import Blueprint, render_template, redirect, url_for
 from werkzeug.wrappers import Response
 from typing import Union, Optional
-from ..data import get_data, calculate_node_stats, find_node_by_id
+from ..data import get_data, calculate_node_stats, find_node_by_id, get_supabase_config
 
 nodes_bp = Blueprint('nodes', __name__)
 
@@ -34,4 +34,5 @@ def index(area: Optional[str] = None, node_id: Optional[str] = None) -> str:
                          members=members,
                          current_node=current_node,
                          showing_individual_node=current_node is not None,
-                         node_stats=node_stats)
+                         node_stats=node_stats,
+                         supabase_config=get_supabase_config())

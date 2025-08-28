@@ -9,6 +9,8 @@ A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCo
 - **Interactive Node Map**: Geographic display of mesh network nodes with detailed information
 - **Member Profiles**: Community member directory with avatars and contact preferences
 - **Network Statistics**: Real-time coverage area calculations and network metrics
+- **Supabase Integration**: PostgreSQL database with real-time updates and scalable data management
+- **Live Data Synchronization**: Real-time updates across all connected clients
 - **Dark Mode Support**: User-configurable theme with persistent preferences
 - **Mobile Responsive**: Optimized for all device sizes using TailwindCSS
 - **Privacy Controls**: Configurable visibility for nodes and members
@@ -19,9 +21,10 @@ A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCo
 ## Architecture
 
 ### Backend (Flask)
-- **app.py**: Main Flask application with routing and data management
+- **Application Structure**: Modular Flask app with blueprints for routes and services
 - **Routes**: `/` (home), `/nodes/` (with optional area/node_id), `/members/`, `/contact/`, `/api/data`
-- **Data Management**: JSON files from `assets/data/` directory with privacy filtering
+- **Data Management**: Supabase PostgreSQL database with real-time capabilities
+- **Service Layer**: Dedicated Supabase service for all database operations
 - **WSGI Server**: Gunicorn for production deployments
 
 ### Frontend
@@ -29,11 +32,15 @@ A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCo
 - **Styling**: TailwindCSS with custom color scheme and dark mode
 - **JavaScript**: Vanilla JS for data loading and client-side functionality
 - **Alpine.js**: Lightweight reactivity for UI state management
+- **Real-time Updates**: Supabase JavaScript client for live data synchronization
 
-### Data Structure
-- **config.json**: Site configuration, contact info, theme settings
-- **nodes.json**: Mesh network node data with locations, hardware specs, public keys
-- **members.json**: Member profiles with avatars, bios, contact preferences
+### Database Structure
+- **PostgreSQL**: Hosted on Supabase with real-time capabilities
+- **Members Table**: User profiles with social links and privacy controls
+- **Nodes Table**: Mesh network node data with separate location fields (latitude, longitude, location_description)
+- **Raw Database Structure**: Templates and JavaScript use native Supabase field names directly (no data transformation)
+- **Real-time Subscriptions**: Live updates for node status changes and new data
+- **Row Level Security**: Database-level privacy and access controls
 
 ## Development Setup
 
@@ -41,6 +48,7 @@ A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCo
 
 - Python 3.12+
 - Node.js 20+ (LTS)
+- Supabase account and project
 
 ### Local Development
 
@@ -62,7 +70,30 @@ A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCo
    npm install
    ```
 
-4. **Build CSS assets**
+4. **Set up Supabase**
+
+   Create a new Supabase project:
+   - Go to https://supabase.com/dashboard
+   - Click "New Project" and configure your project
+   - Get your project credentials from **Settings** > **API**
+
+   Update your `.env` file:
+   ```bash
+   SUPABASE_URL=https://your-project-id.supabase.co
+   SUPABASE_ANON_KEY=your-anon-public-key
+   SUPABASE_SERVICE_KEY=your-service-role-key
+   ```
+
+   Create database schema:
+   - In Supabase dashboard, go to **SQL Editor**
+   - Copy and run the schema from `db/schema.sql`
+
+   If migrating from existing JSON data:
+   ```bash
+   python db/migrate_data.py
+   ```
+
+5. **Build CSS assets**
    ```bash
    # Development (watch mode)
    npm run build-css
@@ -71,12 +102,12 @@ A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCo
    npm run build-css-prod
    ```
 
-5. **Run the Flask application**
+6. **Run the Flask application**
    ```bash
-   python app.py
+   python run.py
    ```
 
-   The application will be available at http://localhost:5000
+   The application will be available at http://localhost:8000
 
 ### Development Workflow
 
@@ -89,30 +120,40 @@ npm run build-css
 npm run build-css-prod
 ```
 
-#### Data Management
+#### Database Management
 
-Edit JSON files in `assets/data/` directory:
-- Use `isPublic: false` to hide sensitive nodes/members
-- Node IDs follow format: `{shortname}.{area}.ipnt.uk`
-- Member avatars stored in `assets/images/avatars/`
-- Geographic coordinates required for coverage calculation
+Data is stored in Supabase PostgreSQL database:
+- **Real-time Updates**: Changes sync automatically across all clients
+- **Privacy Controls**: Use `is_public` flag to control visibility
+- **Node Status**: Update node online status via database
+- **Member Profiles**: Manage member information with social links
+- **Geographic Data**: Store coordinates in separate `latitude`, `longitude`, and `location_description` columns
+- **Raw Field Names**: Templates and JavaScript use database field names directly (`node_id`, `is_online`, `mesh_role`, etc.)
 
 #### File Structure
 ```
-├── app.py                    # Flask application
-├── requirements.txt          # Python dependencies
-├── package.json             # Node.js dependencies
-├── tailwind.config.js       # TailwindCSS configuration
+├── run.py                   # Application entry point
+├── requirements.txt         # Python dependencies
+├── package.json            # Node.js dependencies
+├── tailwind.config.js      # TailwindCSS configuration
+├── app/
+│   ├── __init__.py         # Flask application factory
+│   ├── data.py             # Data loading functions
+│   ├── supabase_service.py # Database service layer
+│   └── routes/             # Route blueprints
+├── db/
+│   ├── schema.sql          # Database schema
+│   ├── migrate_data.py     # Data migration script
+│   └── migrate_location_fields.sql # Schema migration for location fields
 ├── assets/
 │   ├── css/
-│   │   ├── input.css        # TailwindCSS source
-│   │   └── output.css       # Generated CSS (do not edit)
+│   │   ├── input.css       # TailwindCSS source
+│   │   └── output.css      # Generated CSS (do not edit)
 │   ├── data/
-│   │   ├── config.json      # Site configuration
-│   │   ├── nodes.json       # Network nodes
-│   │   └── members.json     # Community members
+│   │   └── config.json     # Site configuration (JSON only)
 │   ├── js/
-│   │   └── app.js          # Client-side JavaScript
+│   │   ├── app.js          # Client-side JavaScript
+│   │   └── supabase-realtime.js # Real-time updates
 │   └── images/             # Static assets
 ├── templates/
 │   ├── base.html           # Base template
@@ -133,7 +174,7 @@ pip install -r requirements.txt
 npm install && npm run build-css-prod
 
 # Run with Gunicorn
-gunicorn --bind 0.0.0.0:5000 --workers 4 app:app
+gunicorn --bind 0.0.0.0:5000 --workers 4 run:app
 ```
 
 ## API Endpoints
@@ -150,7 +191,7 @@ gunicorn --bind 0.0.0.0:5000 --workers 4 app:app
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/new-feature`
 3. Make your changes and test locally
-4. Build CSS and test the application: `npm run build-css-prod && python app.py`
+4. Build CSS and test the application: `npm run build-css-prod && python run.py`
 5. Commit changes: `git commit -am 'Add new feature'`
 6. Push to branch: `git push origin feature/new-feature`
 7. Create a Pull Request

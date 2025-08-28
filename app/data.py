@@ -1,31 +1,31 @@
 """Data loading and processing functions."""
 import json
 import os
+import logging
 from math import cos, radians
 from typing import Dict, List, Any, Tuple, Optional
+from .supabase_service import supabase_service
 
 ASSETS_DIR = 'assets'
+logger = logging.getLogger(__name__)
 
 
-def load_json_data(filename: str) -> Dict[str, Any]:
-    """Load JSON data from the assets/data directory"""
+def load_config() -> Dict[str, Any]:
+    """Load configuration from JSON file (config remains in JSON)"""
     try:
-        with open(os.path.join(ASSETS_DIR, "data", filename), 'r') as f:
-            data: Dict[str, Any] = json.load(f)
-            return data
+        with open(os.path.join(ASSETS_DIR, "data", "config.json"), 'r') as f:
+            config = json.load(f)
+            return config if isinstance(config, dict) else {}
     except FileNotFoundError:
+        logger.error("config.json not found")
         return {}
 
 
 def get_data() -> Tuple[Dict[str, Any], List[Dict[str, Any]], List[Dict[str, Any]]]:
-    """Load all data files"""
-    config = load_json_data('config.json')
-    nodes_data = load_json_data('nodes.json')
-    members_data = load_json_data('members.json')
-
-    # Filter public nodes and members
-    nodes = [node for node in nodes_data.get('nodes', []) if node.get('isPublic', True)]
-    members = [member for member in members_data.get('members', []) if member.get('isPublic', True)]
+    """Load all data - config from JSON, nodes and members from Supabase"""
+    config = load_config()
+    nodes = supabase_service.get_nodes(include_private=False)  # Public nodes only
+    members = supabase_service.get_members(include_private=False)  # Public members only
 
     return config, nodes, members
 
@@ -35,11 +35,13 @@ def calculate_coverage_area(nodes: List[Dict[str, Any]]) -> int:
     if not nodes:
         return 0
 
-    # Extract coordinates
+    # Extract coordinates from new latitude/longitude fields
     coords = []
     for node in nodes:
-        if node.get('location') and node['location'].get('lat') and node['location'].get('lng'):
-            coords.append((node['location']['lat'], node['location']['lng']))
+        lat = node.get('latitude')
+        lng = node.get('longitude')
+        if lat is not None and lng is not None:
+            coords.append((float(lat), float(lng)))
 
     if not coords:
         return 0
@@ -70,8 +72,8 @@ def calculate_node_stats(nodes: List[Dict[str, Any]]) -> Dict[str, int]:
     """Calculate node statistics for the nodes page"""
     return {
         'totalNodes': len(nodes),
-        'onlineNodes': len([node for node in nodes if node.get('isOnline', True)]),
-        'repeaterNodes': len([node for node in nodes if node.get('meshRole') == 'repeater'])
+        'onlineNodes': len([node for node in nodes if node.get('is_online', True)]),
+        'repeaterNodes': len([node for node in nodes if node.get('mesh_role') == 'repeater'])
     }
 
 
@@ -79,6 +81,25 @@ def find_node_by_id(nodes: List[Dict[str, Any]], area: str, node_id: str) -> Opt
     """Find a specific node by area and node_id"""
     # New format: {area}-{node_id}.ipnt.uk (e.g., "ip2-rep01.ipnt.uk")
     full_node_id = f"{area}-{node_id}.ipnt.uk"
+
+    # Try to get from Supabase first
+    node = supabase_service.get_node_by_id(full_node_id)
+    if node:
+        return node  # type: ignore[no-any-return]
+
     # Also check legacy format: {node_id}.{area}.ipnt.uk for backward compatibility
     legacy_node_id = f"{node_id}.{area}.ipnt.uk"
-    return next((node for node in nodes if node['id'] == full_node_id or node['id'] == legacy_node_id or node['id'] == node_id), None)
+    node = supabase_service.get_node_by_id(legacy_node_id)
+    if node:
+        return node  # type: ignore[no-any-return]
+
+    # Fallback to search in provided nodes list (for compatibility)
+    return next((node for node in nodes if node['node_id'] == full_node_id or node['node_id'] == legacy_node_id or node['node_id'] == node_id), None)
+
+
+def get_supabase_config() -> Dict[str, str]:
+    """Get Supabase configuration for client-side real-time updates"""
+    return {
+        'url': os.getenv('SUPABASE_URL', ''),
+        'anon_key': os.getenv('SUPABASE_ANON_KEY', '')
+    }

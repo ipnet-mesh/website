@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
 {% endblock %}
 
-{% block alpine_data %} x-data="nodesData()" {% if current_node %}data-current-node-id="{{ current_node.id }}"{% endif %}{% endblock %}
+{% block alpine_data %} x-data="nodesData()" {% if current_node %}data-current-node-id="{{ current_node.node_id }}"{% endif %}{% endblock %}
 
 {% block content %}
 <!-- Page Header -->
@@ -46,7 +46,7 @@
                 </ol>
             </nav>
             <h1 class="page-title">{{ current_node.name }}</h1>
-            <p class="page-subtitle">{{ current_node.location.description }}, {{ current_node.area }}</p>
+            <p class="page-subtitle">{{ current_node.location_description }}, {{ current_node.area }}</p>
         </div>
         {% else %}
         <!-- Default Header -->
@@ -168,9 +168,9 @@
             <div class="node-detail-content">
                 <div class="node-detail-header">
                     <div class="node-status">
-                        <div class="node-status-indicator {% if current_node.isOnline %}node-status-online{% else %}node-status-offline{% endif %}"></div>
-                        <span class="node-status-text {% if current_node.isOnline %}node-status-text-online{% else %}node-status-text-offline{% endif %}">
-                            {% if current_node.isOnline %}Online{% else %}Offline{% endif %}
+                        <div class="node-status-indicator {% if current_node.is_online %}node-status-online{% else %}node-status-offline{% endif %}"></div>
+                        <span class="node-status-text {% if current_node.is_online %}node-status-text-online{% else %}node-status-text-offline{% endif %}">
+                            {% if current_node.is_online %}Online{% else %}Offline{% endif %}
                         </span>
                     </div>
                     <a href="{{ url_for('nodes.index') }}" class="node-close-btn">
@@ -187,7 +187,7 @@
                             <div class="node-info-list">
                                 <div class="node-info-row">
                                     <span class="node-info-label">ID:</span>
-                                    <code class="node-info-code">{{ current_node.id }}</code>
+                                    <code class="node-info-code">{{ current_node.node_id }}</code>
                                 </div>
                                 <div class="node-info-row">
                                     <span class="node-info-label">Name:</span>
@@ -199,7 +199,7 @@
                                 </div>
                                 <div class="node-info-row">
                                     <span class="node-info-label">Role:</span>
-                                    <span class="node-info-value capitalize">{{ current_node.meshRole }}</span>
+                                    <span class="node-info-value capitalize">{{ current_node.mesh_role }}</span>
                                 </div>
                             </div>
                         </div>
@@ -229,12 +229,12 @@
                             <div class="node-info-list">
                                 <div class="node-info-row">
                                     <span class="node-info-label">Description:</span>
-                                    <span class="node-info-value">{{ current_node.location.description }}</span>
+                                    <span class="node-info-value">{{ current_node.location_description }}</span>
                                 </div>
                                 <div class="node-info-row">
                                     <span class="node-info-label">Coordinates:</span>
                                     <span class="node-info-value font-mono text-sm">
-                                        {{ "%.6f"|format(current_node.location.lat) }}, {{ "%.6f"|format(current_node.location.lng) }}
+                                        {{ "%.6f"|format(current_node.latitude) }}, {{ "%.6f"|format(current_node.longitude) }}
                                     </span>
                                 </div>
                             </div>
@@ -245,11 +245,11 @@
                             <div class="node-info-list">
                                 <div class="node-info-row">
                                     <span class="node-info-label">Owner:</span>
-                                    <a href="{{ url_for('members.index') }}" class="text-primary hover:text-accent font-medium uppercase">{{ current_node.memberId }}</a>
+                                    <a href="{{ url_for('members.index') }}" class="text-primary hover:text-accent font-medium uppercase">{{ current_node.member_id }}</a>
                                 </div>
                                 <div class="node-info-row">
                                     <span class="node-info-label">Public Key:</span>
-                                    <code class="node-info-code-small">{{ current_node.publicKey or 'Not available' }}</code>
+                                    <code class="node-info-code-small">{{ current_node.public_key or 'Not available' }}</code>
                                 </div>
                             </div>
                         </div>
@@ -326,25 +326,25 @@
         </div>
 
         <div class="node-grid" x-show="filteredNodes && filteredNodes.length > 0">
-            <template x-for="node in filteredNodes" :key="node.id">
+            <template x-for="node in filteredNodes" :key="node.node_id">
                 <div class="node-card">
                     <div class="node-card-content">
                         <div class="node-card-header">
                             <h3 class="node-card-title" x-text="node.name"></h3>
                             <div class="node-card-status">
-                                <div :class="node.isOnline !== false ? 'bg-green-500' : 'bg-red-500'" class="node-card-status-dot"></div>
-                                <span :class="node.isOnline !== false ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'" class="node-card-status-text" x-text="node.isOnline !== false ? 'Online' : 'Offline'"></span>
+                                <div :class="node.is_online !== false ? 'bg-green-500' : 'bg-red-500'" class="node-card-status-dot"></div>
+                                <span :class="node.is_online !== false ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'" class="node-card-status-text" x-text="node.is_online !== false ? 'Online' : 'Offline'"></span>
                             </div>
                         </div>
 
                         <div class="node-card-location">
-                            <span class="node-card-location-text" x-text="node.location.description + ', ' + node.area"></span>
+                            <span class="node-card-location-text" x-text="node.location_description + ', ' + node.area"></span>
                         </div>
 
                         <div class="node-card-details">
                             <div class="node-card-detail-row">
                                 <span class="node-card-detail-label">ID:</span>
-                                <code class="node-card-detail-code" x-text="node.id"></code>
+                                <code class="node-card-detail-code" x-text="node.node_id"></code>
                             </div>
                             <div class="node-card-detail-row">
                                 <span class="node-card-detail-label">Name:</span>
@@ -356,12 +356,12 @@
                             </div>
                             <div class="node-card-detail-row">
                                 <span class="node-card-detail-label">Role:</span>
-                                <span class="node-card-detail-value capitalize" x-text="node.meshRole"></span>
+                                <span class="node-card-detail-value capitalize" x-text="node.mesh_role"></span>
                             </div>
                             <div class="node-card-detail-row">
                                 <span class="node-card-detail-label">Owner:</span>
                                 <a href="{{ url_for('members.index') }}">
-                                    <span class="node-card-detail-value uppercase" x-text="node.memberId"></span>
+                                    <span class="node-card-detail-value uppercase" x-text="node.member_id"></span>
                                 </a>
                             </div>
                         </div>
@@ -369,7 +369,7 @@
                         <div class="node-card-footer">
                             <div class="node-card-footer-content">
                                 <div class="node-card-coordinates">
-                                    <span x-text="node.location.lat.toFixed(6)"></span>, <span x-text="node.location.lng.toFixed(6)"></span>
+                                    <span x-text="node.latitude.toFixed(6)"></span>, <span x-text="node.longitude.toFixed(6)"></span>
                                 </div>
                                 <button @click="navigateToNodeDetails(node)" class="node-card-btn">
                                     View Node Details

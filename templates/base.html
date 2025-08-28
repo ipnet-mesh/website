@@ -56,6 +56,9 @@
         })();
     </script>
 
+    <!-- Supabase JavaScript Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <!-- Alpine.js -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
@@ -190,7 +193,26 @@
     </footer>
 
     <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/supabase-realtime.js') }}"></script>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+    <!-- Initialize Supabase real-time if config is available -->
+    {% if supabase_config and supabase_config.url %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Supabase real-time with config from server
+            const supabaseConfig = {
+                url: '{{ supabase_config.url }}',
+                anon_key: '{{ supabase_config.anon_key }}'
+            };
+
+            if (window.SupabaseRealtime) {
+                window.SupabaseRealtime.init(supabaseConfig);
+            }
+        });
+    </script>
+    {% endif %}
+
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>

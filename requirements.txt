@@ -3,3 +3,4 @@ Werkzeug==3.0.1
 gunicorn==21.2.0
 mypy==1.17.1
 types-Flask==1.1.6
+supabase==2.7.4
