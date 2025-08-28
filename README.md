@@ -127,8 +127,8 @@ Data is stored in Supabase PostgreSQL database:
 
 #### File Structure
 ```
-├── run.py                   # Application entry point
-├── requirements.txt         # Python dependencies
+├── run.py                  # Application entry point
+├── requirements.txt        # Python dependencies
 ├── package.json            # Node.js dependencies
 ├── tailwind.config.js      # TailwindCSS configuration
 ├── app/
