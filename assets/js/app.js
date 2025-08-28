@@ -3,6 +3,178 @@ let config = {};
 let nodes = [];
 let members = [];
 
+// WebSocket connection for real-time MQTT data
+let socket = null;
+let mqttStatus = { connected: false };
+
+// Initialize WebSocket connection
+function initWebSocket() {
+    // Only initialize if Socket.IO is available
+    if (typeof io === 'undefined') {
+        console.warn('Socket.IO library not loaded, WebSocket functionality disabled');
+        return;
+    }
+
+    // Connect to the current page's server (works with Docker port mapping)
+    console.log('Connecting WebSocket to current server');
+    socket = io();
+
+    socket.on('connect', function() {
+        console.log('WebSocket connected');
+    });
+
+    socket.on('disconnect', function() {
+        console.log('WebSocket disconnected');
+    });
+
+    socket.on('mqtt_status', function(data) {
+        mqttStatus = data;
+        console.log('MQTT Status:', data);
+
+        // Emit custom event for components to listen to
+        document.dispatchEvent(new CustomEvent('mqttStatusChanged', { detail: data }));
+    });
+
+    socket.on('mqtt_message', function(data) {
+        console.log('MQTT Message received:', data);
+
+        // Handle different types of MQTT messages
+        handleMqttMessage(data.topic, data.data, data.timestamp);
+
+        // Emit custom event for components to listen to
+        document.dispatchEvent(new CustomEvent('mqttMessage', { detail: data }));
+    });
+
+    socket.on('mqtt_subscribe_result', function(data) {
+        console.log('MQTT Subscribe result:', data);
+    });
+
+    socket.on('mqtt_unsubscribe_result', function(data) {
+        console.log('MQTT Unsubscribe result:', data);
+    });
+
+    socket.on('mqtt_publish_result', function(data) {
+        console.log('MQTT Publish result:', data);
+    });
+}
+
+// Handle incoming MQTT messages
+function handleMqttMessage(topic, data, timestamp) {
+    // Parse topic to determine message type
+    const topicParts = topic.split('/');
+
+    if (topicParts.length >= 3 && topicParts[0] === 'ipnet') {
+        const nodeArea = topicParts[1];
+        const messageType = topicParts[2];
+
+        switch (messageType) {
+            case 'status':
+                handleNodeStatusUpdate(nodeArea, data, timestamp);
+                break;
+            case 'metrics':
+                handleNodeMetricsUpdate(nodeArea, data, timestamp);
+                break;
+            case 'topology':
+                handleTopologyUpdate(data, timestamp);
+                break;
+            case 'alerts':
+                handleAlertMessage(nodeArea, data, timestamp);
+                break;
+            default:
+                console.log(`Unhandled MQTT message type: ${messageType}`);
+        }
+    }
+}
+
+// Handle node status updates
+function handleNodeStatusUpdate(nodeArea, data, timestamp) {
+    console.log(`Node status update for ${nodeArea}:`, data);
+
+    // Update node status in local data if available
+    const node = nodes.find(n => n.area === nodeArea || n.id.includes(nodeArea));
+    if (node && typeof data === 'object') {
+        if (data.hasOwnProperty('isOnline')) {
+            node.isOnline = data.isOnline;
+        }
+        if (data.hasOwnProperty('lastSeen')) {
+            node.lastSeen = data.lastSeen;
+        }
+
+        // Trigger map update if nodes page is active
+        if (window.nodesPageInstance && window.nodesPageInstance.updateMapMarkers) {
+            window.nodesPageInstance.updateMapMarkers();
+        }
+    }
+}
+
+// Handle node metrics updates
+function handleNodeMetricsUpdate(nodeArea, data, timestamp) {
+    console.log(`Node metrics update for ${nodeArea}:`, data);
+
+    // Store metrics data for potential dashboard use
+    const node = nodes.find(n => n.area === nodeArea || n.id.includes(nodeArea));
+    if (node) {
+        node.metrics = { ...node.metrics, ...data, lastUpdate: timestamp };
+    }
+}
+
+// Handle network topology updates
+function handleTopologyUpdate(data, timestamp) {
+    console.log('Network topology update:', data);
+
+    // Handle topology changes - could update network graph/connections
+    document.dispatchEvent(new CustomEvent('topologyUpdate', {
+        detail: { data, timestamp }
+    }));
+}
+
+// Handle alert messages
+function handleAlertMessage(nodeArea, data, timestamp) {
+    console.log(`Alert from ${nodeArea}:`, data);
+
+    // Show notification or update alert indicators
+    document.dispatchEvent(new CustomEvent('mqttAlert', {
+        detail: { nodeArea, data, timestamp }
+    }));
+}
+
+// WebSocket utility functions
+const WebSocketAPI = {
+    // Subscribe to additional MQTT topics
+    subscribe: function(topic) {
+        if (socket && socket.connected) {
+            socket.emit('mqtt_subscribe', { topic: topic });
+        }
+    },
+
+    // Unsubscribe from MQTT topics
+    unsubscribe: function(topic) {
+        if (socket && socket.connected) {
+            socket.emit('mqtt_unsubscribe', { topic: topic });
+        }
+    },
+
+    // Publish message to MQTT topic
+    publish: function(topic, payload, qos = 0, retain = false) {
+        if (socket && socket.connected) {
+            socket.emit('mqtt_publish', {
+                topic: topic,
+                payload: typeof payload === 'object' ? JSON.stringify(payload) : payload,
+                qos: qos,
+                retain: retain
+            });
+        }
+    },
+
+    // Get current MQTT connection status
+    getMqttStatus: function() {
+        return mqttStatus;
+    }
+};
+
+// Make WebSocket API globally available
+window.WebSocketAPI = WebSocketAPI;
+
 // Get path prefix from meta tag or default
 function getPathPrefix() {
     const metaTag = document.querySelector('meta[name="path-prefix"]');
@@ -91,7 +263,7 @@ const Router = {
                 // Store a reference to the parent for later use
                 this.parentComponent = this.$parent;
             },
-        
+
         updateOptions() {
             // Handle both array and function parameters
             if (typeof optionsOrFunction === 'function') {
@@ -106,12 +278,12 @@ const Router = {
                 this.options = optionsOrFunction || [];
             }
         },
-        
+
         toggle() {
             this.updateOptions(); // Refresh options when opening
             this.open = !this.open;
         },
-        
+
         getDisplayText() {
             if (this.selectedValues.length === 0) {
                 return 'All';
@@ -121,11 +293,11 @@ const Router = {
                 return `${this.selectedValues.length} selected`;
             }
         },
-        
+
                     updateSelection() {
                 // Try to get parent from stored reference or current context
                 let parent = this.parentComponent || this.$parent;
-                
+
                 // If still no parent, try to find it by looking up the DOM tree
                 if (!parent) {
                     let element = this.$el;
@@ -140,18 +312,18 @@ const Router = {
                         element = element.parentElement;
                     }
                 }
-                
+
                 if (!parent) {
                     return;
                 }
 
                 // Update the parent component's property
                 parent[propertyName] = [...this.selectedValues];
-                
+
                 // Trigger filter update
                 parent.applyFilters();
             },
-        
+
                     clearAll() {
                 this.selectedValues = [];
                 this.updateSelection();
@@ -177,6 +349,8 @@ function nodesData() {
         map: null,
         markers: [],
         markerClusterGroup: null,
+        mqttConnected: false,
+        realtimeDataEnabled: false,
 
         async init() {
             const data = await loadData();
@@ -200,13 +374,57 @@ function nodesData() {
                     this.initMap();
                 }, 100);
             });
-            
+
             // Force refresh multiselect options after data is loaded
             this.$nextTick(() => {
                 this.refreshMultiselectOptions();
             });
+
+            // Set up MQTT status listeners
+            this.setupMqttListeners();
         },
-        
+
+        setupMqttListeners() {
+            // Listen for MQTT status changes
+            document.addEventListener('mqttStatusChanged', (event) => {
+                this.mqttConnected = event.detail.connected;
+            });
+
+            // Listen for MQTT messages and update node data
+            document.addEventListener('mqttMessage', (event) => {
+                if (this.realtimeDataEnabled) {
+                    // Message handling is done in the global handler
+                    // This just ensures the UI updates when needed
+                    this.$nextTick(() => {
+                        this.updateMapMarkers();
+                    });
+                }
+            });
+
+            // Set initial MQTT status
+            if (window.WebSocketAPI) {
+                this.mqttConnected = window.WebSocketAPI.getMqttStatus().connected;
+            }
+        },
+
+        toggleRealtimeData() {
+            this.realtimeDataEnabled = !this.realtimeDataEnabled;
+
+            if (this.realtimeDataEnabled && this.mqttConnected) {
+                // Subscribe to node-specific topics if needed
+                const nodeTopics = [
+                    'ipnet/+/status',
+                    'ipnet/+/metrics'
+                ];
+
+                nodeTopics.forEach(topic => {
+                    if (window.WebSocketAPI) {
+                        window.WebSocketAPI.subscribe(topic);
+                    }
+                });
+            }
+        },
+
         refreshMultiselectOptions() {
             // Find all multiselect components and refresh their options
             const multiselectContainers = this.$el.querySelectorAll('.multiselect-container');
@@ -380,7 +598,7 @@ function nodesData() {
                 if (this.markerClusterGroup) {
                     this.markerClusterGroup.clearLayers();
                 }
-                
+
                 // Always clear individual markers from map
                 this.markers.forEach(marker => {
                     if (this.map.hasLayer(marker)) {
@@ -395,12 +613,12 @@ function nodesData() {
 
             // Use cluster group if available and clustering is enabled
             const useClusterGroup = this.markerClusterGroup && this.clusteringEnabled;
-            
+
             // Ensure cluster group is added to map if clustering is enabled
             if (this.clusteringEnabled && this.markerClusterGroup && !this.map.hasLayer(this.markerClusterGroup)) {
                 this.map.addLayer(this.markerClusterGroup);
             }
-            
+
             // Remove cluster group from map if clustering is disabled
             if (!this.clusteringEnabled && this.markerClusterGroup && this.map.hasLayer(this.markerClusterGroup)) {
                 this.map.removeLayer(this.markerClusterGroup);
@@ -439,8 +657,8 @@ function nodesData() {
                     const borderWidth = isCurrentNode ? 'border-4' : 'border-2';
 
                     // Get first 2 characters of public key in lowercase, or fallback to node id
-                    const iconText = node.publicKey && node.publicKey.length >= 2 
-                        ? node.publicKey.substring(0, 2).toLowerCase() 
+                    const iconText = node.publicKey && node.publicKey.length >= 2
+                        ? node.publicKey.substring(0, 2).toLowerCase()
                         : node.id.substring(0, 2);
 
                     const customIcon = L.divIcon({
@@ -451,7 +669,7 @@ function nodesData() {
                     });
 
                     const marker = L.marker([node.location.lat, node.location.lng], { icon: customIcon });
-                    
+
                     // Add tooltip only if pin labels are enabled
                     if (this.pinLabelsEnabled) {
                         marker.bindTooltip(node.id, {
@@ -461,7 +679,7 @@ function nodesData() {
                             className: 'node-tooltip'
                         });
                     }
-                    
+
                     // Add popup
                     marker.bindPopup(`
                         <div class="max-w-xs">
@@ -511,9 +729,9 @@ function nodesData() {
                     this.selectedOwner.includes(node.memberId);
                 const onlineMatch = !this.showOnlineOnly || node.isOnline !== false;
                 const testingMatch = this.showTesting || node.isTesting !== true;
-                
+
                 const matches = hardwareMatch && roleMatch && ownerMatch && onlineMatch && testingMatch;
-                
+
                 return matches;
             }).sort((a, b) => {
                 // Sort by area first, then by ID
@@ -662,6 +880,11 @@ function escapeHtml(text) {
     };
     return text.replace(/[&<>"']/g, m => map[m]);
 }
+
+// Initialize WebSocket when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initWebSocket();
+});
 
 // Dark mode persistence
 document.addEventListener('alpine:init', () => {

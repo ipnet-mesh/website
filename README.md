@@ -9,6 +9,8 @@ A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCo
 - **Interactive Node Map**: Geographic display of mesh network nodes with detailed information
 - **Member Profiles**: Community member directory with avatars and contact preferences
 - **Network Statistics**: Real-time coverage area calculations and network metrics
+- **MQTT Integration**: Real-time data streaming from mesh network nodes
+- **WebSocket API**: Live updates for node status, metrics, and network topology
 - **Dark Mode Support**: User-configurable theme with persistent preferences
 - **Mobile Responsive**: Optimized for all device sizes using TailwindCSS
 - **Privacy Controls**: Configurable visibility for nodes and members
@@ -41,6 +43,7 @@ A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCo
 
 - Python 3.12+
 - Node.js 20+ (LTS)
+- MQTT Broker (optional, for real-time features)
 
 ### Local Development
 
@@ -71,12 +74,20 @@ A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCo
    npm run build-css-prod
    ```
 
-5. **Run the Flask application**
+5. **Configure MQTT (optional)**
    ```bash
-   python app.py
+   # Set environment variables for MQTT broker connection
+   export MQTT_BROKER_HOST=your-mqtt-broker.com
+   export MQTT_USERNAME=your_username
+   export MQTT_PASSWORD=your_password
    ```
 
-   The application will be available at http://localhost:5000
+6. **Run the Flask application**
+   ```bash
+   python run.py
+   ```
+
+   The application will be available at http://localhost:8000
 
 ### Development Workflow
 
@@ -122,6 +133,60 @@ Edit JSON files in `assets/data/` directory:
 │   └── contact.html        # Contact page
 └── CLAUDE.md               # Claude Code instructions
 ```
+
+## MQTT and WebSocket Integration
+
+The application supports real-time data streaming via MQTT broker connectivity with WebSocket API for live updates.
+
+### Environment Variables
+
+Configure MQTT connection using environment variables:
+
+**Required:**
+- `MQTT_BROKER_HOST` - MQTT broker hostname/IP address
+- `MQTT_BROKER_PORT` - MQTT broker port (default: 1883)
+
+**Connection Settings:**
+- `MQTT_KEEPALIVE` - Keep-alive interval in seconds (default: 120)
+- `MQTT_CLIENT_ID` - MQTT client ID (default: 'ipnet-website')
+
+**Authentication (optional):**
+- `MQTT_USERNAME` - MQTT username
+- `MQTT_PASSWORD` - MQTT password
+
+**TLS/SSL (optional):**
+- `MQTT_USE_TLS` - Enable TLS (true/false, default: false)
+- `MQTT_CA_CERT` - Path to CA certificate file
+- `MQTT_CLIENT_CERT` - Path to client certificate file
+- `MQTT_CLIENT_KEY` - Path to client private key file
+
+### MQTT Topics
+
+The application automatically subscribes to:
+- `ipnet/+/status` - Node status updates (online/offline)
+- `ipnet/+/metrics` - Node performance metrics
+- `ipnet/network/topology` - Network topology changes
+- `ipnet/alerts/+` - Alert messages from nodes
+
+### Client-Side WebSocket API
+
+```javascript
+// Subscribe to additional topics
+WebSocketAPI.subscribe('ipnet/custom/topic');
+
+// Publish messages
+WebSocketAPI.publish('ipnet/commands/restart', { node: 'ip2-rep01' });
+
+// Get MQTT connection status
+const status = WebSocketAPI.getMqttStatus();
+```
+
+### Real-time Features
+
+- **Live Node Status**: Map markers update automatically when nodes go online/offline
+- **Real-time Metrics**: Node performance data updates without page refresh
+- **Network Topology**: Dynamic updates of network connections
+- **Alert System**: Real-time notifications from mesh network nodes
 
 ## Deployment
 
