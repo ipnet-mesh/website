@@ -164,7 +164,7 @@
       "elevation": 37,
       "showOnMap": false,
       "isPublic": true,
-      "isOnline": true,
+      "isOnline": false,
       "isTesting": false,
       "meshRole": "integration",
       "channels": []
@@ -296,22 +296,43 @@
       "channels": []
 	  },
     {
+      "id": "ip4-rep02.ipnt.uk",
+      "publicKey": "b00ce9d218203e96d8557a4d59e06f5de59bbc4dcc4df9c870079d2cb8b5bd80",
+      "name": "IP4 Repeater 2",
+      "memberId": "markab",
+      "area": "IP4",
+      "location": {
+        "lat": 52.06217,
+        "lng": 1.18332,
+        "description": "Rushmere Road"
+      },
+      "hardware": "Heltec V3",
+      "antenna": "Paradar 5dbi Whip",
+      "elevation": 35,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": false,
+      "isTesting": false,
+      "meshRole": "repeater",
+      "channels": []
+	  },
+    {
       "id": "ip3-tst01.ipnt.uk",
       "publicKey": "69fb8431e7ab307513797544fab99ce53ce24c46ec2d3a11767fe70f2ca37b23",
       "name": "IP3 Test Repeater 1",
       "memberId": "markab",
       "area": "IP3",
       "location": {
-        "lat": 52.04536,
-        "lng": 1.222629,
+        "lat": 52.041869,
+        "lng": 1.204789,
         "description": "Brokehall"
       },
       "hardware": "Station G2",
       "antenna": "McGill 10dBi Panel",
       "elevation": 37,
-      "showOnMap": false,
+      "showOnMap": true,
       "isPublic": true,
-      "isOnline": true,
+      "isOnline": false,
       "isTesting": true,
       "meshRole": "repeater",
       "channels": []
