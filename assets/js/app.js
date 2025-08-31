@@ -91,7 +91,7 @@ const Router = {
                 // Store a reference to the parent for later use
                 this.parentComponent = this.$parent;
             },
-        
+
         updateOptions() {
             // Handle both array and function parameters
             if (typeof optionsOrFunction === 'function') {
@@ -106,12 +106,12 @@ const Router = {
                 this.options = optionsOrFunction || [];
             }
         },
-        
+
         toggle() {
             this.updateOptions(); // Refresh options when opening
             this.open = !this.open;
         },
-        
+
         getDisplayText() {
             if (this.selectedValues.length === 0) {
                 return 'All';
@@ -121,11 +121,11 @@ const Router = {
                 return `${this.selectedValues.length} selected`;
             }
         },
-        
+
                     updateSelection() {
                 // Try to get parent from stored reference or current context
                 let parent = this.parentComponent || this.$parent;
-                
+
                 // If still no parent, try to find it by looking up the DOM tree
                 if (!parent) {
                     let element = this.$el;
@@ -140,18 +140,18 @@ const Router = {
                         element = element.parentElement;
                     }
                 }
-                
+
                 if (!parent) {
                     return;
                 }
 
                 // Update the parent component's property
                 parent[propertyName] = [...this.selectedValues];
-                
+
                 // Trigger filter update
                 parent.applyFilters();
             },
-        
+
                     clearAll() {
                 this.selectedValues = [];
                 this.updateSelection();
@@ -200,13 +200,13 @@ function nodesData() {
                     this.initMap();
                 }, 100);
             });
-            
+
             // Force refresh multiselect options after data is loaded
             this.$nextTick(() => {
                 this.refreshMultiselectOptions();
             });
         },
-        
+
         refreshMultiselectOptions() {
             // Find all multiselect components and refresh their options
             const multiselectContainers = this.$el.querySelectorAll('.multiselect-container');
@@ -380,7 +380,7 @@ function nodesData() {
                 if (this.markerClusterGroup) {
                     this.markerClusterGroup.clearLayers();
                 }
-                
+
                 // Always clear individual markers from map
                 this.markers.forEach(marker => {
                     if (this.map.hasLayer(marker)) {
@@ -395,12 +395,12 @@ function nodesData() {
 
             // Use cluster group if available and clustering is enabled
             const useClusterGroup = this.markerClusterGroup && this.clusteringEnabled;
-            
+
             // Ensure cluster group is added to map if clustering is enabled
             if (this.clusteringEnabled && this.markerClusterGroup && !this.map.hasLayer(this.markerClusterGroup)) {
                 this.map.addLayer(this.markerClusterGroup);
             }
-            
+
             // Remove cluster group from map if clustering is disabled
             if (!this.clusteringEnabled && this.markerClusterGroup && this.map.hasLayer(this.markerClusterGroup)) {
                 this.map.removeLayer(this.markerClusterGroup);
@@ -439,8 +439,8 @@ function nodesData() {
                     const borderWidth = isCurrentNode ? 'border-4' : 'border-2';
 
                     // Get first 2 characters of public key in lowercase, or fallback to node id
-                    const iconText = node.publicKey && node.publicKey.length >= 2 
-                        ? node.publicKey.substring(0, 2).toLowerCase() 
+                    const iconText = node.publicKey && node.publicKey.length >= 2
+                        ? node.publicKey.substring(0, 2).toLowerCase()
                         : node.id.substring(0, 2);
 
                     const customIcon = L.divIcon({
@@ -451,7 +451,7 @@ function nodesData() {
                     });
 
                     const marker = L.marker([node.location.lat, node.location.lng], { icon: customIcon });
-                    
+
                     // Add tooltip only if pin labels are enabled
                     if (this.pinLabelsEnabled) {
                         marker.bindTooltip(node.id, {
@@ -461,7 +461,7 @@ function nodesData() {
                             className: 'node-tooltip'
                         });
                     }
-                    
+
                     // Add popup
                     marker.bindPopup(`
                         <div class="max-w-xs">
@@ -511,9 +511,9 @@ function nodesData() {
                     this.selectedOwner.includes(node.memberId);
                 const onlineMatch = !this.showOnlineOnly || node.isOnline !== false;
                 const testingMatch = this.showTesting || node.isTesting !== true;
-                
+
                 const matches = hardwareMatch && roleMatch && ownerMatch && onlineMatch && testingMatch;
-                
+
                 return matches;
             }).sort((a, b) => {
                 // Sort by area first, then by ID

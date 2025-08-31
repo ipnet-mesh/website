@@ -13,7 +13,7 @@
         "description": "Fountains Road"
       },
       "hardware": "Heltec V3",
-      "antenna": "Paradar 8.5dBi omni",
+      "antenna": "Paradar 8.5dBi Omni",
       "elevation": 31,
       "showOnMap": true,
       "isPublic": true,
@@ -34,7 +34,7 @@
         "description": "Belstead Road"
       },
       "hardware": "Heltec V3",
-      "antenna": "Generic 5dBi Whip",
+      "antenna": "McGill 6dBi Omni",
       "elevation": 44,
       "showOnMap": true,
       "isPublic": true,
@@ -55,7 +55,7 @@
         "description": "Birkfield Drive"
       },
       "hardware": "Heltec V3",
-      "antenna": "Paradar 8.5dBi omni",
+      "antenna": "Paradar 8.5dBi Omni",
       "elevation": 52,
       "showOnMap": true,
       "isPublic": true,
@@ -86,6 +86,69 @@
       "channels": []
     },
     {
+      "id": "ip2-tst01.ipnt.uk",
+      "publicKey": "",
+      "name": "IP2 Test Repeater 1",
+      "memberId": "louis",
+      "area": "IP2",
+      "location": {
+        "lat": 52.0352745,
+        "lng": 1.129809,
+        "description": "Fountains Road"
+      },
+      "hardware": "Heltec V3",
+      "antenna": "McGill 6dBi Omni",
+      "elevation": 25,
+      "showOnMap": false,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": true,
+      "meshRole": "repeater",
+      "channels": []
+    },
+    {
+      "id": "ip2-tst01.ipnt.uk",
+      "publicKey": "558b593059904d5d02ac3a1458778e5c2659f4e983b632c91a853600b82c99cb",
+      "name": "IP2 Test Repeater 1",
+      "memberId": "louis",
+      "area": "IP2",
+      "location": {
+        "lat": 52.0352745,
+        "lng": 1.129809,
+        "description": "Fountains Road"
+      },
+      "hardware": "Heltec V3",
+      "antenna": "McGill 6dBi Omni",
+      "elevation": 15,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": true,
+      "meshRole": "integration",
+      "channels": []
+    },
+    {
+      "id": "ip2-tst02.ipnt.uk",
+      "publicKey": "50b8ff61aee1b296aabb82fc920b5724a435c2222177ea719c15ccd2e0e578f2",
+      "name": "IP2 Test Repeater 2",
+      "memberId": "louis",
+      "area": "IP2",
+      "location": {
+        "lat": 52.0354881,
+        "lng": 1.130084,
+        "description": "Fountains Road"
+      },
+      "hardware": "Heltec V3",
+      "antenna": "Generic 5dBi Whip",
+      "elevation": 15,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": true,
+      "meshRole": "integration",
+      "channels": []
+    },
+    {
       "id": "ip3-rep01.ipnt.uk",
       "publicKey": "9135986b83815ada92883358435cc6528c7db60cb647f9b6547739a1ce5eb1c8",
       "name": "IP3 Repeater 1",
@@ -97,7 +160,7 @@
         "description": "Brokehall"
       },
       "hardware": "Heltec V3",
-      "antenna": "Paradar 8.5dBi omni",
+      "antenna": "Paradar 8.5dBi Omni",
       "elevation": 42,
       "showOnMap": true,
       "isPublic": true,
@@ -244,7 +307,7 @@
         "description": "Grove Hill"
       },
       "hardware": "Heltec V3",
-      "antenna": "McGill 3dbi Omni",
+      "antenna": "McGill 3dBi Omni",
       "elevation": 13,
       "showOnMap": true,
       "isPublic": true,
