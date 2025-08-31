@@ -87,7 +87,7 @@
     },
     {
       "id": "ip2-tst01.ipnt.uk",
-      "publicKey": "",
+      "publicKey": "50b8ff61aee1b296aabb82fc920b5724a435c2222177ea719c15ccd2e0e578f2",
       "name": "IP2 Test Repeater 1",
       "memberId": "louis",
       "area": "IP2",
