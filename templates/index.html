@@ -49,7 +49,7 @@
     <div class="about-container">
         <div class="about-header">
             <h2 class="about-title">
-                About MeshCore
+                About {{ config.technology }}
             </h2>
             <p class="about-subtitle">
                 Discover the power of decentralized communication
@@ -75,13 +75,37 @@
                 </a>
             </div>
             <div class="about-cta-card">
-                <div class="about-cta-emoji">📡</div>
                 <h4 class="about-cta-title">
-                    Join Our Network
+                    Radio Settings
                 </h4>
+                <div class="preset-name">
+                    EU/UK (Narrow)
+                </div>
                 <p class="about-cta-text">
-                    Get started with your own {{ config.technology }}/Meshtastic device and connect to our local mesh network today.
+                    Use these preset settings to connect:
                 </p>
+                <table class="radio-settings-table">
+                    <tr>
+                        <td class="radio-setting-label">Frequency</td>
+                        <td class="radio-setting-value">869.618MHz</td>
+                    </tr>
+                    <tr>
+                        <td class="radio-setting-label">Spreading Factor</td>
+                        <td class="radio-setting-value">5</td>
+                    </tr>
+                    <tr>
+                        <td class="radio-setting-label">Bandwidth</td>
+                        <td class="radio-setting-value">62.5kHz</td>
+                    </tr>
+                    <tr>
+                        <td class="radio-setting-label">Coding Rate</td>
+                        <td class="radio-setting-value">8</td>
+                    </tr>
+                    <tr>
+                        <td class="radio-setting-label">TX Power</td>
+                        <td class="radio-setting-value">22dBm</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
