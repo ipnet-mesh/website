@@ -3,7 +3,7 @@
   "nodes": [
     {
       "id": "ip2-rep01.ipnt.uk",
-      "publicKey": "A0722F9DE381484DA5AAECDB61586171E2FC4A4714072BBF04FD8F09B4768DED",
+      "publicKey": "2337484665CED7E210007E9FD9DB98CED0A24A6EAB8B4CBE3A06B3A1CEA33CA1",
       "name": "IP2 Repeater 1",
       "memberId": "louis",
       "area": "IP2",
@@ -24,7 +24,7 @@
     },
     {
       "id": "ip2-rep02.ipnt.uk",
-      "publicKey": "815EBCB3C74CC07BB37569E8C086CC4D4138948A1D4AEE1C51D57FEC071DDCC3",
+      "publicKey": "8CB01FFF1AFC099055AF418CE5FC5E60384DF9FF763C25DD7E6A5E0922E8DF90",
       "name": "IP2 Repeater 2",
       "memberId": "louis",
       "area": "IP2",
@@ -59,7 +59,7 @@
       "elevation": 52,
       "showOnMap": true,
       "isPublic": true,
-      "isOnline": true,
+      "isOnline": false,
       "isTesting": false,
       "meshRole": "repeater",
       "channels": []
@@ -87,7 +87,7 @@
     },
     {
       "id": "ip2-tst01.ipnt.uk",
-      "publicKey": "50b8ff61aee1b296aabb82fc920b5724a435c2222177ea719c15ccd2e0e578f2",
+      "publicKey": "E1E0AE4348289EE3498399CCB0A95B78FAB89A1426F05D6072B80D1FD1201CD1",
       "name": "IP2 Test Repeater 1",
       "memberId": "louis",
       "area": "IP2",
@@ -104,48 +104,6 @@
       "isOnline": true,
       "isTesting": true,
       "meshRole": "repeater",
-      "channels": []
-    },
-    {
-      "id": "ip2-tst01.ipnt.uk",
-      "publicKey": "558b593059904d5d02ac3a1458778e5c2659f4e983b632c91a853600b82c99cb",
-      "name": "IP2 Test Repeater 1",
-      "memberId": "louis",
-      "area": "IP2",
-      "location": {
-        "lat": 52.0352745,
-        "lng": 1.129809,
-        "description": "Fountains Road"
-      },
-      "hardware": "Heltec V3",
-      "antenna": "McGill 6dBi Omni",
-      "elevation": 15,
-      "showOnMap": true,
-      "isPublic": true,
-      "isOnline": true,
-      "isTesting": true,
-      "meshRole": "integration",
-      "channels": []
-    },
-    {
-      "id": "ip2-tst02.ipnt.uk",
-      "publicKey": "50b8ff61aee1b296aabb82fc920b5724a435c2222177ea719c15ccd2e0e578f2",
-      "name": "IP2 Test Repeater 2",
-      "memberId": "louis",
-      "area": "IP2",
-      "location": {
-        "lat": 52.0354881,
-        "lng": 1.130084,
-        "description": "Fountains Road"
-      },
-      "hardware": "Heltec V3",
-      "antenna": "Generic 5dBi Whip",
-      "elevation": 15,
-      "showOnMap": true,
-      "isPublic": true,
-      "isOnline": true,
-      "isTesting": true,
-      "meshRole": "integration",
       "channels": []
     },
     {
