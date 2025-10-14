@@ -45,7 +45,7 @@
     },
     {
       "id": "ip2-rep03.ipnt.uk",
-      "publicKey": "3DC903EC46BB61A837BBC5212BB6000ED93E13F3FE4A04B390A8AD80C7D5357A",
+      "publicKey": "5B565DF747913358E24D890B2227DE9C35D09763746B6EC326C15EBBF9B8BE3B",
       "name": "IP2 Repeater 3",
       "memberId": "louis",
       "area": "IP2",
@@ -59,7 +59,7 @@
       "elevation": 52,
       "showOnMap": true,
       "isPublic": true,
-      "isOnline": false,
+      "isOnline": true,
       "isTesting": false,
       "meshRole": "repeater",
       "channels": []
