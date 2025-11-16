@@ -64,6 +64,22 @@
         "github": "",
         "twitter": ""
       }
+    },
+    {
+      "id": "test",
+      "name": "TEST",
+      "joinDate": "2025-11-16",
+      "location": "Ipswich",
+      "avatar": "/assets/images/avatars/default.jpg",
+      "bio": "",
+      "contactPreference": "discord",
+      "isPublic": true,
+      "nodeName": "githubtest",
+      "nodePublicKey": "5B565DF747913358E24D890B2227DE9C35D09763746B6EC326C15E0000000000",
+      "socialLinks": {
+        "github": "",
+        "twitter": ""
+      }
     }
   ]
 }

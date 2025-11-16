@@ -336,7 +336,7 @@
       "isTesting": false,
       "meshRole": "repeater",
       "channels": []
-	  },
+    },
     {
       "id": "ip3-tst01.ipnt.uk",
       "publicKey": "69fb8431e7ab307513797544fab99ce53ce24c46ec2d3a11767fe70f2ca37b23",
@@ -357,6 +357,27 @@
       "isTesting": true,
       "meshRole": "repeater",
       "channels": []
-	  }
+	  },
+    {
+      "id": "githubtest.ipnt.uk",
+      "publicKey": "5B565DF747913358E24D890B2227DE9C35D09763746B6EC326C15E0000000000",
+      "name": "githubtest.ipnt.uk",
+      "memberId": "test",
+      "area": "IP2",
+      "location": {
+        "lat": 52.0357627,
+        "lng": 1.132079,
+        "description": "Ipswich"
+      },
+      "hardware": "Heltec v3",
+      "antenna": "Generic Whip",
+      "elevation": 25,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": false,
+      "meshRole": "repeater",
+      "channels": []
+    }
   ]
 }
