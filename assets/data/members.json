@@ -64,6 +64,22 @@
         "github": "",
         "twitter": ""
       }
+    },
+    {
+      "id": "craig",
+      "name": "Craig",
+      "joinDate": "2025-11-21",
+      "location": "Ipswich",
+      "avatar": "/assets/images/avatars/default.jpg",
+      "bio": "",
+      "contactPreference": "discord",
+      "isPublic": true,
+      "nodeName": "",
+      "nodePublicKey": "",
+      "socialLinks": {
+        "github": "",
+        "twitter": ""
+      }
     }
   ]
 }

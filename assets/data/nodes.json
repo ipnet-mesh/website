@@ -336,6 +336,27 @@
       "isTesting": false,
       "meshRole": "repeater",
       "channels": []
+    },
+    {
+      "id": "ip4-rep03.ipnt.uk",
+      "publicKey": "8accb6d0189ccaffb745ba54793e7fe3edd515edb45554325d957e48c1b9f3b3",
+      "name": "IP4 Repeater 3",
+      "memberId": "craig",
+      "area": "IP4",
+      "location": {
+        "lat": 52.058,
+        "lng": 1.165,
+        "description": "IP4 Area"
+      },
+      "hardware": "Heltec v3",
+      "antenna": "Generic Whip",
+      "elevation": 30,
+      "showOnMap": true,
+      "isPublic": true,
+      "isOnline": true,
+      "isTesting": false,
+      "meshRole": "repeater",
+      "channels": []
 	  },
     {
       "id": "ip3-tst01.ipnt.uk",
