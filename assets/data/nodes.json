@@ -66,7 +66,7 @@
     },
     {
       "id": "ip2-int01.ipnt.uk",
-      "publicKey": "",
+      "publicKey": "780d0939f90b22d3bd7cbedcaf4e8d468a12c01886ab24b8cfa11eab2f5516c5",
       "name": "IP2 Integration 1",
       "memberId": "louis",
       "area": "IP2",
@@ -86,24 +86,24 @@
       "channels": []
     },
     {
-      "id": "ip2-tst01.ipnt.uk",
-      "publicKey": "E1E0AE4348289EE3498399CCB0A95B78FAB89A1426F05D6072B80D1FD1201CD1",
-      "name": "IP2 Test Repeater 1",
+      "id": "ip2-int02.ipnt.uk",
+      "publicKey": "30121dc60362c633c457ffa18f49b3e1d6823402c33709f32d7df70612250b96",
+      "name": "IP2 Integration 2",
       "memberId": "louis",
       "area": "IP2",
       "location": {
-        "lat": 52.0352745,
-        "lng": 1.129809,
+        "lat": 52.0354539,
+        "lng": 1.1295338,
         "description": "Fountains Road"
       },
       "hardware": "Heltec V3",
-      "antenna": "McGill 6dBi Omni",
+      "antenna": "Generic 5dBi Whip",
       "elevation": 25,
       "showOnMap": false,
       "isPublic": true,
       "isOnline": true,
-      "isTesting": true,
-      "meshRole": "repeater",
+      "isTesting": false,
+      "meshRole": "integration",
       "channels": []
     },
     {
