@@ -13,6 +13,68 @@ A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCo
 - **Mobile Responsive**: Optimized for all device sizes using TailwindCSS
 - **Privacy Controls**: Configurable visibility for nodes and members
 
+## Example: MeshCore Integration
+
+This website is part of the IPNet mesh network ecosystem. Here's an example of interacting with a mesh node using Claude with the MeshCore MCP server:
+
+<div align="center">
+
+```markdown
+┌─────────────────────────────────────────────────────────────────────┐
+│ 💬 Conversation with Claude via OpenWebUI + MeshCore MCP Server    │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+</div>
+
+> **👤 USER**
+> Are you connected to MeshCore?
+
+> **🤖 CLAUDE**
+> Yes, I am connected to MeshCore. I can see the device information showing a **Heltec V3** device running firmware version **8 (v1.10.0-9405e8b)** built on November 13, 2025. The device supports up to **350 contacts** and **40 channels**.
+
+---
+
+> **👤 USER**
+> Do I have any messages?
+
+> **🤖 CLAUDE**
+> No, you don't have any messages. Your message buffer is currently empty.
+
+---
+
+> **👤 USER**
+> Someone has sent a message. Can you check again?
+
+> **🤖 CLAUDE**
+> You're right! You do have a message now. There's **1 message** in your buffer:
+>
+> **Message Details:**
+> - **From:** Unknown (Public Key: `2369759a4926`)
+> - **Time:** November 22, 2025 at 13:46:24
+> - **Message:** *"Hello GitHub!"*
+>
+> It appears to be from an unknown contact, but you can see their public key identifier.
+
+---
+
+> **👤 USER**
+> Reply to that message saying "Hello World!"
+
+> **🤖 CLAUDE**
+> I've successfully sent your reply! The message **"Hello World!"** has been sent to contact `2369759a4926`. The system confirms the message was sent successfully. ✓
+
+<div align="center">
+
+```markdown
+┌─────────────────────────────────────────────────────────────────────┐
+│ This demonstrates Claude's ability to interact with mesh network    │
+│ nodes through the MeshCore MCP server, enabling message reading,    │
+│ sending, and device management through natural language.            │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+</div>
 
 ## Quick Start
 
