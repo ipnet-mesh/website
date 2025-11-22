@@ -17,16 +17,6 @@ A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCo
 
 This website is part of the IPNet mesh network ecosystem. Here's an example of interacting with a mesh node using Claude with the MeshCore MCP server:
 
-<div align="center">
-
-```markdown
-┌─────────────────────────────────────────────────────────────────────┐
-│ 💬 Conversation with Claude via OpenWebUI + MeshCore MCP Server    │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
-</div>
-
 > **👤 USER**
 > Are you connected to MeshCore?
 
@@ -63,18 +53,6 @@ This website is part of the IPNet mesh network ecosystem. Here's an example of i
 
 > **🤖 CLAUDE**
 > I've successfully sent your reply! The message **"Hello World!"** has been sent to contact `2369759a4926`. The system confirms the message was sent successfully. ✓
-
-<div align="center">
-
-```markdown
-┌─────────────────────────────────────────────────────────────────────┐
-│ This demonstrates Claude's ability to interact with mesh network    │
-│ nodes through the MeshCore MCP server, enabling message reading,    │
-│ sending, and device management through natural language.            │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
-</div>
 
 ## Quick Start
 
