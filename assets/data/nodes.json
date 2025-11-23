@@ -86,9 +86,9 @@
       "channels": []
     },
     {
-      "id": "ip2-int02.ipnt.uk",
+      "id": "bot.ipnt.uk",
       "publicKey": "30121dc60362c633c457ffa18f49b3e1d6823402c33709f32d7df70612250b96",
-      "name": "IP2 Integration 2",
+      "name": "MeshBot",
       "memberId": "louis",
       "area": "IP2",
       "location": {
