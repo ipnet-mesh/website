@@ -2,10 +2,10 @@ name: Docker Build and Push
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, feature/alpha ]
     tags: [ 'v*' ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main, feature/alpha ]
   release:
     types: [ published ]
 
