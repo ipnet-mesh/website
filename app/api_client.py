@@ -14,6 +14,9 @@ CACHE_DIR = os.path.join('instance', 'cache', 'api')
 CACHE_FILE = os.path.join(CACHE_DIR, 'nodes.json')
 CACHE_TTL_MINUTES = 5  # Refresh cache every 5 minutes
 
+# Ensure cache directory exists
+os.makedirs(CACHE_DIR, exist_ok=True)
+
 _cache: Dict[str, Any] = {
     'nodes': [],
     'last_updated': None,
@@ -136,8 +139,6 @@ def save_cache(nodes: List[Dict[str, Any]]) -> None:
         'nodes': nodes
     }
     try:
-        # Ensure instance directory exists
-        os.makedirs(CACHE_DIR, exist_ok=True)
         with open(CACHE_FILE, 'w') as f:
             json.dump(cache_data, f, indent=2)
         logger.info(f"Cache saved with {len(nodes)} nodes")
