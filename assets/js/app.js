@@ -645,6 +645,18 @@ function contactData() {
     }
 }
 
+// Stats page data
+function statsData() {
+    return {
+        config: {},
+
+        async init() {
+            const data = await loadData();
+            this.config = data.config;
+        }
+    }
+}
+
 // Utility functions
 function escapeHtml(text) {
     const map = {

@@ -199,3 +199,43 @@ def get_nodes() -> List[Dict[str, Any]]:
     # Nothing available
     logger.error("No nodes available from API or cache")
     return []
+
+
+def get_advertisements(limit: int = 100) -> List[Dict[str, Any]]:
+    """Fetch recent advertisements from API."""
+    api_url, api_key = get_api_config()
+
+    if not api_url:
+        logger.warning("API_URL not configured")
+        return []
+
+    headers = {}
+    if api_key:
+        headers['Authorization'] = f'Bearer {api_key}'
+
+    try:
+        url = f"{api_url}/api/v1/advertisements?limit={limit}&offset=0"
+        logger.info(f"Fetching advertisements from API: {url}")
+        response = requests.get(url, headers=headers, timeout=10)
+
+        if response.status_code != 200:
+            logger.error(f"API returned status {response.status_code}")
+            return []
+
+        if not response.text or not response.text.strip():
+            logger.error("API returned empty response")
+            return []
+
+        try:
+            data = response.json()
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse API JSON response: {e}")
+            return []
+
+        advertisements: List[Dict[str, Any]] = data.get('advertisements', [])
+        logger.info(f"Fetched {len(advertisements)} advertisements from API")
+        return advertisements
+
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Failed to fetch advertisements from API: {e}")
+        return []

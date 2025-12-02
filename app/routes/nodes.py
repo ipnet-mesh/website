@@ -1,8 +1,9 @@
 """Node-related routes."""
-from flask import Blueprint, render_template, redirect, url_for
+import re
+from flask import Blueprint, render_template, redirect, url_for, abort
 from werkzeug.wrappers import Response
 from typing import Union, Optional
-from ..data import get_data, calculate_node_stats, find_node_by_id
+from ..data import get_data, calculate_node_stats, find_node_by_id, find_node_by_public_key
 
 nodes_bp = Blueprint('nodes', __name__)
 
@@ -35,3 +36,25 @@ def index(area: Optional[str] = None, node_id: Optional[str] = None) -> str:
                          current_node=current_node,
                          showing_individual_node=current_node is not None,
                          node_stats=node_stats)
+
+
+@nodes_bp.route('/nodes/key/<public_key>')
+def by_public_key(public_key: str) -> str:
+    """Display node by public key (64 char hex)"""
+    # Validate public key format
+    if not re.match(r'^[a-fA-F0-9]{64}$', public_key):
+        abort(404)
+
+    config, nodes, members = get_data()
+    current_node = find_node_by_public_key(nodes, public_key)
+
+    if not current_node:
+        abort(404)
+
+    return render_template('nodes.html',
+                           config=config,
+                           nodes=nodes,
+                           members=members,
+                           current_node=current_node,
+                           showing_individual_node=True,
+                           node_stats=None)

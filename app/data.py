@@ -86,3 +86,8 @@ def find_node_by_id(nodes: List[Dict[str, Any]], area: str, node_id: str) -> Opt
     # Also check legacy format: {node_id}.{area}.ipnt.uk for backward compatibility
     legacy_node_id = f"{node_id}.{area}.ipnt.uk"
     return next((node for node in nodes if node['id'] == full_node_id or node['id'] == legacy_node_id or node['id'] == node_id), None)
+
+
+def find_node_by_public_key(nodes: List[Dict[str, Any]], public_key: str) -> Optional[Dict[str, Any]]:
+    """Find a specific node by its public key (64 char hex)"""
+    return next((node for node in nodes if node.get('publicKey') == public_key), None)
