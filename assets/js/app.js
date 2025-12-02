@@ -463,13 +463,11 @@ function nodesData() {
                     }
 
                     // Add popup
-                    const lastSeenText = node.lastSeen ? `<div><em>Last Seen:</em> ${this.formatLastSeen(node.lastSeen, true)}</div>` : '';
                     marker.bindPopup(`
                         <div class="max-w-xs">
                             <strong class="text-lg">${node.name}</strong><br>
                             <div class="mt-2 space-y-1 text-sm">
                                 <div><em>Owner:</em> ${this.getMemberName(node.memberId)}</div>
-                                ${lastSeenText}
                             </div>
                             <div class="mt-3 pt-2 border-t border-gray-200">
                                 <button onclick="window.nodesPageInstance.navigateToNodeDetails({id: '${node.id}', area: '${node.area}'})" class="text-primary hover:text-accent text-sm font-medium">
@@ -527,17 +525,6 @@ function nodesData() {
         getMemberName(memberId) {
             const member = this.members.find(m => m.id === memberId);
             return member ? member.name : 'Unknown';
-        },
-
-        formatLastSeen(isoString, forHtml = false) {
-            const relative = formatRelativeTime(isoString);
-            if (!relative) return '';
-
-            if (forHtml) {
-                const fullTimestamp = isoString.substring(0, 16).replace('T', ' ') + ' UTC';
-                return `<span title="${fullTimestamp}">${relative}</span>`;
-            }
-            return relative;
         },
 
         getUniqueHardware() {
@@ -659,25 +646,6 @@ function contactData() {
 }
 
 // Utility functions
-function formatRelativeTime(isoString) {
-    if (!isoString) return '';
-    // Only append Z if no timezone info present (no Z, +, or - after time portion)
-    const hasTimezone = /Z|[+-]\d{2}:?\d{2}$/.test(isoString);
-    const date = new Date(hasTimezone ? isoString : isoString + 'Z');
-    if (isNaN(date.getTime())) return '';
-
-    const now = new Date();
-    const diffMs = now - date;
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMins / 60);
-    const diffDays = Math.floor(diffHours / 24);
-
-    if (diffMins < 1) return 'just now';
-    if (diffMins < 60) return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
-    if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
-    return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
-}
-
 function escapeHtml(text) {
     const map = {
         '&': '&amp;',
