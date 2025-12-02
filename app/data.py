@@ -2,7 +2,9 @@
 import json
 import os
 from math import cos, radians
-from typing import Dict, List, Any, Tuple, Optional
+from typing import Any, Dict, List, Optional, Tuple
+
+from .api_client import get_nodes as get_nodes_from_api
 
 ASSETS_DIR = 'assets'
 
@@ -20,11 +22,13 @@ def load_json_data(filename: str) -> Dict[str, Any]:
 def get_data() -> Tuple[Dict[str, Any], List[Dict[str, Any]], List[Dict[str, Any]]]:
     """Load all data files"""
     config = load_json_data('config.json')
-    nodes_data = load_json_data('nodes.json')
     members_data = load_json_data('members.json')
 
+    # Get nodes from API (with caching)
+    all_nodes = get_nodes_from_api()
+
     # Filter public nodes and members
-    nodes = [node for node in nodes_data.get('nodes', []) if node.get('isPublic', True)]
+    nodes = [node for node in all_nodes if node.get('isPublic', True)]
     members = [member for member in members_data.get('members', []) if member.get('isPublic', True)]
 
     return config, nodes, members

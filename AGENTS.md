@@ -15,11 +15,11 @@ This is a Flask-based website for IPNet (Ipswich Mesh Network), a local MeshCore
 ## Architecture
 
 ### Backend (Flask)
-- **app.py**: Main Flask application with routing and data management
+- **app/**: Flask application package with blueprints
 - Routes: `/` (home), `/nodes/` (with optional area/node_id), `/members/`, `/contact/`, `/api/data`
-- Data loading: JSON files from `assets/data/` directory (config.json, nodes.json, members.json)
+- **Node data**: Fetched from external API with file-based caching (`instance/cache/api/nodes.json`)
+- **Static data**: JSON files from `assets/data/` directory (config.json, members.json)
 - Privacy filtering: Only displays items with `isPublic: true`
-- Coverage calculation: Simple bounding box algorithm for geographic area estimation
 
 ### Frontend
 - **Templates**: Jinja2 templates in `templates/` directory with base.html inheritance
@@ -29,8 +29,8 @@ This is a Flask-based website for IPNet (Ipswich Mesh Network), a local MeshCore
 
 ### Data Structure
 - **config.json**: Site configuration, contact info, theme settings, feature flags
-- **nodes.json**: Mesh network node data with locations, hardware specs, public keys
 - **members.json**: Member profiles with avatars, bios, contact preferences
+- **Node data**: Fetched from external API (configured via `API_URL` environment variable)
 - **Node privacy**: Filter by `isPublic` flag before display
 - **URL routing**: Short URLs like `/<area>/<node_id>` redirect to full nodes page
 
@@ -57,22 +57,28 @@ python app.py
 
 ## Key Files
 
-- **app.py**: Flask routes and data processing logic
-- **assets/data/**: JSON data files (config, nodes, members)
-- **templates/base.html**: Main template with meta tags, dark mode setup
-- **assets/js/app.js**: Client-side data loading and JavaScript functionality
-- **tailwind.config.js**: TailwindCSS configuration with custom colors and dark mode
-- **assets/css/input.css**: TailwindCSS source file
-- **assets/css/output.css**: Generated CSS (do not edit directly)
+- **app/**: Flask application package
+  - **api_client.py**: External API client with caching for node data
+  - **data.py**: Data loading and processing functions
+  - **routes/**: Blueprint modules for each route group
+- **assets/data/**: JSON data files (config.json, members.json)
+- **templates/**: Jinja2 templates with base.html inheritance
+- **assets/js/app.js**: Client-side JavaScript
+- **assets/css/**: TailwindCSS source and generated files
+
+## Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `API_URL` | Yes | Base URL for the MeshCore API |
+| `API_KEY` | No | Bearer token for API authentication |
 
 ## Data Management
 
-When updating data:
-1. Edit JSON files in `assets/data/` directory
-2. Use `isPublic: false` to hide sensitive nodes/members
-3. Node IDs follow format: `{shortname}.{area}.ipnt.uk`
-4. Member avatars stored in `assets/images/avatars/`
-5. Geographic coordinates required for coverage calculation
+- Node data is fetched from the external API and cached locally
+- Edit `assets/data/config.json` for site configuration
+- Edit `assets/data/members.json` for member profiles
+- Member avatars stored in `assets/images/avatars/`
 
 ## Deployment Notes
 

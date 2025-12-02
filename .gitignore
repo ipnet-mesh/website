@@ -7,6 +7,9 @@ __pycache__
 *.pyo
 *.pyd
 
+# Flask instance folder (runtime cache)
+instance/
+
 output.css
 
 mosquitto/config/acl.conf

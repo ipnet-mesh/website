@@ -13,5 +13,5 @@ repos:
     rev: v1.14.0
     hooks:
       - id: mypy
-        additional_dependencies: [types-Flask]
+        additional_dependencies: [types-Flask, types-requests]
         files: ^app/

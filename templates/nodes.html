@@ -201,6 +201,12 @@
                                     <span class="node-info-label">Role:</span>
                                     <span class="node-info-value capitalize">{{ current_node.meshRole }}</span>
                                 </div>
+                                {% if current_node.lastSeen %}
+                                <div class="node-info-row">
+                                    <span class="node-info-label">Last Seen:</span>
+                                    <span class="node-info-value cursor-help" title="{{ current_node.lastSeen[:16].replace('T', ' ') }} UTC" x-data x-text="formatRelativeTime('{{ current_node.lastSeen }}')"></span>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
 

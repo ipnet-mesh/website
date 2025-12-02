@@ -19,9 +19,9 @@ A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCo
 ## Architecture
 
 ### Backend (Flask)
-- **app.py**: Main Flask application with routing and data management
+- **app/**: Flask application package with blueprints
 - **Routes**: `/` (home), `/nodes/` (with optional area/node_id), `/members/`, `/contact/`, `/api/data`
-- **Data Management**: JSON files from `assets/data/` directory with privacy filtering
+- **Node Data**: Fetched from external API with file-based caching
 - **WSGI Server**: Gunicorn for production deployments
 
 ### Frontend
@@ -32,8 +32,8 @@ A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCo
 
 ### Data Structure
 - **config.json**: Site configuration, contact info, theme settings
-- **nodes.json**: Mesh network node data with locations, hardware specs, public keys
 - **members.json**: Member profiles with avatars, bios, contact preferences
+- **Node data**: Fetched from external API (configured via environment variables)
 
 ## Development Setup
 
@@ -89,38 +89,35 @@ npm run build-css
 npm run build-css-prod
 ```
 
+#### Environment Variables
+
+Create a `.env` file with:
+```
+API_URL=https://api.example.com
+API_KEY=your-api-key  # Optional
+```
+
 #### Data Management
 
-Edit JSON files in `assets/data/` directory:
-- Use `isPublic: false` to hide sensitive nodes/members
-- Node IDs follow format: `{shortname}.{area}.ipnt.uk`
+- Node data is fetched from the external API
+- Edit `assets/data/config.json` for site configuration
+- Edit `assets/data/members.json` for member profiles
 - Member avatars stored in `assets/images/avatars/`
-- Geographic coordinates required for coverage calculation
 
 #### File Structure
 ```
-├── app.py                    # Flask application
-├── requirements.txt          # Python dependencies
-├── package.json             # Node.js dependencies
-├── tailwind.config.js       # TailwindCSS configuration
+├── app/                      # Flask application package
+│   ├── api_client.py        # External API client with caching
+│   ├── data.py              # Data loading functions
+│   └── routes/              # Blueprint modules
 ├── assets/
-│   ├── css/
-│   │   ├── input.css        # TailwindCSS source
-│   │   └── output.css       # Generated CSS (do not edit)
-│   ├── data/
-│   │   ├── config.json      # Site configuration
-│   │   ├── nodes.json       # Network nodes
-│   │   └── members.json     # Community members
-│   ├── js/
-│   │   └── app.js          # Client-side JavaScript
-│   └── images/             # Static assets
-├── templates/
-│   ├── base.html           # Base template
-│   ├── index.html          # Homepage
-│   ├── nodes.html          # Nodes page
-│   ├── members.html        # Members page
-│   └── contact.html        # Contact page
-└── CLAUDE.md               # Claude Code instructions
+│   ├── css/                 # TailwindCSS files
+│   ├── data/                # Static data (config.json, members.json)
+│   ├── js/app.js            # Client-side JavaScript
+│   └── images/              # Static assets
+├── instance/cache/api/       # API response cache
+├── templates/               # Jinja2 templates
+└── requirements.txt         # Python dependencies
 ```
 
 ## Deployment
