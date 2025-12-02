@@ -32,7 +32,10 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Create non-root user
+# Create cache directory structure
+RUN mkdir -p /app/instance/cache/api
+
+# Create non-root user and set ownership
 RUN useradd --create-home --shell /bin/bash app && chown -R app:app /app
 USER app
 

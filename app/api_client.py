@@ -14,9 +14,6 @@ CACHE_DIR = os.path.join('instance', 'cache', 'api')
 CACHE_FILE = os.path.join(CACHE_DIR, 'nodes.json')
 CACHE_TTL_MINUTES = 5  # Refresh cache every 5 minutes
 
-# Ensure cache directory exists
-os.makedirs(CACHE_DIR, exist_ok=True)
-
 _cache: Dict[str, Any] = {
     'nodes': [],
     'last_updated': None,
