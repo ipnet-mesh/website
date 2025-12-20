@@ -1,6 +1,15 @@
 # IPNet Community Website
 
-[![Docker Build and Push](https://github.com/ipnet-mesh/website/actions/workflows/docker-build.yml/badge.svg)](https://github.com/ipnet-mesh/website/actions/workflows/docker-build.yml)
+> [!CAUTION]
+> ## 📦 This Project is Archived
+>
+> **This repository is no longer actively maintained.** All future development has moved to the new unified repository:
+>
+> ### 👉 [**MeshCore Hub**](https://github.com/ipnet-mesh/meshcore-hub)
+>
+> Please use MeshCore Hub for all new projects and contributions. This repository remains available for reference only.
+
+---
 
 A Flask-based community website for IPNet (Ipswich Mesh Network), a local MeshCore community group serving Ipswich, Suffolk, UK. The site displays mesh network nodes, member profiles, and provides community information with interactive maps and statistics.
 
